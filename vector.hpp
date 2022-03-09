@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <cstring>
+#include <stdexcept>
 
 namespace ft
 {
@@ -14,27 +15,31 @@ namespace ft
             typedef  std::size_t                            size_type;
             typedef  T                                      value_type;
             typedef  Alloc                                  allocator_type;
-            typedef typename Alloc::reference               value_type&;
-            typedef typename Alloc::const_reference const   value_type&;
-            typedef typename Alloc::pointer         const   value_type*;
+            typedef typename Alloc::reference&               reference;
+            typedef const typename Alloc::const_reference&    const_reference;
+            typedef typename Alloc::pointer*         const   pointer;
 
             //typedef typename std::allocator<T>::value_type  value_type;
         private:
             allocator_type _alloc;
             //T               _value_type;
-            int siz;
-            T   *arr;
+            size_type       _size;
+            size_type       _capacity;
+            value_type      *arr;
         public:
+            //  Constructors
+
             explicit vector(const allocator_type& alloc = allocator_type())
             {
                 _alloc = alloc;
-                siz = 0;
-                arr = _alloc.allocate(0);
+                _size = 0;
             }
             explicit vector(size_type n, const value_type& va = value_type(), const allocator_type& alloc= allocator_type())
             {
                 _alloc = alloc;
+                _size = n;
                 this->arr = _alloc.allocate(n);
+                _capacity = n;
                 for (int i = 0; i < n; i++)
                 {
                     this->arr[i] = va; 
@@ -63,10 +68,51 @@ namespace ft
                 this->arr = x.arr;
                 this->siz = x.siz;
             }
+            //  Element Access
+
+            reference   operator[] (size_type n)
+            {
+                return (arr[n]);
+            }
+            const_reference   operator[] (size_type n) const
+            {
+                return (arr[n]);
+            }
+            reference   at(size_type n)
+            {
+                if (n >= this->_size)
+                    throw std::out_of_range("Is out of range");
+                else
+                    return(arr[n]);
+            } 
+            const_reference   at(size_type n) const
+            {
+                if (n >= this->_size)
+                    throw std::out_of_range("Is out of range");
+                else
+                    return(arr[n]);
+            } 
+            reference   front()
+            {
+                return (arr[0]);
+            }
+            const_reference   front() const
+            {
+                return (arr[0]);
+            }
+            reference   back()
+            {
+                return (arr(this->_size - 1));
+            }
+            const_reference back() const
+            {
+                return (arr(this->_size - 1));
+            }
+            //  Capacity
 
             size_type size() const
             {
-                return (this->siz);
+                return (this->_size);
             }
             size_type max_size() const
             {
@@ -88,12 +134,124 @@ namespace ft
                 else if (strcmp(s, "d") == 0 || strcmp(s, "l") == 0)
                 {
                      for (int i = 0; i < 61 ; i++ )
-                     {
                          hold *= 2;
-                     }
                      return (hold - 1);
                 }   
                 return 0;
             }
+            size_type   capacity() const
+            {
+                return (this->_capacity);
+            }
+            void    resize(size_type n, value_type val = value_type())
+            {
+                value_type *array;
+                int i = 0;
+                if (n < this->_size)
+                {
+                    array = _alloc.allocate(n);
+                    while ( i < n )
+                    {
+                        array[i] = this->arr[i];
+                        i++;
+                    }
+                    _alloc.deallocate(this->arr, this->_size);
+                    for (int i = 0; i < n; i++)
+                        _alloc.destroy(this->arr + i);
+                    this->arr = _alloc.allocate(n);
+                    i = 0;
+                    while (i < n)
+                    {
+                        this->arr[i] = array[i];
+                        i++;
+                    }
+                }
+                else if (n > this->_size)
+                {
+                   array = _alloc.allocate(n);
+                   while ( i < this->_size )
+                    {
+                        array[i] = this->arr[i];
+                        i++;
+                    }
+                    while (i < n)
+                    {
+                        array[i] = val;
+                        i++;
+                    }
+                    _alloc.deallocate(this->arr, this->_size);
+                    this->arr = _alloc.allocate(n);
+                    i = 0;
+                    while (i < n)
+                    {
+                        this->arr[i] = array[i];
+                        i++;           
+                    }
+                    if (n > this->_capacity)
+                        this->_capacity += n;
+                }
+                this->_size = n;
+            }
+            bool    empty(){
+                if (this->_size > 0)
+                    return true;
+                return false;
+            }
+            void    reserve (size_type n)
+            {
+                if (n > this->max_size())
+                    throw std::length_error("Length above of Max_Size");
+                else
+                    {
+                        this->arr = _alloc.allocate(n);
+                        this->_capacity = n;
+                    }
+            }
+            // Modifiers
+            void    assign(size_type n, const value_type& val)
+            {
+               this->_size = n; 
+               _alloc.destroy(this->arr);
+               if (this->_size > this->_capacity)
+               {
+                   _alloc.deallocate(this->arr, this->_size);
+                   this->arr = _alloc.allocate(n);
+               }
+               for (int i = 0; i < n; i++)
+               {
+                   this->arr[i] = val;
+               }
+            }
+            void    push_back(const value_type& val)
+            {
+                value_type  *array;
+                int i = 0;
+
+                array = _alloc.allocate(this->_size + 1);
+                for (int i = 0; i < this->_size; i++)
+                {
+                    array[i] = this->arr[i];
+                }
+                _alloc.deallocate(this->arr, this->_size);
+                this->arr = _alloc.allocate(this->_size + 1);
+                while (i < this->_size)
+                {
+                    this->arr[i] = array[i];
+                    i += 1;
+                }
+                this->arr[i] = val;
+                _alloc.deallocate(array, this->_size);
+                this->_size += 1;
+            }
+            void    pop_back()
+            {
+                _alloc.destroy(this->arr + this->_size - 1);
+                this->_size -= 1;
+            }
+            void    swap(vector& x)
+            {
+                
+            }
+
     };
 }
