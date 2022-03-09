@@ -9,30 +9,41 @@ namespace ft
     template < class T, class Alloc = std::allocator<T> > 
     class vector
     {
-        typedef  std::size_t        size_type;
-        typedef const std::allocator<T>           allocator_type;        
-        typedef typename std::allocator<T>::value_type  value_type;
+            // Members Types
+        public:
+            typedef  std::size_t                            size_type;
+            typedef  T                                      value_type;
+            typedef  Alloc                                  allocator_type;
+            typedef typename Alloc::reference               value_type&;
+            typedef typename Alloc::const_reference const   value_type&;
+            typedef typename Alloc::pointer         const   value_type*;
 
+            //typedef typename std::allocator<T>::value_type  value_type;
         private:
+            allocator_type _alloc;
+            //T               _value_type;
             int siz;
             T   *arr;
         public:
             explicit vector(const allocator_type& alloc = allocator_type())
             {
+                _alloc = alloc;
                 siz = 0;
-             //   arr = alloc.allocate(0);
+                arr = _alloc.allocate(0);
             }
-            explicit vector(size_type n, const value_type& va = value_type(), const allocator_type& alloc = allocator_type())
+            explicit vector(size_type n, const value_type& va = value_type(), const allocator_type& alloc= allocator_type())
             {
-                this->arr = alloc.allocate(n);
+                _alloc = alloc;
+                this->arr = _alloc.allocate(n);
                 for (int i = 0; i < n; i++)
                 {
                     this->arr[i] = va; 
                 }
             }
             template <class InputIterator>
-            vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+            vector (InputIterator first, InputIterator last, const allocator_type& alloc)
             {
+                _alloc = alloc;
                 int count = 0;
                 int i = 0;
                 while (first != last)
@@ -40,7 +51,7 @@ namespace ft
                     count += 1;
                     first += 1;
                 }
-                this->arr = alloc.allocate(count);
+                this->arr = _alloc.allocate(count);
                 while (first != last)
                 {
                     this->arr[i] = *first;

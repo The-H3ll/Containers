@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "memory": "cpp",
+        "vector": "cpp",
+        "__functional_base": "cpp",
+        "__hash_table": "cpp",
+        "__node_handle": "cpp",
+        "__split_buffer": "cpp",
+        "__memory": "cpp",
+        "memory_resource": "cpp",
+        "sstream": "cpp",
+        "string": "cpp"
+    }
+}
