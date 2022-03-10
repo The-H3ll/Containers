@@ -7,19 +7,29 @@
 int     main()
 {
     std::vector<int> first(5, 100);
+    std::vector<int> first1(3, 300);
+
     ft::vector<int> test(5, 100);
+    ft::vector<int> test1(3, 100);
 
-    first.assign(4, 22);
-    test.assign(4, 22);
-    // std::vector<char> firsts;
-    // std::vector<double> firstss;
-    // std::vector<long> firstsss;
+    std::vector<int>::iterator it;
 
+    first1.swap(first);
+    test1.swap(test);
     
+    std::cout << "=====Testing Swaps=====\n";
+    for (int i = 0; i < first.size(); i++)
+        std::cout << first[i] << " || " << test[i] << std::endl;
+    
+    std::cout << "Capacity0 ==> " << first.capacity() << " || " << test.capacity() << std::endl;
 
-    // ft::vector<char> tests;
-    // ft::vector<double> testss;
-    // ft::vector<long> testsss;
+    std::cout << "=====Testing Assign=====\n";
+
+    first.assign(10, 22);
+    test.assign(10, 22);
+    std::cout << "Capacity1 ==> " << first.capacity() << " || " << test.capacity() << std::endl;
+
+    std::cout << "=====Testing PushBack / PopBack=====\n";
     for (int i = 0 ; i < 3; i++)
     {
         first.push_back(i);
@@ -33,14 +43,13 @@ int     main()
     // std::cout << first.max_size() << std::endl;
     // std::cout << firsts.max_size() << std::endl;
     // std::cout << firstss.max_size() << std::endl;
-     std::cout << first.max_size() << " || " << test.max_size() <<  std::endl;
-     std::cout << "Capacity ==> " << first.capacity() << " || " << test.capacity() << std::endl;
+     std::cout <<"Max Size ==> "<< first.max_size() << " || " << test.max_size() <<  std::endl;
+     std::cout << "Capacity2 ==> " << first.capacity() << " || " << test.capacity() << std::endl;
     // std::cout << firsts.max_size() << " || " << tests.max_size() <<  std::endl;
     // std::cout << firstss.max_size() << " || " << testss.max_size() <<  std::endl;
     // std::cout << firstsss.max_size() << " || " << testsss.max_size() <<  std::endl;
 
-    std::cout << "CAP1 ==> " << first.capacity() << std::endl;
-    std::cout << "CAP1 ==> " << test.capacity() << std::endl;
+    std::cout << "=====Testing Resize=====\n";
     test.resize(5);
     first.resize(5);
 
@@ -66,5 +75,67 @@ int     main()
     // }
     std::cout << "CAP4 ==> " << first.capacity() << std::endl;
     std::cout << "CAP4 ==> " << test.capacity() << std::endl;
+
+    std::cout << "=====Testing Clear====\n";
+
+    test.clear();
+    first.clear();
+    std::cout << "Size ==> "<< test.size() <<  " || " << first.size() <<std::endl;
+    std::cout << "Capacity ==> " << first.capacity() << " || " << test.capacity() << std::endl;
+
+    std::cout << "====Testing Allocator=====\n";
+    std::vector<int> myvector;
+  int * p;
+  unsigned int i;
+
+  // allocate an array with space for 5 elements using vector's allocator:
+  p = myvector.get_allocator().allocate(5);
+
+  // construct values in-place on the array:
+  for (i=0; i<5; i++) myvector.get_allocator().construct(&p[i],i);
+
+  std::cout << "The allocated array contains:";
+  for (i=0; i<5; i++) std::cout << ' ' << p[i];
+  std::cout << '\n';
+
+  // destroy and deallocate:
+  for (i=0; i<5; i++) myvector.get_allocator().destroy(&p[i]);
+  myvector.get_allocator().deallocate(p,5);
+
+    ft::vector<int> myvectors;
+  int * ps;
+ // unsigned int is;
+
+  // allocate an array with space for 5 elements using vector's allocator:
+  ps = myvectors.get_allocator().allocate(5);
+
+  // construct values in-place on the array:
+  for (i=0; i<5; i++) myvectors.get_allocator().construct(&ps[i],i);
+
+  std::cout << "The allocated array contains:";
+  for (i=0; i<5; i++) std::cout << ' ' << ps[i];
+  std::cout << '\n';
+
+  // destroy and deallocate:
+  for (i=0; i<5; i++) myvectors.get_allocator().destroy(&ps[i]);
+  myvectors.get_allocator().deallocate(ps,5);
+
+
+  std::cout << "=====Testing Relational Operators======\n";
+
+    std::vector<int> foo (3,100);   // three ints with a value of 100
+    std::vector<int> bar (2,200);   // two ints with a value of 200
+    ft::vector<int> foos(3, 100);
+    ft::vector<int> bars (2,200);   // two ints with a value of 200
+
+    if ( foo ==bar)
+        std::cout << "foo and bar are equal\n";
+    if (foos == bars)
+        std::cout << "foos and bars are equal\n";
+    //if ()
+   // if (ft::operator!=(foos, bars))
+   //     std::cout << "Are not equal\n";
+  
+
     return 0;
 }

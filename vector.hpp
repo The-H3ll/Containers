@@ -155,10 +155,7 @@ namespace ft
                         array[i] = this->arr[i];
                         i++;
                     }
-                    _alloc.deallocate(this->arr, this->_size);
-                    for (int i = 0; i < n; i++)
-                        _alloc.destroy(this->arr + i);
-                    this->arr = _alloc.allocate(n);
+                    _alloc.destroy(this->arr);
                     i = 0;
                     while (i < n)
                     {
@@ -179,20 +176,25 @@ namespace ft
                         array[i] = val;
                         i++;
                     }
-                    _alloc.deallocate(this->arr, this->_size);
-                    this->arr = _alloc.allocate(n);
+                    if (n > this->_capacity)
+                    {
+                        _alloc.deallocate(this->arr, this->_size);
+                        this->arr = _alloc.allocate(this->_capacity * 2);
+                        this->_capacity *= 2;
+                    }
+                    else
+                        _alloc.destroy(this->arr);
                     i = 0;
                     while (i < n)
                     {
                         this->arr[i] = array[i];
                         i++;           
                     }
-                    if (n > this->_capacity)
-                        this->_capacity += n;
                 }
                 this->_size = n;
             }
-            bool    empty(){
+            bool    empty()
+            {
                 if (this->_size > 0)
                     return true;
                 return false;
@@ -214,34 +216,37 @@ namespace ft
                _alloc.destroy(this->arr);
                if (this->_size > this->_capacity)
                {
-                   _alloc.deallocate(this->arr, this->_size);
-                   this->arr = _alloc.allocate(n);
+                   _alloc.deallocate(this->arr, this->_capacity);
+                   this->arr = _alloc.allocate(this->_size);
+                   this->_capacity = n;
                }
                for (int i = 0; i < n; i++)
-               {
                    this->arr[i] = val;
-               }
             }
             void    push_back(const value_type& val)
             {
                 value_type  *array;
                 int i = 0;
 
+                this->_size += 1;
                 array = _alloc.allocate(this->_size + 1);
-                for (int i = 0; i < this->_size; i++)
+                for (int i = 0; i < this->_size - 1; i++)
                 {
                     array[i] = this->arr[i];
                 }
-                _alloc.deallocate(this->arr, this->_size);
-                this->arr = _alloc.allocate(this->_size + 1);
-                while (i < this->_size)
+                _alloc.destroy(this->arr);
+                if (this->_size > this->_capacity)
+                {
+                    this->arr = _alloc.allocate(this->_capacity * 2);
+                    this->_capacity *= 2;
+                }
+                while (i < this->_size - 1)
                 {
                     this->arr[i] = array[i];
                     i += 1;
                 }
                 this->arr[i] = val;
                 _alloc.deallocate(array, this->_size);
-                this->_size += 1;
             }
             void    pop_back()
             {
@@ -250,8 +255,56 @@ namespace ft
             }
             void    swap(vector& x)
             {
-                
+                vector hold;
+
+                hold = *this;
+                *this = x;
+                x = hold;
+            }
+            void    clear()
+            {
+                _alloc.destroy(this->arr);
+                this->_size = 0;
             }
 
+            // Allocator
+            allocator_type  get_allocator() const
+            {
+                return (_alloc);
+            }
+        //  Non-Members functions
+        
+        //friend bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs);
+       // friend bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs);
     };
+
 }
+template <class T, class Alloc>
+    bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+  {
+      if (lhs.size() == rhs.size())
+      {
+       // if (std::equal(lhs.begin(), lhs.end(), rhs.begin()))
+            return (true);
+       // else
+         //   return (false);
+      }
+      else
+        return (false);
+  }
+  template <class T, class Alloc>
+    bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+    {
+        return !(lhs == rhs);
+        // if (lhs.size() != rhs.size())
+        // {
+        //     return (true);
+        // }
+        // else
+        //     return (false);
+    }
+template <class T, class Alloc>
+    void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y) 
+    {
+        x.swap(y);
+    }
