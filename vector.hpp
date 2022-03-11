@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstring>
 #include <stdexcept>
+#include "iterators.hpp"
 
 namespace ft
 {
@@ -12,12 +13,14 @@ namespace ft
     {
             // Members Types
         public:
-            typedef  std::size_t                            size_type;
-            typedef  T                                      value_type;
-            typedef  Alloc                                  allocator_type;
-            typedef typename Alloc::reference&               reference;
-            typedef const typename Alloc::const_reference&    const_reference;
-            typedef typename Alloc::pointer*         const   pointer;
+            typedef  std::size_t                            	size_type;
+            typedef  T                                      	value_type;
+            typedef  Alloc                                  	allocator_type;
+            typedef typename Alloc::reference&               	reference;
+            typedef const typename Alloc::const_reference&    	const_reference;
+            typedef typename Alloc::pointer*           			pointer;
+			typedef const typename Alloc::pointer*           	const_pointer;
+			typedef Iterator<value_type>							iterator;
 
             //typedef typename std::allocator<T>::value_type  value_type;
         private:
@@ -68,6 +71,17 @@ namespace ft
                 this->arr = x.arr;
                 this->siz = x.siz;
             }
+            // Iterators
+           iterator	begin()
+           {
+            	//Iterator<value_type>::value_type
+            	return itrayo1`(it);
+           }
+           iterator end()
+		   {
+            	iterator *it =arr;
+            	return (it[this->_size + 1]);
+		   }
             //  Element Access
 
             reference   operator[] (size_type n)

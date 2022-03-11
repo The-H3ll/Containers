@@ -135,7 +135,25 @@ int     main()
     //if ()
    // if (ft::operator!=(foos, bars))
    //     std::cout << "Are not equal\n";
-  
 
-    return 0;
+   std::cout << "======Testing Iterators=========\n";
+
+   	ft::vector<int> myVec;
+	ft::vector<int> myVec1;
+
+	for (int i = 0; i < 5; i++)
+	{
+		myVec.push_back(i);
+	}
+	ft::vector<int>::iterator ite;
+	for (ite = myVec.begin(); ite != myVec.end(); ite++)
+		std::cout << *ite << std::endl;
+	//t::vector<int>::iterator it1 = myVec1.begin();
+
+	/*if (ite == it1)
+		std::cout << "Yes Equal\n";
+	else if (ite != it1)
+		std::cout << "It differs\n";*/
+
+	return 0;
 }
