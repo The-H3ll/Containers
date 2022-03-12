@@ -48,8 +48,9 @@ namespace ft
                     this->arr[i] = va; 
                 }
             }
-            template <class InputIterator>
-            vector (InputIterator first, InputIterator last, const allocator_type& alloc)
+		template <class InputIterator>
+		vector (InputIterator first, InputIterator last,
+				const allocator_type& alloc = allocator_type())
             {
                 _alloc = alloc;
                 int count = 0;
@@ -74,13 +75,13 @@ namespace ft
             // Iterators
            iterator	begin()
            {
-            	//Iterator<value_type>::value_type
-            	return itrayo1`(it);
+            	iterator sec(&arr[0]);
+            	return(sec);
            }
            iterator end()
 		   {
-            	iterator *it =arr;
-            	return (it[this->_size + 1]);
+            	iterator first(&arr[this->_size]);
+            	return (first);
 		   }
             //  Element Access
 
@@ -259,6 +260,7 @@ namespace ft
                     this->arr[i] = array[i];
                     i += 1;
                 }
+                std::cout << "val ==> " << val;
                 this->arr[i] = val;
                 _alloc.deallocate(array, this->_size);
             }

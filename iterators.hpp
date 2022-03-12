@@ -23,35 +23,136 @@ public:
 	{
 		std::cout << "Iterator default constructor\n";
 	}
+	Iterator(value_type *value)
+	{
+		it = value;
+	}
 	Iterator(const Iterator &_iter)
 	{
 		*this = _iter;
 	}
-	Iterator &operator = (const Iterator &iter)
+	Iterator operator = (const Iterator &iter)
 	{
-		*this = iter;
+		it = iter.it;
+		return (it);
 	}
 	bool	operator== (const Iterator &iter)
 	{
-		if (this->it[0] == iter.it[0])
+		if (it == iter.it)
 			return true;
 		else
 			return false;
 	}
 	bool 	operator != (const Iterator &iter)
 	{
-		if (this->it[0] != iter.it[0])
+		if (it != iter.it)
 			return true;
 		return false;
 	}
-	value_type 	operator*(const Iterator &iter)
+	value_type 	&operator*()
 	{
-		return (iter.it[0]);
+		return (*it);
+	}
+	void operator*(value_type value)
+	{
+		*it = value;
 	}
 
-	void	operator++(const Iterator &iter)
+	value_type *operator->()
 	{
-		iter.it++;
+		return it;
 	}
 
+	Iterator 	operator++(value_type)
+	{
+		it++;
+		return it;
+	}
+
+	Iterator 	operator++()
+	{
+		++it;
+		return it;
+	}
+
+	Iterator 	operator--(value_type)
+	{
+		it--;
+		return it;
+	}
+
+	Iterator 	operator--()
+	{
+		--it;
+		return it;
+	}
+	Iterator operator + (value_type value)
+	{
+		Iterator temp = *this;
+
+		temp.it = temp.it + value;
+		return 	temp ;
+	}
+	friend Iterator operator +(value_type value, Iterator iter)
+	{
+		iter.it = iter.it +value;
+		return iter;
+	}
+	Iterator operator - (value_type value)
+	{
+		Iterator temp = *this;
+
+		temp.it = temp.it - value;
+		return 	temp ;
+	}
+	friend Iterator operator -(value_type value, Iterator iter)
+	{
+		iter.it = iter.it - value;
+		return iter;
+	}
+	bool  operator <(Iterator iter)
+	{
+		if (this->it < iter.it)
+			return true;
+		return false;
+	}
+	bool  operator >(Iterator iter)
+	{
+		if (this->it > iter.it)
+			return true;
+		return false;
+	}
+	bool  operator >=(Iterator iter)
+	{
+		if (this->it >= iter.it)
+			return true;
+		return false;
+	}
+	bool  operator <=(Iterator iter)
+	{
+		if (this->it >= iter.it)
+			return true;
+		return false;
+	}
+
+	Iterator operator -=(value_type value)
+	{
+		Iterator temp = *this;
+
+		temp.it -= value;
+		return 	temp ;
+	}
+
+	Iterator operator +=(value_type value)
+	{
+		Iterator temp = *this;
+
+		temp.it += value;
+		return 	temp ;
+	}
+
+	value_type operator[](value_type value)
+	{
+		return (it[value]);
+	}
 };

@@ -139,21 +139,65 @@ int     main()
    std::cout << "======Testing Iterators=========\n";
 
    	ft::vector<int> myVec;
-	ft::vector<int> myVec1;
 
-	for (int i = 0; i < 5; i++)
-	{
+	std::cout << "**** Testing Operator -> ****\n";
+	ft::vector<int> myVec1;
+	std::vector<int> t;
+	t.push_back(3);
+	myVec1.push_back(3);
+	std::vector<int>::iterator itt;
+	ft::vector<int>::iterator it2;
+	itt = t.begin();
+	it2 = myVec1.begin();
+	std::cout << itt.operator->() << std::endl;
+	std::cout << it2.operator->() << std::endl;
+
+	std::cout << "**** Testing Operator !=, ==, ++ ****\n";
+	t.clear();
+	for (int i = 1 ; i < 5; i++)
+		t.push_back(i);
+	itt = t.begin();
+	*itt++;
+	std::cout << *itt << std::endl;
+	myVec.clear();
+	for (int i = 1; i < 5; i++)
 		myVec.push_back(i);
-	}
 	ft::vector<int>::iterator ite;
 	for (ite = myVec.begin(); ite != myVec.end(); ite++)
 		std::cout << *ite << std::endl;
-	//t::vector<int>::iterator it1 = myVec1.begin();
+	myVec.clear();
+	for (int i = 1; i < 5; i++)
+		myVec.push_back(i);
+	ite = myVec.begin();
+	*ite++;
+	std::cout << *ite << std::endl;
+	std::cout << "**** Testing Operator *it = m *****\n";
+	ft::vector<int>car;
+	car.push_back(10);
+	ft::vector<int>::iterator tes = car.begin();
+	std::cout << "Fir ==> " << *tes << std::endl;
+	*tes = 3;
+	std::cout << "test ==> " << *tes << std::endl;
 
-	/*if (ite == it1)
-		std::cout << "Yes Equal\n";
-	else if (ite != it1)
-		std::cout << "It differs\n";*/
+	std::cout << "**** Testing Operator -- *****\n";
+	myVec.clear();
+	t.clear();
+	std::cout << "Size1==> " << myVec.size() << std::endl;
+	for (int i = 1; i < 5; i++)
+	{
+		myVec.push_back(i);
+		std::cout << "I ==> " << i << std::endl;
+ 	}
+	std::cout << "Size1==> " << myVec.size() << std::endl;
+	for (int i = 0 ; i < myVec.size() ; i++)
+		std::cout << myVec[i] << std::endl;
+	std::cout << "=====\n";
 
+
+	ite = myVec.begin();
+	//ite = 2 + ite;
+	for(int i = 0; i < 4 ;i++)
+		std::cout << ite[i] << std::endl;
+	ft::vector<int>	ab(5, 6);
 	return 0;
 }
