@@ -5,6 +5,7 @@
 #include <cstring>
 #include <stdexcept>
 #include "iterators.hpp"
+#include "enable_if.hpp"
 
 namespace ft
 {
@@ -22,8 +23,9 @@ namespace ft
 			typedef const typename Alloc::pointer*           	const_pointer;
 			typedef Iterator<value_type>							iterator;
 
-            //typedef typename std::allocator<T>::value_type  value_type;
-        private:
+
+		//typedef typename std::allocator<T>::value_type  value_type;
+	public:
             allocator_type _alloc;
             //T               _value_type;
             size_type       _size;
@@ -48,8 +50,9 @@ namespace ft
                     this->arr[i] = va; 
                 }
             }
-		template <class InputIterator>
+		template <class InputIterator >
 		vector (InputIterator first, InputIterator last,
+		  typename  ft::enable_if<Iterator_trait<InputIterator>::value, InputIterator>::type,
 				const allocator_type& alloc = allocator_type())
             {
                 _alloc = alloc;

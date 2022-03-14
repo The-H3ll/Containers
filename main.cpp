@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include "vector.hpp"
+#include "is_integral.hpp"
 
 
 int     main()
@@ -198,6 +199,12 @@ int     main()
 	//ite = 2 + ite;
 	for(int i = 0; i < 4 ;i++)
 		std::cout << ite[i] << std::endl;
-	ft::vector<int>	ab(5, 6);
+
+	std::cout << "**** Testing is Integral ****\n";
+
+	//std::cout << "char: " << is_integral<char>::value << std::endl;
+	//std::cout << "int: " << is_integral<int>::value << std::endl;
+	//std::cout << "float: " << is_integral<float>::value << std::endl;
+
 	return 0;
 }

@@ -6,6 +6,7 @@
 #include <cstring>
 #include <stdexcept>
 
+
 template <class T, class Pointer = T*, class Reference = T&>
 class Iterator
 {
@@ -93,11 +94,12 @@ public:
 		temp.it = temp.it + value;
 		return 	temp ;
 	}
-	friend Iterator operator +(value_type value, Iterator iter)
-	{
-		iter.it = iter.it +value;
-		return iter;
-	}
+//	friend Iterator operator +(value_type value, Iterator iter)
+//	{
+//		Iterator temp = iter;
+//		temp.it = temp.it +value;
+//		return temp;
+//	}
 	Iterator operator - (value_type value)
 	{
 		Iterator temp = *this;
@@ -107,8 +109,9 @@ public:
 	}
 	friend Iterator operator -(value_type value, Iterator iter)
 	{
-		iter.it = iter.it - value;
-		return iter;
+		Iterator  temp = iter;
+		temp.it = temp.it - value;
+		return temp;
 	}
 	bool  operator <(Iterator iter)
 	{
@@ -155,4 +158,24 @@ public:
 	{
 		return (it[value]);
 	}
+};
+
+
+template<class T, class U>
+struct is_same
+{
+	bool  ret_value(T t, U u)
+	{
+		if (typeid(t) == typeid(u))
+			return true;
+		return false;
+	}
+};
+
+
+template<class Iter>
+class Iterator_trait : public Iterator<Iter> {
+
+public:
+	static const bool value = is_same<std::input_iterator_tag, Iter>::ret_value();
 };

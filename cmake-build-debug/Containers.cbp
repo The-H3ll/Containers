@@ -82,10 +82,22 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/molabhai/Desktop/Containers/enable_if.hpp">
+			<Option target="Containers"/>
+		</Unit>
+		<Unit filename="/Users/molabhai/Desktop/Containers/is_integral.hpp">
+			<Option target="Containers"/>
+		</Unit>
 		<Unit filename="/Users/molabhai/Desktop/Containers/iterators.hpp">
 			<Option target="Containers"/>
 		</Unit>
 		<Unit filename="/Users/molabhai/Desktop/Containers/main.cpp">
+			<Option target="Containers"/>
+		</Unit>
+		<Unit filename="/Users/molabhai/Desktop/Containers/map.hpp">
+			<Option target="Containers"/>
+		</Unit>
+		<Unit filename="/Users/molabhai/Desktop/Containers/pair.hpp">
 			<Option target="Containers"/>
 		</Unit>
 		<Unit filename="/Users/molabhai/Desktop/Containers/vector.cpp">
