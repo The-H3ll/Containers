@@ -2,8 +2,9 @@
 #include <vector>
 #include <iostream>
 #include "vector.hpp"
-#include "is_integral.hpp"
-
+//#include "is_integral.hpp"
+#include "pair.hpp"
+#include "map.hpp"
 
 int     main()
 {
@@ -205,6 +206,57 @@ int     main()
 	//std::cout << "char: " << is_integral<char>::value << std::endl;
 	//std::cout << "int: " << is_integral<int>::value << std::endl;
 	//std::cout << "float: " << is_integral<float>::value << std::endl;
+
+	std::cout << "**** Testing std::pair ****\n";
+
+	std::pair <std::string,double> product1;                     // default constructor
+	std::pair <std::string,double> product2 ("tomatoes",2.30);   // value init
+	std::pair <std::string,double> product3 (product2);          // copy constructor
+
+	ft::pair <std::string,double> me_product1;                     // default constructor
+	ft::pair <std::string,double> me_product2 ("tomatoes",2.30);   // value init
+	ft::pair <std::string,double> me_product3 (me_product2);          // copy constructor
+
+	product1.first = "labhairi";
+	product1.second = 1;
+
+	me_product1.first = "Mouaad";
+	me_product1.second = 2;
+
+	std::cout << "The price of " << product1.first << " is $" << product1.second << '\n';
+	std::cout << "The price of " << product2.first << " is $" << product2.second << '\n';
+	std::cout << "The price of " << product3.first << " is $" << product3.second << '\n';
+
+	std::cout << "The price of " << me_product1.first << " is $" << me_product1.second << '\n';
+	std::cout << "The price of " << me_product2.first << " is $" << me_product2.second << '\n';
+	std::cout << "The price of " << me_product3.first << " is $" << me_product3.second << '\n';
+
+	ft::pair<int,char> fooo (10,'z');
+	ft::pair<int,char> barr (90,'a');
+
+	if (fooo==barr) std::cout << "foo and bar are equal\n";
+	if (fooo!=barr) std::cout << "foo and bar are not equal\n";
+	if (fooo< barr) std::cout << "foo is less than bar\n";
+	if (fooo> barr) std::cout << "foo is greater than bar\n";
+	if (fooo<=barr) std::cout << "foo is less than or equal to bar\n";
+	if (fooo>=barr) std::cout << "foo is greater than or equal to bar\n";
+
+	std::cout << "*****	Testing Map *****\n";
+
+	ft::map<int, char> mapi;
+
+
+	std::cout << "*****	Testing Max Size *****\n";
+
+	std::vector<std::string>	vec;
+	ft::vector<std::string>		my_vec;
+
+
+	std::cout << vec.max_size() << std::endl;
+	std::cout << my_vec.max_size() << std::endl;
+
+
+
 
 	return 0;
 }

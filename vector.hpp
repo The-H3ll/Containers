@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstring>
 #include <stdexcept>
+#include <math.h>
 #include "iterators.hpp"
 #include "enable_if.hpp"
 
@@ -14,7 +15,7 @@ namespace ft
     {
             // Members Types
         public:
-            typedef  std::size_t                            	size_type;
+            typedef  float                          	size_type;
             typedef  T                                      	value_type;
             typedef  Alloc                                  	allocator_type;
             typedef typename Alloc::reference&               	reference;
@@ -25,7 +26,7 @@ namespace ft
 
 
 		//typedef typename std::allocator<T>::value_type  value_type;
-	public:
+	private:
             allocator_type _alloc;
             //T               _value_type;
             size_type       _size;
@@ -136,12 +137,10 @@ namespace ft
             {
                 unsigned long  hold = 1;
                 const char *s = typeid(T).name();
-
+/*
                 if (strcmp(s, "i") == 0)
                 {
-                    for (int i = 0; i <62; i++ )
-                        hold *= 2;
-                    return (hold - 1);
+                    return ();
                 }
                 else if (strcmp(s, "c") == 0)
                 {
@@ -154,8 +153,14 @@ namespace ft
                      for (int i = 0; i < 61 ; i++ )
                          hold *= 2;
                      return (hold - 1);
-                }   
-                return 0;
+                }   */
+				if (sizeof(T) != 1)
+				{
+					hold = pow(2, 64) / sizeof(T) - 1;
+					return  (hold);
+				}
+
+				return (pow(2, 63) - 1);
             }
             size_type   capacity() const
             {
