@@ -15,7 +15,7 @@ namespace ft
     {
             // Members Types
         public:
-            typedef  float                          	size_type;
+            typedef  std::size_t                         	size_type;
             typedef  T                                      	value_type;
             typedef  Alloc                                  	allocator_type;
             typedef typename Alloc::reference&               	reference;

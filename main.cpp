@@ -1,9 +1,9 @@
 
 #include <vector>
 #include <iostream>
+#include <map>
 #include "vector.hpp"
 //#include "is_integral.hpp"
-#include "pair.hpp"
 #include "map.hpp"
 
 int     main()
@@ -243,19 +243,22 @@ int     main()
 
 	std::cout << "*****	Testing Map *****\n";
 
-	ft::map<int, char> mapi;
+	ft::map<char, int> mapi;
+	std::map<char, int> map;
 
+	map.insert(std::pair<char, int>('a', 200));
+	map.insert(std::pair<char, int>('b', 100));
 
-	std::cout << "*****	Testing Max Size *****\n";
+	std::map<char, int>::iterator map_it;
 
-	std::vector<std::string>	vec;
-	ft::vector<std::string>		my_vec;
+	for (map_it = map.begin(); map_it != map.end(); map_it++)
+	{
+		std::cout << "First ==> " << map_it->first << " || Second ==> " << map_it->second <<std::endl;
+	}
+	ft::pair<ft::map<char,int>::iterator,bool> ret;
+	 ret = mapi.insert(ft::pair<char, int > ('a',2));
 
-
-	std::cout << vec.max_size() << std::endl;
-	std::cout << my_vec.max_size() << std::endl;
-
-
+	 std::cout << ret.first->second << std::endl;
 
 
 	return 0;

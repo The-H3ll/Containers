@@ -12,11 +12,11 @@ class Iterator
 {
 public:
     typedef std::random_access_iterator_tag iterator_category;
-    typedef T value_type;
-    typedef std::ptrdiff_t difference_type;
-    typedef difference_type  distance_type;
-    typedef Pointer pointer;
-    typedef Reference reference;
+    typedef T								value_type;
+    typedef std::ptrdiff_t					difference_type;
+    typedef difference_type 				distance_type;
+    typedef Pointer							pointer;
+    typedef Reference						reference;
 private:
 	value_type *it;
 public:
