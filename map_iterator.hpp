@@ -10,19 +10,19 @@
 #include <iostream>
 #include <cstring>
 #include <stdexcept>
+#include "pair.hpp"
 
-template <class T, class Pointer = T*, class Reference = T&>
+template <class T, class V>
 class Map_iterator
 {
 public:
 	typedef std::bidirectional_iterator_tag	iteratory_category;
-	typedef T								value_type;
+	typedef ft::pair<T, V>							value_type;
 	typedef std::ptrdiff_t 					difference_type;
-	typedef Pointer							pointer;
-	typedef Reference						reference;
 
 private:
 	value_type *_it;
+	//ft::Node	*node;
 public:
 	Map_iterator()
 	{
@@ -30,23 +30,34 @@ public:
 	}
 	Map_iterator(value_type value)
 	{
-		_it= &value;
+		_it = new value_type(value);
+		std::cout << "Enter\n";
+		//_it= &value;
+		std::cout << _it->first << std::endl;
+		std::cout << _it->second << std::endl;
+		std::cout << "End\n";
 	}
 	Map_iterator(const Map_iterator& mapIterator)
 	{
 		_it = mapIterator._it;
 	}
+
+
+
 	Map_iterator operator=(const Map_iterator& mapIterator)
 	{
+		value_type *temp;
+
+		temp = mapIterator._it;
+
+		std::cout << "dsdd1 ===> " << temp->first << std::endl;
+		std::cout << "dsdd1 ===> " << mapIterator._it->first << std::endl;
+
 		this->_it = mapIterator._it;
+
 		return (*this);
 	}
 
-	Map_iterator	operator= (const value_type& value)
-	{
-		*_it = value;
-		return _it;
-	}
 
 	bool operator==(const Map_iterator& mapIterator)
 	{

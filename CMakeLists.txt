@@ -9,4 +9,4 @@ add_executable(Containers
         iterators.hpp
         main.cpp
         vector.cpp
-        vector.hpp enable_if.hpp is_integral.hpp map.hpp pair.hpp value_comp.hpp map_iterator.hpp)
+        vector.hpp enable_if.hpp is_integral.hpp map.hpp pair.hpp value_comp.hpp map_iterator.hpp node.hpp)

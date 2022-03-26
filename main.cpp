@@ -258,8 +258,7 @@ int     main()
 	ft::pair<ft::map<char,int>::iterator,bool> ret;
 	 ret = mapi.insert(ft::pair<char, int > ('a',2));
 
-	 std::cout << ret.first->second << std::endl;
-
-
+	 std::cout << "ret==> first ==> " << ret.first->second << std::endl;
+	 std::cout << "ret==> second ==> " << ret.first->first << std::endl;
 	return 0;
 }

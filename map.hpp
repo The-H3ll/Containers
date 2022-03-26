@@ -14,10 +14,12 @@
 #include <stdexcept>
 #include "map_iterator.hpp"
 #include "pair.hpp"
+#include "node.hpp"
 //#include "value_comp.hpp"
 
 namespace ft
 {
+
 	class Node
 	{
 	public:
@@ -45,10 +47,9 @@ namespace ft
 		typedef typename Alloc::pointer*				pointer;
 		typedef const typename Alloc::pointer*			const_pointer;
 		typedef std::size_t 							size_type;
-		typedef	Map_iterator<value_type>				iterator;
+		typedef	Map_iterator<const key_type, mapped_type>				iterator;
 		//typedef Map_iterator<const value_type>			const_iterator;
 		typedef ft::Node									Node_;
-
 
 	private:
 		size_type	_size;
@@ -67,20 +68,24 @@ namespace ft
 			if (node == NULL)
 			{
 				root_node(val);
+				std::cout << " kEy --> " << node->key << std::endl;
+				std::cout << "value --> " << node->value << std::endl;
+				//Map_iterator<value_type>(my_pair.first, val);
+				std::cout << "Before\n";
+				my_pair.first = iterator (val);
+				std::cout << "dd ==> " << my_pair.first->first <<std::endl;
+				std::cout << "After\n";
 				my_pair.second = true;
 				return my_pair;
+				std::cout << "Enter \n";
 			}
-			else
-
+			std::cout << "dkdkkd 2\n";
 			if (val.first < node->key)
-			{
 				node->left = my_insert(node->left, val);
-			}
 			else if (val.first > node->key)
-			{
 				node->right = my_insert(node->right, val);
-			}
-			my_pair.first = Map_iterator<value_type>(val);
+			//Map_iterator<value_type>(my_pair.first, val);
+			my_pair.first = iterator (val);
 			my_pair.second = true;
 			return my_pair;
 		}
