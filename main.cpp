@@ -6,8 +6,11 @@
 //#include "is_integral.hpp"
 #include "map.hpp"
 
+
+
 int     main()
 {
+	/*
     std::vector<int> first(5, 100);
     std::vector<int> first1(3, 300);
 
@@ -240,25 +243,50 @@ int     main()
 	if (fooo> barr) std::cout << "foo is greater than bar\n";
 	if (fooo<=barr) std::cout << "foo is less than or equal to bar\n";
 	if (fooo>=barr) std::cout << "foo is greater than or equal to bar\n";
-
+*/
 	std::cout << "*****	Testing Map *****\n";
 
-	ft::map<char, int> mapi;
+	ft::map<int, int> mapi;
 	std::map<char, int> map;
 
 	map.insert(std::pair<char, int>('a', 200));
 	map.insert(std::pair<char, int>('b', 100));
 
 	std::map<char, int>::iterator map_it;
+	ft::map<int, int>::iterator map_i;
 
 	for (map_it = map.begin(); map_it != map.end(); map_it++)
-	{
 		std::cout << "First ==> " << map_it->first << " || Second ==> " << map_it->second <<std::endl;
-	}
-	ft::pair<ft::map<char,int>::iterator,bool> ret;
-	 ret = mapi.insert(ft::pair<char, int > ('a',2));
+	ft::pair<ft::map<int,int>::iterator,bool> ret;
+//	 mapi.insert(ft::pair<char, int > ('a',2));
+//	 ret = mapi.insert(ft::pair<char , int > ('b', 4));
+//	 mapi.insert(ft::pair<char, int >('c', 5));
+//	mapi.insert(ft::pair<char, int > ('1',2));
 
-	 std::cout << "ret==> first ==> " << ret.first->second << std::endl;
-	 std::cout << "ret==> second ==> " << ret.first->first << std::endl;
+
+	mapi.insert(ft::pair<int , int>(33, 2));
+	mapi.insert(ft::pair<int , int>(13, 2));
+	mapi.insert(ft::pair<int , int>(53, 2));
+	mapi.insert(ft::pair<int , int>(9, 2));
+	mapi.insert(ft::pair<int , int>(21, 2));
+	ret = mapi.insert(ft::pair<int , int>(61, 2));
+	mapi.insert(ft::pair<int , int>(8, 2));
+	mapi.insert(ft::pair<int , int>(11, 2));
+
+	map_i = ret.first;
+
+	std::cout << "first ==> " << map_i->first << std::endl;
+	std::cout << "second ==> " << map_i->second << std::endl;
+
+	++map_i;
+
+	std::cout << "first 1 ==> " << map_i->first << std::endl;
+	std::cout << "second 1 ==> " << map_i->second << std::endl;
+
+	//std::cout << "ret==> first ==> " << ret.first->second << std::endl;
+	 //std::cout << "ret==> First ==> second ==> " << ret.first->first << std::endl;
+
+	// if (ret.second == true)
+	 //	std::cout << "Yes!!\n";
 	return 0;
 }

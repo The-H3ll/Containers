@@ -7,6 +7,20 @@
 
 namespace ft
 {
+	struct pairs
+	{
+		int key;
+		int value;
+	};
+
+	class Node
+	{
+	public:
+		pairs	*pair;
+		Node	*right;
+		Node	*left;
+		int 	height;
+	};
 }
 
 

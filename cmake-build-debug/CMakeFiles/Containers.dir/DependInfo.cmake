@@ -5,7 +5,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/molabhai/Desktop/Containers/main.cpp" "/Users/molabhai/Desktop/Containers/cmake-build-debug/CMakeFiles/Containers.dir/main.cpp.o"
-  "/Users/molabhai/Desktop/Containers/vector.cpp" "/Users/molabhai/Desktop/Containers/cmake-build-debug/CMakeFiles/Containers.dir/vector.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 
