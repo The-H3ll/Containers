@@ -13,17 +13,17 @@
 #include "pair.hpp"
 #include "node.hpp"
 
-template <class T, class V>
+template <class T, class V, class Z>
 class Map_iterator
 {
 public:
 	typedef std::bidirectional_iterator_tag	iteratory_category;
 	typedef ft::pair<T, V>							value_type;
 	typedef std::ptrdiff_t 					difference_type;
-	typedef ft::Node						Node_;
+	typedef Z						Node_;
 
 private:
-	value_type 	*_it;
+	//value_type 	*_it;
 	Node_ 		*node;
 
 public:
@@ -31,26 +31,26 @@ public:
 	{
 		// Default;
 	}
-	Map_iterator(value_type value)
-	{
-		_it = new value_type(value);
-		//_it= &value;
-	}
 
 	Map_iterator(const Map_iterator& mapIterator)
 	{
-		_it = mapIterator._it;
+		this->node = mapIterator.node;
+	}
+
+	Map_iterator(Node_ *node_)
+	{
+		node = node_;
 	}
 
 	Map_iterator operator=(const Map_iterator& mapIterator)
 	{
-		this->_it = mapIterator._it;
+		this->node = mapIterator.node;
 		return (*this);
 	}
 
 	bool operator==(const Map_iterator& mapIterator)
 	{
-		if (this->_it == mapIterator._it)
+		if (this->node == mapIterator.node)
 			return true;
 		return false;
 	}
@@ -62,25 +62,40 @@ public:
 
 	value_type&	operator*()
 	{
-		return (*_it);
+		return (*node->pair);
 	}
 
 	value_type *operator->()
 	{
-		return _it;
+	//	std::cout << "Node ==> " << node->height << std::endl;
+		return node->pair;
 	}
+
 
 	value_type 	*operator++()
 	{
 
-		return _it;
+		return ;
 	}
 
-	Map_iterator 	operator--()
+	Map_iterator	left_most() {
+		while (node->left != NULL)
+			node = node->left;
+		return (*this);
+	}
+
+	void	check_value()
+	{
+		std::cout << "Check IN\n";
+		std::cout << "Key ==> " << node->pair->first << std::endl;
+		std::cout << "value ==> " << node->pair->second << std::endl;
+	}
+
+	/*Map_iterator 	operator--()
 	{
 		--_it;
 		return _it;
-	}
+	}*/
 };
 
 #endif //CONTAINERS_MAP_ITERATOR_HPP

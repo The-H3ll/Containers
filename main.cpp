@@ -263,7 +263,6 @@ int     main()
 //	 mapi.insert(ft::pair<char, int >('c', 5));
 //	mapi.insert(ft::pair<char, int > ('1',2));
 
-
 	mapi.insert(ft::pair<int , int>(33, 2));
 	mapi.insert(ft::pair<int , int>(13, 2));
 	mapi.insert(ft::pair<int , int>(53, 2));
@@ -273,20 +272,24 @@ int     main()
 	mapi.insert(ft::pair<int , int>(8, 2));
 	mapi.insert(ft::pair<int , int>(11, 2));
 
-	map_i = ret.first;
+	//map_i = ret.first;
+
+	map_i = mapi.begin();
+
+	//std::cout << "HEEERE\n";
 
 	std::cout << "first ==> " << map_i->first << std::endl;
 	std::cout << "second ==> " << map_i->second << std::endl;
 
-	++map_i;
+	//map_i = mapi.begin();
 
-	std::cout << "first 1 ==> " << map_i->first << std::endl;
-	std::cout << "second 1 ==> " << map_i->second << std::endl;
+	//std::cout << "first ==> " << map_i->first << std::endl;
+	//std::cout << "second ==> " << map_i->second << std::endl;
 
 	//std::cout << "ret==> first ==> " << ret.first->second << std::endl;
 	 //std::cout << "ret==> First ==> second ==> " << ret.first->first << std::endl;
 
 	// if (ret.second == true)
-	 //	std::cout << "Yes!!\n";
+	 //	std::cout << "Yes!!\n
 	return 0;
 }

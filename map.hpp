@@ -38,12 +38,21 @@ namespace ft
 		typedef typename Alloc::pointer*							pointer;
 		typedef const typename Alloc::pointer*						const_pointer;
 		typedef std::size_t 										size_type;
-		typedef	Map_iterator<const key_type, mapped_type>			iterator;
 		//typedef Map_iterator<const value_type>			const_iterator;
-		typedef ft::Node											Node_;
-		typedef ft::pairs											Pairs;
+	private:
+		class Node
+		{
+		public:
+			value_type 	*pair;
+			Node	*right;
+			Node	*left;
+			Node	*parent;
+			int 	height;
+		};
+		typedef Node											Node_;
 		typedef typename 	Alloc::template rebind<Node_ >::other	allocator_;
-		typedef typename 	Alloc::template rebind<pairs >::other	allocator;
+	public:
+		typedef	Map_iterator<const key_type, mapped_type, Node_>			iterator;
 
 
 	private:
@@ -51,7 +60,6 @@ namespace ft
 		Node_			*node;
 		allocator_type	alloc;
 		allocator_ 		alloc_;
-		allocator 		p_alloc;
 		key_compare 	k_compare;
 
 	public:
@@ -66,26 +74,28 @@ namespace ft
 			ft::pair< iterator , bool> my_pair;
 			if (node == NULL)
 			{
-				std::cout << "Enter NULL\n";
 				root_node(val);
-				my_pair.first = iterator (val);
+				my_pair.first = iterator (node);
 				my_pair.second = true;
 				return my_pair;
 			}
-			if (val.first < node->pair->key)
+			if (val.first < node->pair->first)
 			{
-				std::cout << "Enter Left\n";
 				node->left = my_insert(node->left, val);
+				my_pair.first = iterator (node->right);
+				my_pair.second = true;
 			}
-			else if (val.first > node->pair->key)
+			else if (val.first > node->pair->first)
 			{
-				std::cout << "Enter Right\n";
 				node->right = my_insert(node->right, val);
+				my_pair.first = iterator (node->right);
+				my_pair.second = true;
 			}
-			my_pair.first = iterator (val);
-			my_pair.second = true;
+			else
+				my_pair.second = false;
 			return my_pair;
 		}
+
 		void 	printTree(Node* root, std::string indent, bool last)
 		{
 			if (root != nullptr) {
@@ -97,7 +107,7 @@ namespace ft
 					std::cout << "L----";
 					indent += "|  ";
 				}
-				std::cout << root->pair->key << std::endl;
+				std::cout << root->pair->first << std::endl;
 				printTree(root->left, indent, false);
 				printTree(root->right, indent, true);
 			}
@@ -105,16 +115,18 @@ namespace ft
 
 		iterator	begin()
 		{
-
+			return iterator(node).left_most();
 		}
 
 		~map()
 		{
-			printTree(node, "", false);
+			//iterator (node).check_value();
+			//printTree(node, "", false);
 			alloc_.deallocate(node, sizeof (Node_));
 		}
 
 	private:
+
 
 		int max(int a, int b)
 		{
@@ -126,7 +138,6 @@ namespace ft
 				return 0;
 			return node->height;
 		}
-
 		int balanc_factor(Node_ *node)
 		{
 			if (node == NULL)
@@ -136,23 +147,27 @@ namespace ft
 		void root_node(const value_type& val)
 		{
 			node =	alloc_.allocate(1);
-			node->pair = p_alloc.allocate(1);
-			node->pair->key = val.first;
+			node->pair = alloc.allocate(1);
+			alloc.construct(node->pair, val);
+			std::cout << "key ==> " << node->pair->first << std::endl;
+			std::cout << "Value ==> " << node->pair->second << std::endl;
 			node->height = 0;
 			node->left = NULL;
 			node->right	=	NULL;
-			node->pair->value = val.second;
+			node->parent = NULL;
+			//node->pair->second = val.second;
 		}
 
-		Node_*	new_node(const value_type& val)
+		Node_*	new_node(const value_type &val)
 		{
-			Node_ *_node =  alloc_.allocate(sizeof (Node_));
-			_node->pair =	p_alloc.allocate(sizeof (Pairs));
-			_node->pair->key = val.first;
+			Node_ *_node =  alloc_.allocate(1);
+			_node->pair =	alloc.allocate(1);
+			alloc.construct(_node->pair, val);
 			_node->height = 1;
 			_node->left = NULL;
 			_node->right	=	NULL;
-			_node->pair->value = val.second;
+			//_node->parent = node
+			//_node->pair->second = val.second;
 			return _node;
 		}
 
@@ -161,9 +176,10 @@ namespace ft
 			int balance;
 			if (node == NULL)
 				return (new_node(val));
-			if (val.first < node->pair->key)
+			std::cout << "Node ==> " << node->pair->first << std::endl;
+			if (val.first < node->pair->first)
 				node->left = my_insert(node->left, val);
-			else if (val.first > node->pair->key)
+			else if (val.first > node->pair->first)
 				node->right = my_insert(node->right, val);
 			else
 				return node;
@@ -171,18 +187,21 @@ namespace ft
 			balance = balanc_factor(node);
 			if (balance > 1)
 			{
-				if (val.first < node->left->pair->key) {
+				if (val.first < node->left->pair->first)
+				{
 					return right_rotate(node);
-				} else if (val.first > node->left->pair->key) {
+				}
+				else if (val.first > node->left->pair->first)
+				{
 					node->left = left_rotate(node->left);
 					return right_rotate(node);
 				}
 			}
 			if (balance < -1)
 			{
-				if (val.first > node->right->pair->key) {
+				if (val.first > node->right->pair->first) {
 					return left_rotate(node);
-				} else if (val.first < node->right->pair->key) {
+				} else if (val.first < node->right->pair->first) {
 					node->right = right_rotate(node->right);
 					return left_rotate(node);
 				}
