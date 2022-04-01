@@ -268,24 +268,41 @@ int     main()
 	mapi.insert(ft::pair<int , int>(53, 2));
 	mapi.insert(ft::pair<int , int>(9, 2));
 	mapi.insert(ft::pair<int , int>(21, 2));
-	ret = mapi.insert(ft::pair<int , int>(61, 2));
+	mapi.insert(ft::pair<int , int>(61, 2));
 	mapi.insert(ft::pair<int , int>(8, 2));
-	mapi.insert(ft::pair<int , int>(11, 2));
+	ret = mapi.insert(ft::pair<int , int>(11, 2));
 
-	//map_i = ret.first;
+//	for(map_i = mapi.begin(); map_i != mapi.end(); map_i++)
+//	{
+//		std::cout << "First ==> " << map_i->first << std::endl;
+//
+//	}
+//	map_i = mapi.begin();
+	std::cout << "BAAAACCCCCCCCCCKKKKKK\n";
+//	while (ret.first != map_i)
+//	{
+//		std::cout << "fIRR ==> " <<  ret.first->first << std::endl;
+//		ret.first--;
+//	}
+//	std::cout << "fIRR ==> " <<  ret.first->first << std::endl;
 
-	map_i = mapi.begin();
 
-	//std::cout << "HEEERE\n";
+	//mapi.erase(ret.first);
 
-	std::cout << "first ==> " << map_i->first << std::endl;
-	std::cout << "second ==> " << map_i->second << std::endl;
+	mapi.erase(53);
 
-	//map_i = mapi.begin();
+	/*for(map_i = mapi.begin(); map_i != mapi.end(); map_i++)
+	{
+		std::cout << "First ==> " << map_i->first << std::endl;
 
-	//std::cout << "first ==> " << map_i->first << std::endl;
-	//std::cout << "second ==> " << map_i->second << std::endl;
+	}
+*/
+//	mapi.erase(13);
 
+
+	/*map_i = mapi.begin();
+
+*/
 	//std::cout << "ret==> first ==> " << ret.first->second << std::endl;
 	 //std::cout << "ret==> First ==> second ==> " << ret.first->first << std::endl;
 
