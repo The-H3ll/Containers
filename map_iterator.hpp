@@ -22,9 +22,10 @@ public:
 	typedef std::ptrdiff_t 					difference_type;
 	typedef Z						Node_;
 
-private:
+//private:
 	value_type 	*_it;
 	Node_ 		*node;
+
 
 public:
 	Map_iterator()
@@ -50,7 +51,6 @@ public:
 
 	Map_iterator	operator=(const value_type *value)
 	{
-		//this->node->pair = value;
 		return (*this);
 	}
 
@@ -58,7 +58,6 @@ public:
 	Map_iterator operator=(const Map_iterator& mapIterator)
 	{
 		this->node = mapIterator.node;
-		//this->_it = mapIterator._it;
 		return (*this);
 	}
 
@@ -76,8 +75,6 @@ public:
 
 	value_type 	return_pair()
 	{
-		std::cout << "Enter \n";
-		std::cout << "HELLLO " << node->pair->first << std::endl;
 		return (*node->pair);
 	}
 
@@ -88,7 +85,6 @@ public:
 
 	value_type *operator->()
 	{
-	//	std::cout << "Node ==> " << node->height << std::endl;
 		return node->pair;
 	}
 
@@ -100,17 +96,11 @@ public:
 		if (tmp->pair->first == node->pair->first)
 			node = node->right;
 		else if (node->right != NULL)
-		{
 			node = node->right;
-		}
 		else if (node->parent != NULL && node->pair->first < node->parent->pair->first)
-		{
 			node = node->parent;
-		}
 		else if (node->parent != NULL && node->pair->first > node->parent->pair->first && node->parent->parent != NULL)
-		{
 			node = node->parent->parent;
-		}
 		return (this);
 	}
 
@@ -121,25 +111,21 @@ public:
 		if (tmp->pair->first == node->pair->first)
 			node = node->right;
 		else if (node->right != NULL)
-		{
 			node = node->right;
-		}
 		else if (node->parent != NULL && node->pair->first < node->parent->pair->first)
-		{
 			node = node->parent;
-		}
 		else if (node->parent != NULL && node->pair->first > node->parent->pair->first && node->parent->parent != NULL)
-		{
 			node = node->parent->parent;
-		}
 		else
 			node = node->right;
 		return (this);
 	}
 
 	Map_iterator	left_most() {
-		while (node->left != NULL)
+		while (node->left != NULL) {
+			//std::cout << "Node ==> " << node->pair->first << std::endl;
 			node = node->left;
+		}
 		return (*this);
 	}
 

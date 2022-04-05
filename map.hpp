@@ -53,19 +53,22 @@ namespace ft
 		typedef typename 	Alloc::template rebind<Node_ >::other	allocator_;
 	public:
 		typedef	Map_iterator<const key_type, mapped_type, Node_>			iterator;
+		typedef typename 	Alloc::template rebind<iterator >::other	allocator_iter;
 
 
 	private:
 		size_type		_size;
+		allocator_iter 	iter_alloc;
 		Node_			*node;
 		Node_			*tmp;
 		allocator_type	alloc;
 		allocator_ 		alloc_;
 		key_compare 	k_compare;
+		int 			check;
 
 	public:
 		explicit map (const key_compare& comp = key_compare(),
-					  const allocator_type& alloc = allocator_type())
+					  const allocator_type& alloc = allocator_type()): check(0)
 		{
 			this->_size = 0;
 		}
@@ -103,8 +106,61 @@ namespace ft
 
 		void 	erase(iterator position)
 		{
+			iterator iter;
+
+			std::cout << "Before\n";
 			node = erase_node(node, position);
+			while (node->parent != NULL)
+				node = node->parent;
+			std::cout << "Middle\n";
+			iter = begin();
+			while (iter != end())
+			{
+				node = upadte_height(node, iter);
+				iter++;
+			}
+			iter = begin();
+			std::cout << "After Middle\n";
+			while (iter != end())
+			{
+				node = do_rotation(node, iter);
+				iter++;
+			}
 		}
+
+		int count_rang(iterator first, iterator last)
+		{
+			int count = 0;
+			while (first != last)
+			{
+				first++;
+				count += 1;
+			}
+			return count;
+		}
+
+		void 	filling_iter(iterator *temp, iterator first, iterator last)
+		{
+			int i = 0;
+			while (first != last)
+			{
+				temp[i] = first;
+				i++;
+				first++;
+			}
+		}
+
+		void 	erase(iterator first, iterator last) {
+			iterator iter;
+
+			while (first != last) {
+				std::cout << "Inside Inn \n";
+				iter = first;
+				first++;
+				erase(iter);
+			}
+		}
+
 
 		size_type	erase(const key_type& k)
 		{
@@ -112,8 +168,23 @@ namespace ft
 
 			iter = find_key(k);
 			node = erase_node(node, iter);
+			while (node->parent != NULL)
+				node = node->parent;
+			iter = begin();
+			while (iter != end())
+			{
+				node = upadte_height(node, iter);
+				iter++;
+			}
+			iter = begin();
+			while (iter != end())
+			{
+				node = do_rotation(node, iter);
+				iter++;
+			}
 			return (1);
 		}
+
 
 		void 	printTree(Node* root, std::string indent, bool last)
 		{
@@ -156,6 +227,18 @@ namespace ft
 			return (iterator(node).left_most());
 		}
 
+		Node_*		the_right_node(Node_ *node, iterator pos)
+		{
+			if (node == NULL)
+				return NULL;
+			std::cout << "Pos ==> " << pos->first << " || Node  ===> " << node->pair->first << std::endl;
+			if (pos->first < node->pair->first)
+				node->left = the_right_node(node->left, pos);
+			else if (pos->first > node->pair->first)
+				node->right = the_right_node(node->right, pos);
+			return node;
+		}
+
 		Node_*		erase_node(Node_ *root, iterator pos) {
 			if (root == NULL)
 				return root;
@@ -165,16 +248,14 @@ namespace ft
 				root->right = erase_node(root->right, pos);
 			else {
 				if ((root->left == NULL) || (root->right == NULL)) {
-					std::cout << "Enter 1\n";
-
 					Node *temp = root->left ? root->left : root->right;
-					iterator iter = find_key(temp->pair);
-					std::cout << "Temp ==> " << temp->pair->first << std::endl;
-					std::cout << "Root ==> " << root->pair->first << std::endl;
 					if (temp == NULL) {
+						//Node *_temp = root->parent;
 						temp = root;
 						root = NULL;
-					} else {
+					}
+					else {
+						iterator iter = find_key(temp->pair);
 						//*root = *temp;
 						alloc.construct(root->pair, iter.return_pair());
 						root->height = temp->height;
@@ -183,36 +264,74 @@ namespace ft
 					}
 					free(temp);
 				} else {
-					std::cout << "Enter 2\n";
-					iterator temp = iterator(node->right).left_most();//= nodeWithMinimumValue(root->right);
-					alloc.construct(root->pair, temp.return_pair());
+					std::cout << "Inside of erase node \n";
+					std::cout << "Di Pair ==> " << root->right->pair->first << std::endl;
+					std::cout << "Di Root ==> " << root->pair->first << std::endl;
+					iterator temp = iterator(root->right).left_most();//= nodeWithMinimumValue(root->right);
+					std::cout << "TempINN  ==> " << temp->first << std::endl;
+					Node_ *_temp = the_right_node(node, temp);
+					std::cout << "Temp ==> " << _temp->pair->first << std::endl;
+					root = _temp;
+					std::cout << "Pair ==> " << root->right->pair->first << std::endl;
+					std::cout << "Root ==> " << root->pair->first << std::endl;
 					root->right = erase_node(root->right,
 											 temp);
 				}
-				std::cout << "Root ==> " << root->pair->first << std::endl;
 				if (root == NULL)
 					return root;
 				root->height = 1 + max(height(root->left),
 									   height(root->right));
-				std::cout << "Height ==> " << root->height << std::endl;
+			}
+			return root;
+		}
+
+		Node_*		do_rotation(Node_ *root, iterator iter)
+		{
+			if (root == NULL)
+				return NULL;
+			root->height = 1 + max(height(root->left),height(root->right));
+			if (iter->first < root->pair->first)
+				root->left = do_rotation(root->left, iter);
+			else if (iter->first > root->pair->first)
+				root->right = do_rotation(root->right, iter);
+			else
+			{
 				int balanceFactor = balanc_factor(root);
 				if (balanceFactor > 1) {
 					if (balanc_factor(root->left) >= 0) {
-						return right_rotate(root);
-					} else {
+						root = right_rotate(root);
+						return root;
+					}
+					else {
 						root->left = left_rotate(root->left);
-						return right_rotate(root);
+						root = right_rotate(root);
+						return root;
 					}
 				}
 				if (balanceFactor < -1) {
 					if (balanc_factor(root->right) <= 0) {
-						return left_rotate(root);
+						root = left_rotate(root);
+						return root;
 					} else {
 						root->right = right_rotate(root->right);
-						return left_rotate(root);
+						root = left_rotate(root);
+						return root;
 					}
 				}
 			}
+			return root;
+		}
+
+		Node_*		upadte_height(Node_* root, iterator iter)
+		{
+			if (root == NULL)
+				return NULL;
+			if (iter->first < root->pair->first)
+				root->left = do_rotation(root->left, iter);
+			else if (iter->first > root->pair->first)
+				root->right = do_rotation(root->right, iter);
+			else
+				root->height = 1 + max(height(root->left),height(root->right));
 			return root;
 		}
 
@@ -279,8 +398,6 @@ namespace ft
 			node =	alloc_.allocate(1);
 			node->pair = alloc.allocate(1);
 			alloc.construct(node->pair, val);
-			std::cout << "keyS ==> " << node->pair->first << std::endl;
-			std::cout << "Value ==> " << node->pair->second << std::endl;
 			node->height = 0;
 			node->left = NULL;
 			node->right	=	NULL;
@@ -294,7 +411,7 @@ namespace ft
 			alloc.construct(_node->pair, val);
 			_node->height = 1;
 			_node->left = NULL;
-			_node->right	=	NULL;
+			_node->right = NULL;
 			_node->parent = tmp;
 			return _node;
 		}
@@ -345,19 +462,24 @@ namespace ft
 			return node;
 		}
 
-		Node_*		right_rotate(Node_* x)
+		Node_*		right_rotate(Node_* y)
 		{
-			Node_ *y = x->left;
-			Node_ *T2 = y->right;
-			y->right = x;
-			x->left = T2;
-			x->height = max(height(x->left),
-							height(x->right)) +
-						1;
+			Node_ *x = y->left;
+			Node_ *T2 = x->right;
+			if (y->parent == NULL)
+			{
+				y->parent = x;
+				x->parent = NULL;
+			}
+			x->right = y;
+			y->left = T2;
 			y->height = max(height(y->left),
 							height(y->right)) +
 						1;
-			return y;
+			x->height = max(height(x->left),
+							height(x->right)) +
+						1;
+			return x;
 		}
 
 		Node_*	left_rotate(Node_* x)
