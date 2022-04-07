@@ -60,7 +60,10 @@ namespace ft
 		size_type		_size;
 		allocator_iter 	iter_alloc;
 		Node_			*node;
+		Node_			*root;
+		Node_			*temp_parent;
 		Node_			*tmp;
+		Node_			*temp;
 		allocator_type	alloc;
 		allocator_ 		alloc_;
 		key_compare 	k_compare;
@@ -108,11 +111,10 @@ namespace ft
 		{
 			iterator iter;
 
-			std::cout << "Before\n";
+			std::cout << "Start \n";
 			node = erase_node(node, position);
 			while (node->parent != NULL)
 				node = node->parent;
-			std::cout << "Middle\n";
 			iter = begin();
 			while (iter != end())
 			{
@@ -120,12 +122,13 @@ namespace ft
 				iter++;
 			}
 			iter = begin();
-			std::cout << "After Middle\n";
+			std::cout << "Middle\n";
 			while (iter != end())
 			{
 				node = do_rotation(node, iter);
 				iter++;
 			}
+			std::cout << "End \n";
 		}
 
 		int count_rang(iterator first, iterator last)
@@ -154,10 +157,20 @@ namespace ft
 			iterator iter;
 
 			while (first != last) {
-				std::cout << "Inside Inn \n";
 				iter = first;
-				first++;
+				if (first != end())
+					first++;
+				std::cout << "SeG Here\n";
+				std::cout << "Will erase ==> " << iter->first << std::endl;
 				erase(iter);
+				/*if (check == 1)
+				{
+					std::cout << "PP ==> " << first->first << std::endl;
+					first--;
+					std::cout << "PPoo ==> " << first->first << std::endl;
+					check = 0;
+				}*/
+				printTree(node, "", true);
 			}
 		}
 
@@ -166,6 +179,7 @@ namespace ft
 		{
 			iterator iter;
 
+			printTree(node, "", true);
 			iter = find_key(k);
 			node = erase_node(node, iter);
 			while (node->parent != NULL)
@@ -174,6 +188,7 @@ namespace ft
 			while (iter != end())
 			{
 				node = upadte_height(node, iter);
+				//std::cout << "Itter ==> " << iter->first << std::endl;
 				iter++;
 			}
 			iter = begin();
@@ -182,6 +197,16 @@ namespace ft
 				node = do_rotation(node, iter);
 				iter++;
 			}
+			root = node;
+			printTree(node, "", true);
+			iter = begin();
+			while (iter != end())
+			{
+				node = do_father(node, iter, root);
+				iter++;
+				//std::cout << "Iterr ==> " << iter->first << std::endl;
+			}
+			printTree(node, "", true);
 			return (1);
 		}
 
@@ -205,7 +230,10 @@ namespace ft
 
 		iterator	begin()
 		{
-			return iterator(node).left_most();
+			iterator  iter;
+
+			iter = iterator(node).left_most();
+			return iter;
 		}
 
 		iterator end()
@@ -216,13 +244,42 @@ namespace ft
 		{
 			//iterator (node).check_value();
 			//iterator (node).left_most();
-			printTree(node, "", false);
+			//printTree(node, "", false);
 			alloc_.deallocate(node, sizeof (Node_));
 		}
 
 	private:
 
 
+		Node_*		do_father(Node_* root, iterator iter, Node_* node)
+		{
+			if (root == NULL)
+				return NULL;
+			if (iter->first < root->pair->first)
+			{
+				if (root->pair->first != node->pair->first)
+					temp = root;
+				root->left = do_father(root->left, iter,node);
+			}
+			else if (iter->first > root->pair->first)
+			{
+				if (root->pair->first != node->pair->first)
+					temp = root;
+				root->right = do_father(root->right, iter, node);
+			}
+			else
+			{
+				if (root->pair->first != node->pair->first)
+				{
+					if (root->pair->first == temp->pair->first)
+						root->parent = node;
+					else
+						root->parent = temp;
+				} else
+					root->parent = NULL;
+			}
+			return root;
+		}
 		iterator  nodeWithMinimumValue(Node_ *node) {
 			return (iterator(node).left_most());
 		}
@@ -231,7 +288,6 @@ namespace ft
 		{
 			if (node == NULL)
 				return NULL;
-			std::cout << "Pos ==> " << pos->first << " || Node  ===> " << node->pair->first << std::endl;
 			if (pos->first < node->pair->first)
 				node->left = the_right_node(node->left, pos);
 			else if (pos->first > node->pair->first)
@@ -248,32 +304,30 @@ namespace ft
 				root->right = erase_node(root->right, pos);
 			else {
 				if ((root->left == NULL) || (root->right == NULL)) {
-					Node *temp = root->left ? root->left : root->right;
+					std::cout << "Enter 1\n";
+					std::cout << root->pair->first << std::endl;
+					Node_ *temp = root->left ? root->left : root->right;
 					if (temp == NULL) {
+						std::cout << "Enter heree in Null\n";
 						//Node *_temp = root->parent;
 						temp = root;
 						root = NULL;
 					}
 					else {
+
 						iterator iter = find_key(temp->pair);
-						//*root = *temp;
-						alloc.construct(root->pair, iter.return_pair());
+						root = iter.return_node();
+					/*	alloc.construct(root->pair, iter.return_pair());
 						root->height = temp->height;
 						root->right = temp->right;
-						root->left = temp->left;
+						root->left = temp->left;*/
 					}
 					free(temp);
 				} else {
-					std::cout << "Inside of erase node \n";
-					std::cout << "Di Pair ==> " << root->right->pair->first << std::endl;
-					std::cout << "Di Root ==> " << root->pair->first << std::endl;
 					iterator temp = iterator(root->right).left_most();//= nodeWithMinimumValue(root->right);
-					std::cout << "TempINN  ==> " << temp->first << std::endl;
-					Node_ *_temp = the_right_node(node, temp);
-					std::cout << "Temp ==> " << _temp->pair->first << std::endl;
-					root = _temp;
-					std::cout << "Pair ==> " << root->right->pair->first << std::endl;
-					std::cout << "Root ==> " << root->pair->first << std::endl;
+					check = 1;
+					alloc.construct(root->pair, temp.return_pair());
+				//	root = temp.return_node();
 					root->right = erase_node(root->right,
 											 temp);
 				}
@@ -282,6 +336,9 @@ namespace ft
 				root->height = 1 + max(height(root->left),
 									   height(root->right));
 			}
+
+		//	std::cout << "Finally Root => " << root->pair->first << std::endl;
+			printTree(node, "", true);
 			return root;
 		}
 
@@ -464,21 +521,52 @@ namespace ft
 
 		Node_*		right_rotate(Node_* y)
 		{
+//			std::cout << "Right Rotation\n";
+//			std::cout << "node to rotate ==> " << y->pair->first << std::endl;
+//			if (y->parent == NULL)
+//				std::cout << "Parent is NULL" << std::endl;
+//			else
+//				std::cout << "Parent is --> "<< y->parent->pair->first << std::endl;
+//			if (y->left == NULL)
+//				std::cout << "Left is NULL \n";
+//			else
+//				std::cout << "Left is --> " << y->left->pair->first << std::endl;
+//			if (y->right == NULL)
+//				std::cout << "Right is NULL \n";
+//			else
+//				std::cout << "Right is --> " << y->right->pair->first << std::endl;
 			Node_ *x = y->left;
 			Node_ *T2 = x->right;
-			if (y->parent == NULL)
+			/*if (y->parent == NULL)
 			{
-				y->parent = x;
+			//	y->parent = x;
 				x->parent = NULL;
-			}
+			}*/
 			x->right = y;
 			y->left = T2;
+			x->parent = y->parent;
 			y->height = max(height(y->left),
 							height(y->right)) +
 						1;
 			x->height = max(height(x->left),
 							height(x->right)) +
 						1;
+			if (x->right->right != NULL)
+				x->right->right->parent = x->right;
+			if (x->right->left != NULL)
+				x->right->left->parent = x->right;
+//			if (x->parent == NULL)
+//				std::cout << "Parent is NULL" << std::endl;
+//			else
+//				std::cout << "Parent is --> "<< x->parent->pair->first << std::endl;
+//			if (x->left == NULL)
+//				std::cout << "Left is NULL \n";
+//			else
+//				std::cout << "Left is --> " << x->left->pair->first << std::endl;
+//			if (x->right == NULL)
+//				std::cout << "Right is NULL \n";
+//			else
+//				std::cout << "Right is --> " << x->right->pair->first << std::endl;
 			return x;
 		}
 
@@ -487,6 +575,11 @@ namespace ft
 			Node_ *y = x->right;
 			Node_ *T2 = y->left;
 			y->left = x;
+			if (x->parent == NULL)
+			{
+				x->parent = y;
+				y->parent = NULL;
+			}
 			x->right = T2;
 			x->height = max(height(x->left),
 							height(x->right)) +

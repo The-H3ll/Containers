@@ -249,14 +249,18 @@ int     main()
 	ft::map<int, int> mapi;
 	std::map<char, int> map;
 
+	std::pair<std::map<char, int>::iterator ,bool>map_it1;
 	map.insert(std::pair<char, int>('a', 200));
-	map.insert(std::pair<char, int>('b', 100));
+	map_it1 = map.insert(std::pair<char, int>('b', 100));
 
 	std::map<char, int>::iterator map_it;
 	ft::map<int, int>::iterator map_i;
 
 	for (map_it = map.begin(); map_it != map.end(); map_it++)
 		std::cout << "First ==> " << map_it->first << " || Second ==> " << map_it->second <<std::endl;
+
+	map.erase('b');
+
 	ft::pair<ft::map<int,int>::iterator,bool> ret;
 	ft::pair<ft::map<int,int>::iterator,bool> ret1;
 //	 mapi.insert(ft::pair<char, int > ('a',2));
@@ -264,14 +268,16 @@ int     main()
 //	 mapi.insert(ft::pair<char, int >('c', 5));
 //	mapi.insert(ft::pair<char, int > ('1',2));
 
-	mapi.insert(ft::pair<int , int>(33, 2));
+	std::cout << "Starting \n";
+	ret = mapi.insert(ft::pair<int , int>(33, 2));
 	mapi.insert(ft::pair<int , int>(13, 2));
-	mapi.insert(ft::pair<int , int>(54, 2));
-	ret = mapi.insert(ft::pair<int , int>(9, 2));
+	 mapi.insert(ft::pair<int , int>(54, 2));
+	mapi.insert(ft::pair<int , int>(9, 2));
 	mapi.insert(ft::pair<int , int>(21, 2));
-	mapi.insert(ft::pair<int , int>(61, 2));
+	ret1 = mapi.insert(ft::pair<int , int>(61, 2));
 	mapi.insert(ft::pair<int , int>(8, 2));
 	mapi.insert(ft::pair<int , int>(11, 2));
+	std::cout << "Starting 1\n";
 
 //	for(map_i = mapi.begin(); map_i != mapi.end(); map_i++)
 //	{
@@ -290,7 +296,31 @@ int     main()
 
 	//mapi.erase(ret.first);
 
-	mapi.erase(9);
+	//mapi.erase(21);
+	//mapi.erase(33);
+//	mapi.erase(54);
+
+	std::cout << "Beginnn\n";
+	mapi.erase(33);
+	std::cout << "After Eraaase\n";
+
+	map_i = mapi.begin();
+	while (map_i != mapi.end())
+	{
+		std::cout << " ==> " << map_i->first << std::endl;
+		map_i++;
+	}
+	while (ret1.first != mapi.begin())
+	{
+		std::cout << " Back ==> " <<ret1.first->first << std::endl;
+		ret1.first--;
+	}
+	std::cout << " Back ==> " <<ret1.first->first << std::endl;
+
+	std::cout << "EEEENNNND\n";
+//	mapi.erase(ret.first, mapi.end());
+
+
 	/*while (ret.first != mapi.end())
 	{
 		std::cout << "R ==> " << ret.first->first << std::endl;

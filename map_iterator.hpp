@@ -25,6 +25,7 @@ public:
 //private:
 	value_type 	*_it;
 	Node_ 		*node;
+	Node_ 		*root;
 
 
 public:
@@ -36,6 +37,7 @@ public:
 	Map_iterator(const Map_iterator& mapIterator)
 	{
 		this->node = mapIterator.node;
+		this->root = mapIterator.root;
 	}
 
 	Map_iterator( value_type *value)
@@ -47,6 +49,12 @@ public:
 	Map_iterator(Node_ *node_)
 	{
 		node = node_;
+		root = node_;
+	}
+
+	Node_*	return_node()
+	{
+		return node;
 	}
 
 	Map_iterator	operator=(const value_type *value)
@@ -58,6 +66,7 @@ public:
 	Map_iterator operator=(const Map_iterator& mapIterator)
 	{
 		this->node = mapIterator.node;
+		this->root = mapIterator.root;
 		return (*this);
 	}
 
@@ -92,15 +101,22 @@ public:
 	Map_iterator	*operator++(int)
 	{
 		Node_ *tmp = right_most();
-
+//
+//		if (node->parent != NULL)
+//			std::cout << "111Node ==> " << node->pair->first << " Parent ==> " << node->parent->pair->first << std::endl;
+//		std::cout << "122Node ==> " << node->pair->first << std::endl;
+//		if (node->parent != NULL)
+//			std::cout << " Parent ==> " << node->parent->pair->first << std::endl;
 		if (tmp->pair->first == node->pair->first)
 			node = node->right;
-		else if (node->right != NULL)
+		else if (node->right != NULL && node->pair->first != root->pair->first )
 			node = node->right;
-		else if (node->parent != NULL && node->pair->first < node->parent->pair->first)
+		else if (node->parent != NULL && node->pair->first < node->parent->pair->first && node->pair->first != root->pair->first)
 			node = node->parent;
-		else if (node->parent != NULL && node->pair->first > node->parent->pair->first && node->parent->parent != NULL)
+		else if (node->parent != NULL && node->pair->first > node->parent->pair->first && node->parent->parent != NULL&& node->pair->first != root->pair->first)
 			node = node->parent->parent;
+		else if (node->pair->first == root->pair->first)
+			node = left_most(node->right);
 		return (this);
 	}
 
@@ -123,15 +139,21 @@ public:
 
 	Map_iterator	left_most() {
 		while (node->left != NULL) {
-			//std::cout << "Node ==> " << node->pair->first << std::endl;
 			node = node->left;
 		}
 		return (*this);
 	}
 
+	Node_ *	left_most(Node_* node) {
+		while (node->left != NULL) {
+			 node = node->left;
+		}
+		return (node);
+	}
+
 	Node_ *right_most()
 	{
-		Node_ *tmp = go_root();
+		Node_ *tmp = root;
 		while (tmp->right != NULL)
 			tmp = tmp->right;
 		return (tmp);
@@ -185,17 +207,34 @@ public:
 	Map_iterator 	*operator--(int)
 	{
 
+//		if (node->parent != NULL)
+//		{
+//			std::cout << "Node ==> " << node->parent->pair->first << std::endl;
+//			if (node->pair->first < node->parent->pair->first)
+//				std::cout << "Yes it is\n";
+//			if (node->parent->parent == NULL)
+//				std::cout << "Its id nnnnn\n";
+//		}
+//		std::cout << "Pair ==> " << node->pair->first << std::endl;
+//		if (node->left == NULL)
+//			std::cout << "Is NULL\n"n;
+
 		if (node->left != NULL)
 		{
+	//		std::cout << "Emnnnnter \n";
 			node = node->left;
 			if (node->right != NULL)
 				node = node->right;
-			return (this);
 		}
-		if (node->parent != NULL && node->pair->first > node->parent->pair->first)
+		else if (node->parent != NULL && node->pair->first > node->parent->pair->first)
 		{
+	//		std::cout << "Enterr 2 \n";
 			node = node->parent;
-			return (this);
+		}
+		else if (node->parent != NULL && node->pair->first < node->parent->pair->first && node->parent->parent != NULL)
+		{
+	//		std::cout << "ENNNter 3 \n";
+			node = node->parent->parent;
 		}
 		return (this);
 	}
