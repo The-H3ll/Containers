@@ -245,7 +245,7 @@ int     main()
 	if (fooo>=barr) std::cout << "foo is greater than or equal to bar\n";
 */
 	std::cout << "*****	Testing Map *****\n";
-
+	std::cout << "-------Testing Insert Delete-----\n";
 	ft::map<int, int> mapi;
 	std::map<char, int> map;
 
@@ -277,32 +277,17 @@ int     main()
 	ret1 = mapi.insert(ft::pair<int , int>(61, 2));
 	mapi.insert(ft::pair<int , int>(8, 2));
 	mapi.insert(ft::pair<int , int>(11, 2));
-	std::cout << "Starting 1\n";
 
-//	for(map_i = mapi.begin(); map_i != mapi.end(); map_i++)
-//	{
-//		std::cout << "First ==> " << map_i->first << std::endl;
-//
-//	}
-//	map_i = mapi.begin();
-	std::cout << "BAAAACCCCCCCCCCKKKKKK\n";
-//	while (ret.first != map_i)
-//	{
-//		std::cout << "fIRR ==> " <<  ret.first->first << std::endl;
-//		ret.first--;
-//	}
-//	std::cout << "fIRR ==> " <<  ret.first->first << std::endl;
-
-
+	std::cout << "Size ==> " << mapi.size() << std::endl;
 	//mapi.erase(ret.first);
-
 	//mapi.erase(21);
 	//mapi.erase(33);
-//	mapi.erase(54);
+	//mapi.erase(54);
 
-	std::cout << "Beginnn\n";
-	mapi.erase(33);
+	mapi.erase(ret.first, mapi.end());
+	//mapi.erase(33);
 	std::cout << "After Eraaase\n";
+	std::cout << "Size ==> " << mapi.size() << std::endl;
 
 	map_i = mapi.begin();
 	while (map_i != mapi.end())
@@ -310,43 +295,120 @@ int     main()
 		std::cout << " ==> " << map_i->first << std::endl;
 		map_i++;
 	}
-	while (ret1.first != mapi.begin())
+	std::cout << "To go backwards\n";
+	/*while (ret1.first != mapi.begin())
 	{
 		std::cout << " Back ==> " <<ret1.first->first << std::endl;
 		ret1.first--;
 	}
-	std::cout << " Back ==> " <<ret1.first->first << std::endl;
+	std::cout << " Back ==> " <<ret1.first->first << std::endl;*/
 
 	std::cout << "EEEENNNND\n";
-//	mapi.erase(ret.first, mapi.end());
 
+	std::cout << "------Testing Swap------\n";
 
-	/*while (ret.first != mapi.end())
+	ft::map<char, int> foo;
+
+	std::cout << "Before\n";
+	foo.insert(ft::pair<char, int>('a', 100));
+	std::cout << "After\n";
+	foo.insert(ft::pair<char, int>('b', 200));
+	foo.insert(ft::pair<char, int>('c', 300));
+
+	ft::map<char, int> bar;
+	bar.insert(ft::pair<char, int>('x', 11));
+	bar.insert(ft::pair<char, int>('y', 110));
+	bar.insert(ft::pair<char, int>('z', 120));
+
+	foo.swap(bar);
+
+	std::cout << "HHHHEEEEELLLLOOOOO\n";
+	std::cout << "foo contains:\n";
+	for (ft::map<char,int>::iterator itw=foo.begin(); itw!=foo.end(); ++itw)
+		std::cout << itw->first << " => " << itw->second << '\n';
+
+	std::cout << "SizeFoo ==> " << foo.size() << std::endl;
+
+	std::cout <<"-------Testing Clear && Empty ------\n";
+
+	mapi.clear();
+
+	if (mapi.empty())
 	{
-		std::cout << "R ==> " << ret.first->first << std::endl;
-		ret.first++;
-	}*/
-//	mapi.erase(8);
+		mapi.insert(ft::pair<char, int>(20, 100));
+		mapi.insert(ft::pair<char, int>(40, 200));
+	}
 
-	/*std::cout << "Sttttttaaaaart\n" ;
-	map_i = mapi.begin();
+	std::cout << "Iterate\n";
+	for (map_i = mapi.begin(); map_i != mapi.end(); map_i++)
+		std::cout << map_i->first << " ==> " << map_i->second << std::endl;
 
-	while (map_i != mapi.end())
+	std::cout << "Size ==> " << mapi.size() << std::endl;
+
+	std::cout << "Max Size ==> " << map.max_size() << std::endl;
+	std::cout << "Ft Max Size ==> " << mapi.max_size() << std::endl;
+
+	std::cout << "-------Testing Value Comp-------\n";
+
+	ft::map<char, int >value_comps;
+
+	ft::pair<ft::map<char, int>::iterator , bool> paiss;
+	value_comps.insert(ft::pair<char, int>('a', 100));
+	value_comps.insert(ft::pair<char, int>('b', 100));
+	paiss = value_comps.insert(ft::pair<char, int>('c', 100));
+	ft::pair<char, int> high = *paiss.first;
+
+
+	ft::map<char, int>::iterator kol = value_comps.begin();
+	do{
+		std::cout << kol->first << " ==> " << kol->second << std::endl;
+	} while(value_comps.value_comp()(*kol++, high));
+
+
+	std::cout << "-------Testing Key Compare------\n";
+
+	ft::map<char,int> mymap;
+
+	ft::map<char,int>::key_compare mycomp = mymap.key_comp();
+
+	mymap.insert(ft::pair<char,int >('a', 100));
+	mymap.insert(ft::pair<char,int >('b', 100));
+	mymap.insert(ft::pair<char,int >('c', 100));
+
+	char x = 'c';
+	ft::map<char, int >::iterator polo = mymap.begin();
+
+	do {
+		std::cout << polo->first << " => " << polo->second << '\n';
+	} while ( mycomp((*polo++).first, x) );
+
+	std::cout << "----Testing Find-------\n";
+
+	ft::map<char, int >casa;
+
+	casa.insert(ft::pair<char, int>('a', 100));
+	casa.insert(ft::pair<char, int>('b', 200));
+	casa.insert(ft::pair<char, int>('c', 300));
+	//casa.insert(ft::pair<char, int>('d', 400));
+
+	std::cout << "Before\n";
+	polo = casa.find('a');
+	std::cout << "After\n";
+
+	if (polo != casa.end())
 	{
-		std::cout << "FF ==> " << map_i->first << std::endl;
-		ma
-	}*/
+		std::cout << "Before\n";
+		casa.erase(polo->first);
+		std::cout << "After\n";
 
-//	mapi.erase(13);
+	}
+
+	std::cout << "elements in mymap:" << '\n';
+	std::cout << "a => " << mymap.find('a')->second << '\n';
+	std::cout << "c => " << mymap.find('c')->second << '\n';
 
 
-	/*map_i = mapi.begin();
 
-*/
-	//std::cout << "ret==> first ==> " << ret.first->second << std::endl;
-	 //std::cout << "ret==> First ==> second ==> " << ret.first->first << std::endl;
 
-	// if (ret.second == true)
-	 //	std::cout << "Yes!!\n
 	return 0;
 }

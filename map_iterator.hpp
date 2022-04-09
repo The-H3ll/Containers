@@ -87,7 +87,7 @@ public:
 		return (*node->pair);
 	}
 
-	value_type&	operator*()
+	value_type&	operator*() const
 	{
 		return (*node->pair);
 	}
@@ -98,15 +98,21 @@ public:
 	}
 
 
-	Map_iterator	*operator++(int)
+	Map_iterator	operator++(int)
 	{
 		Node_ *tmp = right_most();
 //
 //		if (node->parent != NULL)
 //			std::cout << "111Node ==> " << node->pair->first << " Parent ==> " << node->parent->pair->first << std::endl;
 //		std::cout << "122Node ==> " << node->pair->first << std::endl;
-//		if (node->parent != NULL)
-//			std::cout << " Parent ==> " << node->parent->pair->first << std::endl;
+		static int i = 0;
+		if (i == 0 )
+		{
+			if (node->parent != NULL)
+				std::cout << " Parent ==> " << node->parent->pair->first << std::endl;
+			std::cout << " NODE ==> " << node->pair->first << std::endl;
+			i += 1;
+		}
 		if (tmp->pair->first == node->pair->first)
 			node = node->right;
 		else if (node->right != NULL && node->pair->first != root->pair->first )
@@ -117,8 +123,9 @@ public:
 			node = node->parent->parent;
 		else if (node->pair->first == root->pair->first)
 			node = left_most(node->right);
-		return (this);
+		return (*this);
 	}
+
 
 	Map_iterator	*operator++()
 	{
@@ -138,8 +145,11 @@ public:
 	}
 
 	Map_iterator	left_most() {
-		while (node->left != NULL) {
-			node = node->left;
+		if (node)
+		{
+			while (node->left != NULL) {
+				node = node->left;
+			}
 		}
 		return (*this);
 	}
