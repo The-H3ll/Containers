@@ -13,12 +13,12 @@
 #include "pair.hpp"
 #include "node.hpp"
 
-template <class T, class V, class Z>
+template <class T, class Z>
 class Map_iterator
 {
 public:
 	typedef std::bidirectional_iterator_tag	iteratory_category;
-	typedef ft::pair<T, V>							value_type;
+	typedef T							value_type;
 	typedef std::ptrdiff_t 					difference_type;
 	typedef Z						Node_;
 
@@ -101,18 +101,7 @@ public:
 	Map_iterator	operator++(int)
 	{
 		Node_ *tmp = right_most();
-//
-//		if (node->parent != NULL)
-//			std::cout << "111Node ==> " << node->pair->first << " Parent ==> " << node->parent->pair->first << std::endl;
-//		std::cout << "122Node ==> " << node->pair->first << std::endl;
-		static int i = 0;
-		if (i == 0 )
-		{
-			if (node->parent != NULL)
-				std::cout << " Parent ==> " << node->parent->pair->first << std::endl;
-			std::cout << " NODE ==> " << node->pair->first << std::endl;
-			i += 1;
-		}
+
 		if (tmp->pair->first == node->pair->first)
 			node = node->right;
 		else if (node->right != NULL && node->pair->first != root->pair->first )
@@ -127,21 +116,21 @@ public:
 	}
 
 
-	Map_iterator	*operator++()
+	Map_iterator	operator++()
 	{
 		Node_ *tmp = right_most();
 
 		if (tmp->pair->first == node->pair->first)
 			node = node->right;
-		else if (node->right != NULL)
+		else if (node->right != NULL && node->pair->first != root->pair->first )
 			node = node->right;
-		else if (node->parent != NULL && node->pair->first < node->parent->pair->first)
+		else if (node->parent != NULL && node->pair->first < node->parent->pair->first && node->pair->first != root->pair->first)
 			node = node->parent;
-		else if (node->parent != NULL && node->pair->first > node->parent->pair->first && node->parent->parent != NULL)
+		else if (node->parent != NULL && node->pair->first > node->parent->pair->first && node->parent->parent != NULL&& node->pair->first != root->pair->first)
 			node = node->parent->parent;
-		else
-			node = node->right;
-		return (this);
+		else if (node->pair->first == root->pair->first)
+			node = left_most(node->right);
+		return (*this);
 	}
 
 	Map_iterator	left_most() {
@@ -217,17 +206,6 @@ public:
 	Map_iterator 	*operator--(int)
 	{
 
-//		if (node->parent != NULL)
-//		{
-//			std::cout << "Node ==> " << node->parent->pair->first << std::endl;
-//			if (node->pair->first < node->parent->pair->first)
-//				std::cout << "Yes it is\n";
-//			if (node->parent->parent == NULL)
-//				std::cout << "Its id nnnnn\n";
-//		}
-//		std::cout << "Pair ==> " << node->pair->first << std::endl;
-//		if (node->left == NULL)
-//			std::cout << "Is NULL\n"n;
 
 		if (node->left != NULL)
 		{

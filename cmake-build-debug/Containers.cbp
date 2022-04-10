@@ -91,6 +91,9 @@
 		<Unit filename="/Users/molabhai/Desktop/Containers/iterators.hpp">
 			<Option target="Containers"/>
 		</Unit>
+		<Unit filename="/Users/molabhai/Desktop/Containers/iterators_traits.hpp">
+			<Option target="Containers"/>
+		</Unit>
 		<Unit filename="/Users/molabhai/Desktop/Containers/main.cpp">
 			<Option target="Containers"/>
 		</Unit>
@@ -107,6 +110,9 @@
 			<Option target="Containers"/>
 		</Unit>
 		<Unit filename="/Users/molabhai/Desktop/Containers/pair.hpp">
+			<Option target="Containers"/>
+		</Unit>
+		<Unit filename="/Users/molabhai/Desktop/Containers/reverse_iterator.hpp">
 			<Option target="Containers"/>
 		</Unit>
 		<Unit filename="/Users/molabhai/Desktop/Containers/value_comp.hpp">

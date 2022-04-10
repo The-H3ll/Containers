@@ -309,18 +309,20 @@ int     main()
 
 	ft::map<char, int> foo;
 
-	std::cout << "Before\n";
-	foo.insert(ft::pair<char, int>('a', 100));
-	std::cout << "After\n";
-	foo.insert(ft::pair<char, int>('b', 200));
-	foo.insert(ft::pair<char, int>('c', 300));
+	foo.insert(ft::pair<char, int>('e', 100));
+	foo.insert(ft::pair<char, int>('f', 200));
+	foo.insert(ft::pair<char, int>('g', 300));
 
 	ft::map<char, int> bar;
 	bar.insert(ft::pair<char, int>('x', 11));
 	bar.insert(ft::pair<char, int>('y', 110));
 	bar.insert(ft::pair<char, int>('z', 120));
 
+	std::cout << "BBBB\n";
+
 	foo.swap(bar);
+
+	std::cout << "AAAA\n";
 
 	std::cout << "HHHHEEEEELLLLOOOOO\n";
 	std::cout << "foo contains:\n";
@@ -389,25 +391,91 @@ int     main()
 	casa.insert(ft::pair<char, int>('a', 100));
 	casa.insert(ft::pair<char, int>('b', 200));
 	casa.insert(ft::pair<char, int>('c', 300));
-	//casa.insert(ft::pair<char, int>('d', 400));
+	casa.insert(ft::pair<char, int>('d', 400));
+	ft::map<char, int >::iterator pol;
 
-	std::cout << "Before\n";
-	polo = casa.find('a');
-	std::cout << "After\n";
+	pol = casa.find('b');
 
-	if (polo != casa.end())
-	{
-		std::cout << "Before\n";
-		casa.erase(polo->first);
-		std::cout << "After\n";
-
-	}
+	if (pol != casa.end())
+		casa.erase(pol->first);
 
 	std::cout << "elements in mymap:" << '\n';
-	std::cout << "a => " << mymap.find('a')->second << '\n';
-	std::cout << "c => " << mymap.find('c')->second << '\n';
+	std::cout << "a => " << casa.find('a')->second << '\n';
+	std::cout << "c => " << casa.find('c')->second << '\n';
+	std::cout << "d => " << casa.find('d')->second << '\n';
+
+	std::cout << "------Testing Count-------\n";
+
+	std::map<char,int> mymaps;
+	char c;
+
+	mymaps ['a']=101;
+	mymaps ['c']=202;
+	mymaps ['f']=303;
+
+	for (c='a'; c<'h'; c++)
+	{
+		std::cout << c;
+		if (mymaps.count(c)>0)
+			std::cout << " is an element of mymap.\n";
+		else
+			std::cout << " is not an element of mymap.\n";
+	}
+
+	std::cout << "-----Testing Lower Upper Band-----\n";
+
+	std::map<char,int> myma;
+	std::map<char,int>::iterator itlow,itup;
+
+	myma['a']=20;
+	myma['b']=40;
+	myma['c']=60;
+	myma['d']=80;
+	myma['e']=100;
+
+	itlow=myma.lower_bound ('b');  // itlow points to b
+	itup=myma.upper_bound ('d');   // itup points to e (not d!)
+
+	myma.erase(itlow,itup);        // erases [itlow,itup)
+
+	// print content:
+	for (std::map<char,int>::iterator it=myma.begin(); it!=myma.end(); ++it)
+		std::cout << it->first << " => " << it->second << '\n';
 
 
+	std::cout << "-----Testing Equal Range-------\n";
+	std::map<char,int> mymapo;
+
+	mymapo['a']=10;
+	mymapo['b']=20;
+	mymapo['c']=30;
+
+	std::pair<std::map<char,int>::iterator,std::map<char,int>::iterator> retss;
+	retss = mymapo.equal_range('b');
+
+	std::cout << "lower bound points to: ";
+	std::cout << retss.first->first << " => " << retss.first->second << '\n';
+
+	std::cout << "upper bound points to: ";
+	std::cout << retss.second->first << " => " << retss.second->second << '\n';
+
+
+	std::cout << "--------Testing Get ALLOCATOR--------\n";
+
+
+	int psize;
+	std::map<char,int> mymappp;
+	std::pair<const char,int>* p;
+
+	// allocate an array of 5 elements using mymap's allocator:
+	p=mymappp.get_allocator().allocate(5);
+
+	// assign some values to array
+	psize = sizeof(std::map<char,int>::value_type)*5;
+
+	std::cout << "The allocated array has a size of " << psize << " bytes.\n";
+
+	mymappp.get_allocator().deallocate(p,5);
 
 
 	return 0;

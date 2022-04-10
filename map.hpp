@@ -16,6 +16,8 @@
 #include "map_iterator.hpp"
 #include "pair.hpp"
 #include "node.hpp"
+#include "make_pair.hpp"
+#include "reverse_iterator.hpp"
 //#include "value_comp.hpp"
 
 namespace ft
@@ -64,12 +66,16 @@ namespace ft
 				return comp(x.first, y.first);
 			}
 		};
-		typedef Node											Node_;
-		typedef typename 	Alloc::template rebind<Node_ >::other	allocator_;
-		typedef value_compare 	value_compare;
+		typedef Node														Node_;
+		typedef typename 	Alloc::template rebind<Node_ >::other			allocator_;
+		typedef value_compare 												value_compare;
 	public:
-		typedef	Map_iterator<const key_type, mapped_type, Node_>			iterator;
-		typedef typename 	Alloc::template rebind<iterator >::other	allocator_iter;
+		typedef	Map_iterator<value_type , Node_>							iterator;
+		typedef Map_iterator<const value_type, Node_>						const_iterator;
+		typedef reverse_iterator<const_iterator>							const_reverse_iterator;
+		typedef reverse_iterator<iterator>									reverse_iterator;
+		typedef typename 	Alloc::template rebind<iterator >::other		allocator_iter;
+		typedef typename iterator_traits<iterator>::difference_type 					difference_type;
 
 
 	private:
@@ -86,24 +92,47 @@ namespace ft
 		int 			check;
 
 	public:
+
+		//	Constructors
 		explicit map (const key_compare& comp = key_compare(),
 					  const allocator_type& alloc = allocator_type()): check(0)
 		{
 			this->node = NULL;
 			this->_size = 0;
 			k_compare = comp;
+			this->alloc = alloc;
 		}
 
+		template <class InputIterator>
+		map (InputIterator first, InputIterator last,
+			 const key_compare& comp = key_compare(),
+			 const allocator_type& alloc = allocator_type())
+		{
+			while (first != last)
+			{
+				insert(first);
+				first++;
+			}
+			k_compare = comp;
+			this->alloc = alloc;
+		}
+
+		map (const map& x)
+		{
+			while (x.begin!= x.last)
+			{
+				insert(x);
+				x++;
+			}
+		}
 		// Map Modifiers
 
 		pair<iterator, bool > insert(const value_type& val)
 		{
 			ft::pair< iterator , bool> my_pair;
 
-			std::cout << "Val ==> " << val.first << std::endl;
 			if (node == NULL)
 			{
-				std::cout << "Is Nuullll\n";
 				root_node(val);
 				my_pair.first = find_key(val);
 				my_pair.second = true;
@@ -112,30 +141,29 @@ namespace ft
 			}
 			if (val.first < node->pair->first)
 			{
-				std::cout << "Start1 \n";
 				tmp = node;
-
 				node->left = my_insert(node->left, val);
 				my_pair.first = find_key(val);
 				my_pair.second = true;
 				this->_size += 1;
-				std::cout << "End1 \n";
-
 			}
 			else if (val.first > node->pair->first)
 			{
-				std::cout << "Start2\n";
 				tmp = node;
 				node->right = my_insert(node->right, val);
-				printTree(node, "", true);
+				root = node;
+				iterator  iter = begin();
+				while (iter != end())
+				{
+					node = do_father(node, iter, root);
+					iter++;
+				}
 				my_pair.first = find_key(val);
-				std::cout << "End2\n";
 				my_pair.second = true;
 				this->_size += 1;
 			}
 			else
 				my_pair.second = false;
-			std::cout << "ENNNND\n";
 			return my_pair;
 		}
 		void 	erase(iterator position)
@@ -143,26 +171,36 @@ namespace ft
 			iterator iter;
 
 			node = erase_node(node, position);
-			while (node->parent != NULL)
+			while (node && node->parent != NULL )
 				node = node->parent;
-			iter = begin();
-			while (iter != end())
+			if (node)
 			{
-				node = upadte_height(node, iter);
-				iter++;
-			}
-			iter = begin();
-			while (iter != end())
-			{
-				node = do_rotation(node, iter);
-				iter++;
-			}
-			root = node;
-			iter = begin();
-			while (iter != end())
-			{
-				node = do_father(node, iter, root);
-				iter++;
+				root = node;
+				iter = begin();
+				while (iter != end())
+				{
+					node = do_father(node, iter, root);
+					iter++;
+				}
+				iter = begin();
+				while (iter != end())
+				{
+					node = upadte_height(node, iter);
+					iter++;
+				}
+				iter = begin();
+				while (iter != end())
+				{
+					node = do_rotation(node, iter);
+					iter++;
+				}
+				root = node;
+				iter = begin();
+				while (iter != end())
+				{
+					node = do_father(node, iter, root);
+					iter++;
+				}
 			}
 			this->_size -= 1;
 		}
@@ -171,8 +209,12 @@ namespace ft
 
 			while (first != last) {
 				iter = first;
-				if (first != end())
-					first++;
+				first++;
+				if (first != last)
+				{
+					if (iter->first == first->first)
+						break;
+				}
 				erase(iter->first);
 			}
 		}
@@ -180,35 +222,49 @@ namespace ft
 		{
 			iterator iter;
 
+			std::cout << "Starting Erase\n";
 			iter = find_key(k);
+			std::cout << " KK ==> " << k << std::endl;
 			node = erase_node(node, iter);
-			while (node->parent != NULL)
+			std::cout << "After\n";
+			while (node && node->parent != NULL)
 				node = node->parent;
-			iter = begin();
-			while (iter != end())
+			if (node)
 			{
-				node = upadte_height(node, iter);
-				iter++;
+				root = node;
+				iter = begin();
+				while (iter != end())
+				{
+					node = do_father(node, iter, root);
+					iter++;
+				}
+				iter = begin();
+				while (iter != end())
+				{
+					node = upadte_height(node, iter);
+					iter++;
+				}
+				iter = begin();
+				while (iter != end())
+				{
+					node = do_rotation(node, iter);
+					iter++;
+				}
+				root = node;
+				iter = begin();
+				while (iter != end())
+				{
+					node = do_father(node, iter, root);
+					iter++;
+				}
+
 			}
-			iter = begin();
-			while (iter != end())
-			{
-				node = do_rotation(node, iter);
-				iter++;
-			}
-			root = node;
-			iter = begin();
-			while (iter != end())
-			{
-				node = do_father(node, iter, root);
-				iter++;
-			}
+			std::cout << "Ending Erase\n";
 			this->_size -= 1;
 			return (1);
 		}
 		void 		clear()
 		{
-			std::cout << "Size in clear ==> " << this->_size << std::endl;
 			iterator iter = begin();
 			erase(iter, end());
 			alloc_.deallocate(node, this->_size);
@@ -217,11 +273,12 @@ namespace ft
 		}
 		void	swap(map& x)
 		{
-			map temp;
+			map holo;
 
-			temp = *this;
+			holo = *this;
 			*this = x;
-			x = temp;
+			x = holo;
+			check = 1;
 		}
 		//		Iterators
 
@@ -236,6 +293,31 @@ namespace ft
 		{
 			return iterator (node).after_right_most();
 		}
+		reverse_iterator rbegin()
+		{
+
+		}
+
+
+		//	Element Access
+		mapped_type&	operator[] (const key_type& k)
+		{
+			return ((*((this->insert(make_pair(k,mapped_type()))).first)).second);
+		}
+
+		pair<iterator, iterator>		equal_range(const key_type& k)
+		{
+			iterator  iter = begin();
+
+			while (iter !=  end())
+			{
+				if (k_compare(iter->first, k) == false && k_compare(k, iter->first) == false)
+					return (make_pair(lower_bound(iter->fiirst), upper_bound(iter->first)));
+			}
+			return (make_pair(upper_bound(k), upper_bound(k)));
+		}
+
+
 		//	Capacity
 
 		bool empty() const
@@ -273,24 +355,74 @@ namespace ft
 
 			while (iter != end())
 			{
+				//std::cout << "Ie ==> " << iter->first << " K ==> " << k  <<'\n';
 				if (k_compare(k, iter->first) == false && k_compare(iter->first, k) == false)
 					return iter;
 				iter++;
 			}
 			return end();
 		}
+		size_type count(const key_type& k) const
+		{
+			iterator iter = begin();
+
+			while (iter != end())
+			{
+				//std::cout << "Ie ==> " << iter->first << " K ==> " << k  <<'\n';
+				if (k_compare(k, iter->first) == false && k_compare(iter->first, k) == false)
+					return 1;
+				iter++;
+			}
+			return 0;
+		}
+		iterator lower_bound(const key_type& k)
+		{
+			iterator  iter;
+
+			iter = begin();
+			while (key_comp()(*iter++, k));
+			return  iter;
+		}
+
+		iterator upper_bound(const key_type& k)
+		{
+			iterator  iter;
+
+			iter = begin();
+			while (key_comp()(k, *iter++) == false);
+			return  iter;
+		}
+
+		//Allocator
+
+		allocator_type get_allocator() const
+		{
+			return alloc;
+		}
+
 
 		~map()
 		{
 			//iterator (node).check_value();
 			//iterator (node).left_most();
-			//printTree(node, "", false);
-//			if (node)
-//		node		alloc_.deallocate(node, this->_size);
+			std::cout << "Size ===> " << this->_size << std::endl;
+			printTree(node, "", false);
+			if (node && check == 0)
+				free_node(node);
+			check = 0;
+			std::cout << "End\n";
 		}
 
 	private:
 
+
+		void	free_node(Node *node)
+		{
+			iterator  iter = begin();
+
+			erase(iter, end());
+
+		}
 		void 	printTree(Node* root, std::string indent, bool last)
 		{
 			if (root != nullptr) {
@@ -310,8 +442,10 @@ namespace ft
 
 		Node_*		do_father(Node_* root, iterator iter, Node_* node)
 		{
+//			std::cout << "In do father\n";
 			if (root == NULL)
 				return NULL;
+//			std::cout << "Start\n";
 			if (iter->first < root->pair->first)
 			{
 				if (root->pair->first != node->pair->first)
@@ -328,12 +462,14 @@ namespace ft
 			{
 				if (root->pair->first != node->pair->first)
 				{
-					if (root->pair->first == temp->pair->first)
+					if (temp && root->pair->first == temp->pair->first)
 						root->parent = node;
-					else
+					else if (temp != NULL)
 						root->parent = temp;
-				} else
+				}
+				else
 					root->parent = NULL;
+				temp = NULL;
 			}
 			return root;
 		}
@@ -361,10 +497,8 @@ namespace ft
 				root->right = erase_node(root->right, pos);
 			else {
 				if ((root->left == NULL) || (root->right == NULL)) {
-					//std::cout << root->pair->first << std::endl;
 					Node_ *temp = root->left ? root->left : root->right;
 					if (temp == NULL) {
-						//Node *_temp = root->parent;
 						temp = root;
 						root = NULL;
 						free(temp);
@@ -395,7 +529,7 @@ namespace ft
 			}
 
 		//	std::cout << "Finally Root => " << root->pair->first << std::endl;
-			//printTree(node, "", true);
+//			printTree(node, "", true);
 			return root;
 		}
 
@@ -552,7 +686,6 @@ namespace ft
 				return node;
 			node->height = 1 + max(height(node->left), height(node->right));
 			balance = balanc_factor(node);
-			std::cout << "Balance ===> " << balance << std::endl;
 			if (balance > 1)
 			{
 				if (val.first < node->left->pair->first)
@@ -595,11 +728,11 @@ namespace ft
 //				std::cout << "Right is --> " << y->right->pair->first << std::endl;
 			Node_ *x = y->left;
 			Node_ *T2 = x->right;
-			/*if (y->parent == NULL)
+			if (y->parent == NULL)
 			{
-			//	y->parent = x;
+				y->parent = x;
 				x->parent = NULL;
-			}*/
+			}
 			x->right = y;
 			y->left = T2;
 			x->parent = y->parent;
@@ -633,11 +766,11 @@ namespace ft
 			Node_ *y = x->right;
 			Node_ *T2 = y->left;
 			y->left = x;
-//			if (x->parent == NULL)
-//			{
-//				x->parent = y;
-//				y->parent = NULL;
-//			}
+			if (x->parent == NULL)
+			{
+				x->parent = y;
+				y->parent = NULL;
+			}
 			x->right = T2;
 			y->parent = x->parent;
 			x->height = max(height(x->left),
