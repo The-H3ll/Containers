@@ -7,6 +7,7 @@
 #include <math.h>
 #include "iterators.hpp"
 #include "enable_if.hpp"
+#include "reverse_iterator.hpp"
 
 namespace ft
 {
@@ -15,20 +16,23 @@ namespace ft
     {
             // Members Types
         public:
-            typedef  std::size_t                         	size_type;
-            typedef  T                                      	value_type;
-            typedef  Alloc                                  	allocator_type;
-            typedef typename Alloc::reference&               	reference;
-            typedef const typename Alloc::const_reference&    	const_reference;
-            typedef typename Alloc::pointer*           			pointer;
-			typedef const typename Alloc::pointer*           	const_pointer;
-			typedef Iterator<value_type>							iterator;
+            typedef  std::size_t                         				size_type;
+            typedef  T                                      			value_type;
+            typedef  Alloc                                  			allocator_type;
+            typedef typename Alloc::reference&               			reference;
+            typedef const typename Alloc::const_reference&    			const_reference;
+            typedef typename Alloc::pointer*           					pointer;
+			typedef const typename Alloc::pointer*           			const_pointer;
+			typedef Iterator<value_type>								iterator;
+			typedef Iterator<const value_type>							const_iterator;
+			typedef reverse_iterator<const_iterator>					const_reverse_iterator;
+			typedef reverse_iterator<iterator>							reverse_iterator;
+			typedef typename iterator_traits<iterator>::difference_type differenc_type;
 
 
 		//typedef typename std::allocator<T>::value_type  value_type;
 	private:
             allocator_type _alloc;
-            //T               _value_type;
             size_type       _size;
             size_type       _capacity;
             value_type      *arr;
@@ -82,10 +86,39 @@ namespace ft
             	iterator sec(&arr[0]);
             	return(sec);
            }
-           iterator end()
+           const_iterator begin() const
+		   {
+			   const_iterator sec(&arr[0]);
+			   return(sec);
+		   }
+
+		   iterator end()
 		   {
             	iterator first(&arr[this->_size]);
             	return (first);
+		   }
+		   const_iterator end() const
+		   {
+			   const_iterator first(&arr[this->_size]);
+			   return (first);
+		   }
+
+		   reverse_iterator	rbegin()
+		   {
+			   return (reverse_iterator(end()));
+		   }
+		   const_reverse_iterator rbegin() const
+		   {
+			   return (const_reverse_iterator(end()));
+		   }
+
+		   reverse_iterator rend()
+		   {
+			   return (reverse_iterator(begin()));
+		   }
+		   const_reverse_iterator rend() const
+		   {
+			   return (const_reverse_iterator(begin()));
 		   }
             //  Element Access
 

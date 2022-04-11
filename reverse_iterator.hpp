@@ -23,7 +23,7 @@ private:
 	iterator_type current;
 
 	//Constructors
-
+public:
 	reverse_iterator()
 	{
 		current = iterator_type ();
@@ -34,7 +34,7 @@ private:
 	}
 
 	template<class Iter>
-	reverse_iterator(const reverse_iterator<Iter>& rev_it)
+	reverse_iterator(const reverse_iterator<Iterator>& rev_it)
 	{
 		current = rev_it.base();
 	}
@@ -48,11 +48,16 @@ private:
 	{
 		iterator_type temp;
 
-		temp = current;
+		temp = current - 1;
 
-		return (*--temp);
+		return (*temp);
 	}
 
+	reverse_iterator&	operator=(const reverse_iterator<Iterator>& other)
+	{
+		current = other.base();
+		return *this;
+	}
 	reverse_iterator	operator+(difference_type n) const
 	{
 		return (reverse_iterator(current - n));

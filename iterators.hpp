@@ -50,42 +50,42 @@ public:
 			return true;
 		return false;
 	}
-	value_type 	&operator*()
+	reference 	operator*()const
 	{
 		return (*it);
 	}
-	void operator*(value_type value)
+/* 	reference operator*(value_type value)
 	{
 		*it = value;
-	}
+	}*/
 
-	value_type *operator->()
+	pointer operator->()
 	{
-		return it;
+		return &(operator*());
 	}
 
 	Iterator 	operator++(value_type)
 	{
 		it++;
-		return it;
+		return (*this);
 	}
 
 	Iterator 	operator++()
 	{
 		++it;
-		return it;
+		return (*this);
 	}
 
 	Iterator 	operator--(value_type)
 	{
 		it--;
-		return it;
+		return (*this);
 	}
 
-	Iterator 	operator--()
+	Iterator 	&operator--()
 	{
 		--it;
-		return it;
+		return (*this);
 	}
 	Iterator operator + (value_type value)
 	{
@@ -100,14 +100,14 @@ public:
 //		temp.it = temp.it +value;
 //		return temp;
 //	}
-	Iterator operator - (value_type value)
+	Iterator operator - (difference_type value)
 	{
 		Iterator temp = *this;
 
 		temp.it = temp.it - value;
 		return 	temp ;
 	}
-	friend Iterator operator -(value_type value, Iterator iter)
+	friend Iterator operator -(difference_type value, Iterator iter)
 	{
 		Iterator  temp = iter;
 		temp.it = temp.it - value;
@@ -138,7 +138,7 @@ public:
 		return false;
 	}
 
-	Iterator operator -=(value_type value)
+	Iterator operator -=(difference_type value)
 	{
 		Iterator temp = *this;
 
@@ -146,7 +146,7 @@ public:
 		return 	temp ;
 	}
 
-	Iterator operator +=(value_type value)
+	Iterator operator +=(difference_type value)
 	{
 		Iterator temp = *this;
 

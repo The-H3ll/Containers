@@ -244,238 +244,252 @@ int     main()
 	if (fooo<=barr) std::cout << "foo is less than or equal to bar\n";
 	if (fooo>=barr) std::cout << "foo is greater than or equal to bar\n";
 */
-	std::cout << "*****	Testing Map *****\n";
-	std::cout << "-------Testing Insert Delete-----\n";
-	ft::map<int, int> mapi;
-	std::map<char, int> map;
-
-	std::pair<std::map<char, int>::iterator ,bool>map_it1;
-	map.insert(std::pair<char, int>('a', 200));
-	map_it1 = map.insert(std::pair<char, int>('b', 100));
-
-	std::map<char, int>::iterator map_it;
-	ft::map<int, int>::iterator map_i;
-
-	for (map_it = map.begin(); map_it != map.end(); map_it++)
-		std::cout << "First ==> " << map_it->first << " || Second ==> " << map_it->second <<std::endl;
-
-	map.erase('b');
-
-	ft::pair<ft::map<int,int>::iterator,bool> ret;
-	ft::pair<ft::map<int,int>::iterator,bool> ret1;
-//	 mapi.insert(ft::pair<char, int > ('a',2));
-//	 ret = mapi.insert(ft::pair<char , int > ('b', 4));
-//	 mapi.insert(ft::pair<char, int >('c', 5));
-//	mapi.insert(ft::pair<char, int > ('1',2));
-
-	std::cout << "Starting \n";
-	ret = mapi.insert(ft::pair<int , int>(33, 2));
-	mapi.insert(ft::pair<int , int>(13, 2));
-	 mapi.insert(ft::pair<int , int>(54, 2));
-	mapi.insert(ft::pair<int , int>(9, 2));
-	mapi.insert(ft::pair<int , int>(21, 2));
-	ret1 = mapi.insert(ft::pair<int , int>(61, 2));
-	mapi.insert(ft::pair<int , int>(8, 2));
-	mapi.insert(ft::pair<int , int>(11, 2));
-
-	std::cout << "Size ==> " << mapi.size() << std::endl;
-	//mapi.erase(ret.first);
-	//mapi.erase(21);
-	//mapi.erase(33);
-	//mapi.erase(54);
-
-	mapi.erase(ret.first, mapi.end());
-	//mapi.erase(33);
-	std::cout << "After Eraaase\n";
-	std::cout << "Size ==> " << mapi.size() << std::endl;
-
-	map_i = mapi.begin();
-	while (map_i != mapi.end())
-	{
-		std::cout << " ==> " << map_i->first << std::endl;
-		map_i++;
-	}
-	std::cout << "To go backwards\n";
-	/*while (ret1.first != mapi.begin())
-	{
-		std::cout << " Back ==> " <<ret1.first->first << std::endl;
-		ret1.first--;
-	}
-	std::cout << " Back ==> " <<ret1.first->first << std::endl;*/
-
-	std::cout << "EEEENNNND\n";
-
-	std::cout << "------Testing Swap------\n";
-
-	ft::map<char, int> foo;
-
-	foo.insert(ft::pair<char, int>('e', 100));
-	foo.insert(ft::pair<char, int>('f', 200));
-	foo.insert(ft::pair<char, int>('g', 300));
-
-	ft::map<char, int> bar;
-	bar.insert(ft::pair<char, int>('x', 11));
-	bar.insert(ft::pair<char, int>('y', 110));
-	bar.insert(ft::pair<char, int>('z', 120));
-
-	std::cout << "BBBB\n";
-
-	foo.swap(bar);
-
-	std::cout << "AAAA\n";
-
-	std::cout << "HHHHEEEEELLLLOOOOO\n";
-	std::cout << "foo contains:\n";
-	for (ft::map<char,int>::iterator itw=foo.begin(); itw!=foo.end(); ++itw)
-		std::cout << itw->first << " => " << itw->second << '\n';
-
-	std::cout << "SizeFoo ==> " << foo.size() << std::endl;
-
-	std::cout <<"-------Testing Clear && Empty ------\n";
-
-	mapi.clear();
-
-	if (mapi.empty())
-	{
-		mapi.insert(ft::pair<char, int>(20, 100));
-		mapi.insert(ft::pair<char, int>(40, 200));
-	}
-
-	std::cout << "Iterate\n";
-	for (map_i = mapi.begin(); map_i != mapi.end(); map_i++)
-		std::cout << map_i->first << " ==> " << map_i->second << std::endl;
-
-	std::cout << "Size ==> " << mapi.size() << std::endl;
-
-	std::cout << "Max Size ==> " << map.max_size() << std::endl;
-	std::cout << "Ft Max Size ==> " << mapi.max_size() << std::endl;
-
-	std::cout << "-------Testing Value Comp-------\n";
-
-	ft::map<char, int >value_comps;
-
-	ft::pair<ft::map<char, int>::iterator , bool> paiss;
-	value_comps.insert(ft::pair<char, int>('a', 100));
-	value_comps.insert(ft::pair<char, int>('b', 100));
-	paiss = value_comps.insert(ft::pair<char, int>('c', 100));
-	ft::pair<char, int> high = *paiss.first;
-
-
-	ft::map<char, int>::iterator kol = value_comps.begin();
-	do{
-		std::cout << kol->first << " ==> " << kol->second << std::endl;
-	} while(value_comps.value_comp()(*kol++, high));
-
-
-	std::cout << "-------Testing Key Compare------\n";
-
-	ft::map<char,int> mymap;
-
-	ft::map<char,int>::key_compare mycomp = mymap.key_comp();
-
-	mymap.insert(ft::pair<char,int >('a', 100));
-	mymap.insert(ft::pair<char,int >('b', 100));
-	mymap.insert(ft::pair<char,int >('c', 100));
-
-	char x = 'c';
-	ft::map<char, int >::iterator polo = mymap.begin();
-
-	do {
-		std::cout << polo->first << " => " << polo->second << '\n';
-	} while ( mycomp((*polo++).first, x) );
-
-	std::cout << "----Testing Find-------\n";
-
-	ft::map<char, int >casa;
-
-	casa.insert(ft::pair<char, int>('a', 100));
-	casa.insert(ft::pair<char, int>('b', 200));
-	casa.insert(ft::pair<char, int>('c', 300));
-	casa.insert(ft::pair<char, int>('d', 400));
-	ft::map<char, int >::iterator pol;
-
-	pol = casa.find('b');
-
-	if (pol != casa.end())
-		casa.erase(pol->first);
-
-	std::cout << "elements in mymap:" << '\n';
-	std::cout << "a => " << casa.find('a')->second << '\n';
-	std::cout << "c => " << casa.find('c')->second << '\n';
-	std::cout << "d => " << casa.find('d')->second << '\n';
-
-	std::cout << "------Testing Count-------\n";
-
-	std::map<char,int> mymaps;
-	char c;
-
-	mymaps ['a']=101;
-	mymaps ['c']=202;
-	mymaps ['f']=303;
-
-	for (c='a'; c<'h'; c++)
-	{
-		std::cout << c;
-		if (mymaps.count(c)>0)
-			std::cout << " is an element of mymap.\n";
-		else
-			std::cout << " is not an element of mymap.\n";
-	}
-
-	std::cout << "-----Testing Lower Upper Band-----\n";
-
-	std::map<char,int> myma;
-	std::map<char,int>::iterator itlow,itup;
-
-	myma['a']=20;
-	myma['b']=40;
-	myma['c']=60;
-	myma['d']=80;
-	myma['e']=100;
-
-	itlow=myma.lower_bound ('b');  // itlow points to b
-	itup=myma.upper_bound ('d');   // itup points to e (not d!)
-
-	myma.erase(itlow,itup);        // erases [itlow,itup)
-
-	// print content:
-	for (std::map<char,int>::iterator it=myma.begin(); it!=myma.end(); ++it)
-		std::cout << it->first << " => " << it->second << '\n';
-
-
-	std::cout << "-----Testing Equal Range-------\n";
-	std::map<char,int> mymapo;
-
-	mymapo['a']=10;
-	mymapo['b']=20;
-	mymapo['c']=30;
-
-	std::pair<std::map<char,int>::iterator,std::map<char,int>::iterator> retss;
-	retss = mymapo.equal_range('b');
-
-	std::cout << "lower bound points to: ";
-	std::cout << retss.first->first << " => " << retss.first->second << '\n';
-
-	std::cout << "upper bound points to: ";
-	std::cout << retss.second->first << " => " << retss.second->second << '\n';
-
-
-	std::cout << "--------Testing Get ALLOCATOR--------\n";
-
-
-	int psize;
-	std::map<char,int> mymappp;
-	std::pair<const char,int>* p;
-
-	// allocate an array of 5 elements using mymap's allocator:
-	p=mymappp.get_allocator().allocate(5);
-
-	// assign some values to array
-	psize = sizeof(std::map<char,int>::value_type)*5;
-
-	std::cout << "The allocated array has a size of " << psize << " bytes.\n";
-
-	mymappp.get_allocator().deallocate(p,5);
+//	std::cout << "*****	Testing Map *****\n";
+//	std::cout << "-------Testing Insert Delete-----\n";
+//	ft::map<int, int> mapi;
+//	std::map<char, int> map;
+//
+//	std::pair<std::map<char, int>::iterator ,bool>map_it1;
+//	map.insert(std::pair<char, int>('a', 200));
+//	map_it1 = map.insert(std::pair<char, int>('b', 100));
+//
+//	std::map<char, int>::iterator map_it;
+//	ft::map<int, int>::iterator map_i;
+//
+//	for (map_it = map.begin(); map_it != map.end(); map_it++)
+//		std::cout << "First ==> " << map_it->first << " || Second ==> " << map_it->second <<std::endl;
+//
+//	map.erase('b');
+//
+//	ft::pair<ft::map<int,int>::iterator,bool> ret;
+//	ft::pair<ft::map<int,int>::iterator,bool> ret1;
+////	 mapi.insert(ft::pair<char, int > ('a',2));
+////	 ret = mapi.insert(ft::pair<char , int > ('b', 4));
+////	 mapi.insert(ft::pair<char, int >('c', 5));
+////	mapi.insert(ft::pair<char, int > ('1',2));
+//
+//	std::cout << "Starting \n";
+//	ret = mapi.insert(ft::pair<int , int>(33, 2));
+//	mapi.insert(ft::pair<int , int>(13, 2));
+//	 mapi.insert(ft::pair<int , int>(54, 2));
+//	mapi.insert(ft::pair<int , int>(9, 2));
+//	mapi.insert(ft::pair<int , int>(21, 2));
+//	ret1 = mapi.insert(ft::pair<int , int>(61, 2));
+//	mapi.insert(ft::pair<int , int>(8, 2));
+//	mapi.insert(ft::pair<int , int>(11, 2));
+//
+//	std::cout << "Size ==> " << mapi.size() << std::endl;
+//	//mapi.erase(ret.first);
+//	//mapi.erase(21);
+//	//mapi.erase(33);
+//	//mapi.erase(54);
+//
+//	mapi.erase(ret.first, mapi.end());
+//	//mapi.erase(33);
+//	std::cout << "After Eraaase\n";
+//	std::cout << "Size ==> " << mapi.size() << std::endl;
+//
+//	map_i = mapi.begin();
+//	while (map_i != mapi.end())
+//	{
+//		std::cout << " ==> " << map_i->first << std::endl;
+//		map_i++;
+//	}
+//	std::cout << "To go backwards\n";
+//	/*while (ret1.first != mapi.begin())
+//	{
+//		std::cout << " Back ==> " <<ret1.first->first << std::endl;
+//		ret1.first--;
+//	}
+//	std::cout << " Back ==> " <<ret1.first->first << std::endl;*/
+//
+//	std::cout << "EEEENNNND\n";
+//
+//	std::cout << "------Testing Swap------\n";
+//
+//	ft::map<char, int> foo;
+//
+//	foo.insert(ft::pair<char, int>('e', 100));
+//	foo.insert(ft::pair<char, int>('f', 200));
+//	foo.insert(ft::pair<char, int>('g', 300));
+//
+//	ft::map<char, int> bar;
+//	bar.insert(ft::pair<char, int>('x', 11));
+//	bar.insert(ft::pair<char, int>('y', 110));
+//	bar.insert(ft::pair<char, int>('z', 120));
+//
+//	std::cout << "BBBB\n";
+//
+//	foo.swap(bar);
+//
+//	std::cout << "AAAA\n";
+//
+//	std::cout << "HHHHEEEEELLLLOOOOO\n";
+//	std::cout << "foo contains:\n";
+//	for (ft::map<char,int>::iterator itw=foo.begin(); itw!=foo.end(); ++itw)
+//		std::cout << itw->first << " => " << itw->second << '\n';
+//
+//	std::cout << "SizeFoo ==> " << foo.size() << std::endl;
+//
+//	std::cout <<"-------Testing Clear && Empty ------\n";
+//
+//	mapi.clear();
+//
+//	if (mapi.empty())
+//	{
+//		mapi.insert(ft::pair<char, int>(20, 100));
+//		mapi.insert(ft::pair<char, int>(40, 200));
+//	}
+//
+//	std::cout << "Iterate\n";
+//	for (map_i = mapi.begin(); map_i != mapi.end(); map_i++)
+//		std::cout << map_i->first << " ==> " << map_i->second << std::endl;
+//
+//	std::cout << "Size ==> " << mapi.size() << std::endl;
+//
+//	std::cout << "Max Size ==> " << map.max_size() << std::endl;
+//	std::cout << "Ft Max Size ==> " << mapi.max_size() << std::endl;
+//
+//	std::cout << "-------Testing Value Comp-------\n";
+//
+//	ft::map<char, int >value_comps;
+//
+//	ft::pair<ft::map<char, int>::iterator , bool> paiss;
+//	value_comps.insert(ft::pair<char, int>('a', 100));
+//	value_comps.insert(ft::pair<char, int>('b', 100));
+//	paiss = value_comps.insert(ft::pair<char, int>('c', 100));
+//	ft::pair<char, int> high = *paiss.first;
+//
+//
+//	ft::map<char, int>::iterator kol = value_comps.begin();
+//	do{
+//		std::cout << kol->first << " ==> " << kol->second << std::endl;
+//	} while(value_comps.value_comp()(*kol++, high));
+//
+//
+//	std::cout << "-------Testing Key Compare------\n";
+//
+//	ft::map<char,int> mymap;
+//
+//	ft::map<char,int>::key_compare mycomp = mymap.key_comp();
+//
+//	mymap.insert(ft::pair<char,int >('a', 100));
+//	mymap.insert(ft::pair<char,int >('b', 100));
+//	mymap.insert(ft::pair<char,int >('c', 100));
+//
+//	char x = 'c';
+//	ft::map<char, int >::iterator polo = mymap.begin();
+//
+//	do {
+//		std::cout << polo->first << " => " << polo->second << '\n';
+//	} while ( mycomp((*polo++).first, x) );
+//
+//	std::cout << "----Testing Find-------\n";
+//
+//	ft::map<char, int >casa;
+//
+//	casa.insert(ft::pair<char, int>('a', 100));
+//	casa.insert(ft::pair<char, int>('b', 200));
+//	casa.insert(ft::pair<char, int>('c', 300));
+//	casa.insert(ft::pair<char, int>('d', 400));
+//	ft::map<char, int >::iterator pol;
+//
+//	pol = casa.find('b');
+//
+//	if (pol != casa.end())
+//		casa.erase(pol->first);
+//
+//	std::cout << "elements in mymap:" << '\n';
+//	std::cout << "a => " << casa.find('a')->second << '\n';
+//	std::cout << "c => " << casa.find('c')->second << '\n';
+//	std::cout << "d => " << casa.find('d')->second << '\n';
+//
+//	std::cout << "------Testing Count-------\n";
+//
+//	std::map<char,int> mymaps;
+//	char c;
+//
+//	mymaps ['a']=101;
+//	mymaps ['c']=202;
+//	mymaps ['f']=303;
+//
+//	for (c='a'; c<'h'; c++)
+//	{
+//		std::cout << c;
+//		if (mymaps.count(c)>0)
+//			std::cout << " is an element of mymap.\n";
+//		else
+//			std::cout << " is not an element of mymap.\n";
+//	}
+//
+//	std::cout << "-----Testing Lower Upper Band-----\n";
+//
+//	std::map<char,int> myma;
+//	std::map<char,int>::iterator itlow,itup;
+//
+//	myma['a']=20;
+//	myma['b']=40;
+//	myma['c']=60;
+//	myma['d']=80;
+//	myma['e']=100;
+//
+//	itlow=myma.lower_bound ('b');  // itlow points to b
+//	itup=myma.upper_bound ('d');   // itup points to e (not d!)
+//
+//	myma.erase(itlow,itup);        // erases [itlow,itup)
+//
+//	// print content:
+//	for (std::map<char,int>::iterator it=myma.begin(); it!=myma.end(); ++it)
+//		std::cout << it->first << " => " << it->second << '\n';
+//
+//
+//	std::cout << "-----Testing Equal Range-------\n";
+//	std::map<char,int> mymapo;
+//
+//	mymapo['a']=10;
+//	mymapo['b']=20;
+//	mymapo['c']=30;
+//
+//	std::pair<std::map<char,int>::iterator,std::map<char,int>::iterator> retss;
+//	retss = mymapo.equal_range('b');
+//
+//	std::cout << "lower bound points to: ";
+//	std::cout << retss.first->first << " => " << retss.first->second << '\n';
+//
+//	std::cout << "upper bound points to: ";
+//	std::cout << retss.second->first << " => " << retss.second->second << '\n';
+//
+//
+//	std::cout << "--------Testing Get ALLOCATOR--------\n";
+//
+//
+//	int psize;
+//	std::map<char,int> mymappp;
+//	std::pair<const char,int>* p;
+//
+//	// allocate an array of 5 elements using mymap's allocator:
+//	p=mymappp.get_allocator().allocate(5);
+//
+//	// assign some values to array
+//	psize = sizeof(std::map<char,int>::value_type)*5;
+//
+//	std::cout << "The allocated array has a size of " << psize << " bytes.\n";
+//
+//	mymappp.get_allocator().deallocate(p,5);
+
+
+	ft::vector<int> myvector (5);  // 5 default-constructed ints
+
+	int i=0;
+
+	ft::vector<int>::reverse_iterator rit = myvector.rbegin();
+	for (; rit!= myvector.rend(); ++rit)
+		*rit = ++i;
+
+	std::cout << "myvector contains:";
+	for (ft::vector<int>::iterator it = myvector.begin(); it != myvector.end(); ++it)
+		std::cout << ' ' << *it;
+	std::cout << '\n';
 
 
 	return 0;

@@ -13,7 +13,7 @@
 #include "pair.hpp"
 #include "node.hpp"
 
-template <class T, class Z>
+template <class T, class Z, class Pointer=T*, class Reference=T&>
 class Map_iterator
 {
 public:
@@ -21,6 +21,8 @@ public:
 	typedef T							value_type;
 	typedef std::ptrdiff_t 					difference_type;
 	typedef Z						Node_;
+	typedef Pointer							pointer;
+	typedef Reference						reference;
 
 //private:
 	value_type 	*_it;
@@ -87,14 +89,14 @@ public:
 		return (*node->pair);
 	}
 
-	value_type&	operator*() const
+	reference	operator*() const
 	{
 		return (*node->pair);
 	}
 
-	value_type *operator->()
+	pointer operator->()
 	{
-		return node->pair;
+		return &(operator*());
 	}
 
 
