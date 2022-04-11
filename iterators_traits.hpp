@@ -17,8 +17,8 @@ class iterator_traits
 public:
 	typedef Iterator		value_type;
 	typedef std::ptrdiff_t	difference_type;
-	typedef Iterator*		pointer;
-	typedef Iterator&		reference;
+	typedef typename Iterator::pointer		pointer;
+	typedef typename Iterator::reference		reference;
 	typedef std::random_access_iterator_tag iterator_category;
 
 

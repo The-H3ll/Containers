@@ -83,8 +83,10 @@ namespace ft
             // Iterators
            iterator	begin()
            {
+            	std::cout << "be\n";
             	iterator sec(&arr[0]);
-            	return(sec);
+			   std::cout << "AD\n";
+			   return(sec);
            }
            const_iterator begin() const
 		   {
@@ -94,12 +96,12 @@ namespace ft
 
 		   iterator end()
 		   {
-            	iterator first(&arr[this->_size]);
+            	iterator first(arr + this->_size);
             	return (first);
 		   }
 		   const_iterator end() const
 		   {
-			   const_iterator first(&arr[this->_size]);
+			   const_iterator first(arr + this->_size);
 			   return (first);
 		   }
 

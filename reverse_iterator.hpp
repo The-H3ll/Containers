@@ -48,9 +48,8 @@ public:
 	{
 		iterator_type temp;
 
-		temp = current - 1;
-
-		return (*temp);
+		temp = current;
+		return (*--temp);
 	}
 
 	reverse_iterator&	operator=(const reverse_iterator<Iterator>& other)

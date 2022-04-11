@@ -13,6 +13,7 @@ class Iterator
 public:
     typedef std::random_access_iterator_tag iterator_category;
     typedef T								value_type;
+   typedef Iterator<const T> 				const_iterator;
     typedef std::ptrdiff_t					difference_type;
     typedef difference_type 				distance_type;
     typedef Pointer							pointer;
@@ -22,7 +23,6 @@ private:
 public:
 	Iterator()
 	{
-		std::cout << "Iterator default constructor\n";
 	}
 	Iterator(value_type *value)
 	{
@@ -36,6 +36,10 @@ public:
 	{
 		it = iter.it;
 		return (it);
+	}
+	operator	const_iterator ()
+	{
+		return (*this);
 	}
 	bool	operator== (const Iterator &iter)
 	{
@@ -94,24 +98,18 @@ public:
 		temp.it = temp.it + value;
 		return 	temp ;
 	}
-//	friend Iterator operator +(value_type value, Iterator iter)
-//	{
-//		Iterator temp = iter;
-//		temp.it = temp.it +value;
-//		return temp;
-//	}
-	Iterator operator - (difference_type value)
+	friend Iterator operator +(value_type value, Iterator iter)
+	{
+		Iterator temp = iter;
+		temp.it = temp.it +value;
+		return temp;
+	}
+	Iterator operator - (difference_type value)const
 	{
 		Iterator temp = *this;
 
 		temp.it = temp.it - value;
 		return 	temp ;
-	}
-	friend Iterator operator -(difference_type value, Iterator iter)
-	{
-		Iterator  temp = iter;
-		temp.it = temp.it - value;
-		return temp;
 	}
 	bool  operator <(Iterator iter)
 	{
