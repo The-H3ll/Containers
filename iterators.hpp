@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstring>
 #include <stdexcept>
+#include "is_integral.hpp"
 
 
 template <class T, class Pointer = T*, class Reference = T&>
@@ -13,16 +14,17 @@ class Iterator
 public:
     typedef std::random_access_iterator_tag iterator_category;
     typedef T								value_type;
-   typedef Iterator<const T> 				const_iterator;
+   	typedef Iterator<const T> 				const_iterator;
     typedef std::ptrdiff_t					difference_type;
     typedef difference_type 				distance_type;
     typedef Pointer							pointer;
     typedef Reference						reference;
-private:
+public:
 	value_type *it;
 public:
 	Iterator()
 	{
+		it = NULL;
 	}
 	Iterator(value_type *value)
 	{
@@ -30,16 +32,16 @@ public:
 	}
 	Iterator(const Iterator &_iter)
 	{
-		*this = _iter;
+		it = _iter.it;
 	}
-	Iterator operator = (const Iterator &iter)
+	Iterator& operator = (const Iterator &iter)
 	{
 		it = iter.it;
-		return (it);
+		return (*this);
 	}
 	operator	const_iterator ()
 	{
-		return (*this);
+		return (this->it);
 	}
 	bool	operator== (const Iterator &iter)
 	{
@@ -56,7 +58,10 @@ public:
 	}
 	reference 	operator*()const
 	{
-		return (*it);
+		value_type *temp;
+
+		temp = it;
+		return (*temp);
 	}
 /* 	reference operator*(value_type value)
 	{
@@ -68,7 +73,7 @@ public:
 		return &(operator*());
 	}
 
-	Iterator 	operator++(value_type)
+	Iterator 	operator++(int)
 	{
 		it++;
 		return (*this);
@@ -80,7 +85,7 @@ public:
 		return (*this);
 	}
 
-	Iterator 	operator--(value_type)
+	Iterator 	operator--(int)
 	{
 		it--;
 		return (*this);
@@ -91,25 +96,25 @@ public:
 		--it;
 		return (*this);
 	}
-	Iterator operator + (value_type value)
+	Iterator operator + (difference_type value)const
 	{
-		Iterator temp = *this;
-
-		temp.it = temp.it + value;
-		return 	temp ;
+//		Iterator temp = *this;
+//
+//		temp.it = temp.it + value
+		return 	Iterator(it + value) ;
 	}
-	friend Iterator operator +(value_type value, Iterator iter)
+	friend Iterator operator +(difference_type value, Iterator iter)
 	{
-		Iterator temp = iter;
-		temp.it = temp.it +value;
-		return temp;
+//		Iterator temp = iter;
+//		temp.it = temp.it +value;
+		return Iterator(iter.it + value);
 	}
 	Iterator operator - (difference_type value)const
 	{
-		Iterator temp = *this;
-
-		temp.it = temp.it - value;
-		return 	temp ;
+//		Iterator temp = *this;
+//
+//		temp.it = temp.it - value;
+		return 	Iterator(it - value) ;
 	}
 	bool  operator <(Iterator iter)
 	{
@@ -136,44 +141,30 @@ public:
 		return false;
 	}
 
-	Iterator operator -=(difference_type value)
+	Iterator& operator -=(difference_type value)
 	{
-		Iterator temp = *this;
-
-		temp.it -= value;
-		return 	temp ;
+		it -= value;
+		return 	*this ;
 	}
 
-	Iterator operator +=(difference_type value)
+	Iterator& operator +=(difference_type value)
 	{
-		Iterator temp = *this;
 
-		temp.it += value;
-		return 	temp ;
+		it += value;
+		return *this;
 	}
 
-	value_type operator[](value_type value)
+	reference operator[](difference_type value) const
 	{
 		return (it[value]);
 	}
 };
 
+template <class Iterators>
+typename Iterator<Iterators>::difference_type operator- (
+		const Iterator<Iterators>& lhs,
+		const Iterator<Iterators>& rhs)
 
-template<class T, class U>
-struct is_same
 {
-	bool  ret_value(T t, U u)
-	{
-		if (typeid(t) == typeid(u))
-			return true;
-		return false;
-	}
-};
-
-
-template<class Iter>
-class Iterator_trait : public Iterator<Iter> {
-
-public:
-	static const bool value = is_same<std::input_iterator_tag, Iter>::ret_value();
-};
+	return (lhs.it - rhs.it);
+}

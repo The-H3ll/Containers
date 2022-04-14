@@ -11,6 +11,8 @@
 #include <cstring>
 #include <stdexcept>
 
+
+
 template <class Iterator>
 class iterator_traits
 {
@@ -20,6 +22,8 @@ public:
 	typedef typename Iterator::pointer		pointer;
 	typedef typename Iterator::reference		reference;
 	typedef std::random_access_iterator_tag iterator_category;
+
+
 
 
 };

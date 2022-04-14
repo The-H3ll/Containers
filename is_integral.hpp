@@ -5,48 +5,176 @@
 #ifndef CONTAINERS_IS_INTEGRAL_HPP
 #define CONTAINERS_IS_INTEGRAL_HPP
 
-#include "iterators.hpp"
 
+#include <memory>
+#include <algorithm>
+#include <iostream>
+#include <cstring>
+#include <stdexcept>
+#include <math.h>
+#include <type_traits>
 
-template<class T>
-struct check_int {
-	bool ret_value() const{
-		const bool t = true;
-		const bool f = false;
-		const char *s = typeid(T).name();
-		if (strcmp(s, "i") == 0)
-			return t;
-		else if (strcmp(s, "l") == 0)
-			return t;
-		else if (strcmp(s, "d") == 0)
-			return t;
-		else if (strcmp(s, "x") == 0)
-			return t;
-		else if (strcmp(s, "b") == 0)
-			return t;
-		else if (strcmp(s, "Ds") == 0)
-			return t;
-		else if (strcmp(s, "Di") == 0)
-			return t;
-		else if (strcmp(s, "w") == 0)
-			return t;
-		else if (strcmp(s, "s") == 0)
-			return t;
-		return f;
-	}
-};
-
-template <class T>
-struct is_integral
+namespace ft
 {
-	static check_int<T> o;
-	static constexpr bool  x =  o.ret_value();
-	static const bool value = x;
-	//typedef std::integral_constant<bool, value> type;
-	operator bool () const
+	template <class T>
+	class is_integral
 	{
-		return value ;
-	}
-};
+	public:
+		static const int value = false;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+	template<>
+	class is_integral<char>
+	{
+	public:
+		static const int value = true;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+	template<>
+	class is_integral<signed char >
+	{
+	public:
+		static const int value = true;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+	template<>
+	class is_integral<unsigned char>
+	{
+	public:
+		static const int value = true;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+	template<>
+	class is_integral<wchar_t>
+	{
+	public:
+		static const int value = true;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+	template<>
+	class is_integral<char16_t>
+	{
+	public:
+		static const int value = true;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+
+	template<>
+	class is_integral<char32_t>
+	{
+	public:
+		static const int value = true;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+
+	template<>
+	class is_integral<short>
+	{
+	public:
+		static const int value = true;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+
+	template<>
+	class is_integral<unsigned short >
+	{
+	public:
+		static const int value = true;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+
+	template<>
+	class is_integral<int>
+	{
+	public:
+		static const int value = true;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+
+	template<>
+	class is_integral<unsigned int>
+	{
+	public:
+		static const int value = true;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+
+	template<>
+	class is_integral<long>
+	{
+	public:
+		static const int value = true;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+
+	template<>
+	class is_integral<unsigned long >
+	{
+	public:
+		static const int value = true;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+
+	template<>
+	class is_integral<long long >
+	{
+	public:
+		static const int value = true;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+
+	template<>
+	class is_integral< unsigned long long >
+	{
+	public:
+		static const int value = true;
+		operator bool () const
+		{
+			return value ;
+		}
+	};
+}
 
 #endif //CONTAINERS_IS_INTEGRAL_HPP

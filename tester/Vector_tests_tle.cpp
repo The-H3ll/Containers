@@ -299,9 +299,9 @@ void reverse_iterator_tests(void)
     EQUAL((&(*(my_rit + 1)) == &(*my_rit1)) && (&(*(rit + 1)) == &(*rit_1)));
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " += operator "
               << "] --------------------]\t\t\033[0m";
+	rit += 1;
     my_rit += 1;
-    rit += 1;
-    EQUAL((&(*my_rit) == &(*my_rit1)) && (&(*rit) == &(*rit_1)));
+	EQUAL((&(*my_rit) == &(*my_rit1)) && (&(*rit) == &(*rit_1)));
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " -= operator "
               << "] --------------------]\t\t\033[0m";
     my_rit -= 1;
