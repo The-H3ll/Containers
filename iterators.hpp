@@ -75,11 +75,12 @@ public:
 
 	Iterator 	operator++(int)
 	{
-		it++;
-		return (*this);
+		Iterator temp(*this);
+		++(*this);
+		return (temp);
 	}
 
-	Iterator 	operator++()
+	Iterator&	operator++()
 	{
 		++it;
 		return (*this);
@@ -87,11 +88,12 @@ public:
 
 	Iterator 	operator--(int)
 	{
-		it--;
-		return (*this);
+		Iterator temp(*this);
+		--(*this);
+		return (temp);
 	}
 
-	Iterator 	&operator--()
+	Iterator& 	operator--()
 	{
 		--it;
 		return (*this);
@@ -136,7 +138,7 @@ public:
 	}
 	bool  operator <=(Iterator iter)
 	{
-		if (this->it >= iter.it)
+		if (this->it <= iter.it)
 			return true;
 		return false;
 	}

@@ -85,8 +85,9 @@ namespace ft
 
 		reverse_iterator	operator--(int )
 		{
-			++current;
-			return (*this);
+			reverse_iterator temp = *this;
+			--(*this);
+			return (temp);
 		}
 
 		reverse_iterator&	operator+=(difference_type n)
