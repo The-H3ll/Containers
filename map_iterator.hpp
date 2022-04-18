@@ -53,7 +53,7 @@ public:
 	Map_iterator(const Map_iterator& mapIterator)
 	{
 		this->node = mapIterator.node;
-		this->root = mapIterator.root;
+		//this->root = mapIterator.root;
 	}
 
 
@@ -65,7 +65,7 @@ public:
 	Map_iterator& operator=(const Map_iterator& mapIterator)
 	{
 		this->node = mapIterator.node;
-		this->root = mapIterator.root;
+		//this->root = mapIterator.root;
 		return (*this);
 	}
 
@@ -99,34 +99,38 @@ public:
 
 	Map_iterator	operator++(int)
 	{
-		Node_ *tmp = right_most();
+//		std::cout << "Enter2\n";
+//		Node_ *tmp = right_most();
+//
+////		if (tmp->pair)
+////		{
+////			std::cout << "Tmp ==> " << tmp->pair->first << std::endl;
+////			std::cout << "Node -=> " << node->pair->first << std::endl;
+////		}
+////		else
+////			std::cout << "Is NULL\n";
+//		if (tmp->pair->first == node->pair->first)
+//			node = node->right;
+//		else if (node->right != NULL && node->pair->first != go_root()->pair->first )
+//			node = node->right;
+//		else if (node->parent != NULL && node->pair->first < node->parent->pair->first && node->pair->first != go_root()->pair->first)
+//			node = node->parent;
+//		else if (node->parent != NULL && node->pair->first > node->parent->pair->first && node->parent->parent != NULL&& node->pair->first != go_root()->pair->first)
+//			node = node->parent->parent;
+//		else if (node->pair->first == go_root()->pair->first)
+//			node = left_most(node->right);
 
-//		if (tmp->pair)
-//		{
-//			std::cout << "Tmp ==> " << tmp->pair->first << std::endl;
-//			std::cout << "Node -=> " << node->pair->first << std::endl;
-//		}
-//		else
-//			std::cout << "Is NULL\n";
-		if (tmp->pair->first == node->pair->first)
-			node = node->right;
-		else if (node->right != NULL && node->pair->first != go_root()->pair->first )
-			node = node->right;
-		else if (node->parent != NULL && node->pair->first < node->parent->pair->first && node->pair->first != go_root()->pair->first)
-			node = node->parent;
-		else if (node->parent != NULL && node->pair->first > node->parent->pair->first && node->parent->parent != NULL&& node->pair->first != go_root()->pair->first)
-			node = node->parent->parent;
-		else if (node->pair->first == go_root()->pair->first)
-			node = left_most(node->right);
-		return (*this);
+			Map_iterator temp = *this;
+			++(*this);
+		return (temp);
 	}
 
 
 	Map_iterator&	operator++()
 	{
+
 		Node_ *tmp = right_most();
 
-		std::cout << "TMP ee==> " << node->pair->first << std::endl;
 		if (tmp->pair && tmp->pair->first == node->pair->first)
 		{
 			node = node->right;
@@ -172,13 +176,18 @@ public:
 	Node_ *right_most()
 	{
 		Node_ *tmp = go_root();
-		while (tmp->right != NULL)
-			tmp = tmp->right;
-		return (tmp);
+		if (tmp)
+		{
+			while (tmp->right != NULL)
+				tmp = tmp->right;
+			return tmp;
+		}
+		return NULL;
 	}
 
 	Map_iterator	after_right_most()
 	{
+		node = go_root();
 		while (node->right != NULL)
 		{
 			node = node->right;
@@ -201,17 +210,21 @@ public:
 	{
 		Node_ *tmp;
 
-		tmp = node;
-		while (tmp->parent != NULL)
+		if (node)
 		{
+			tmp = node;
+			while (tmp->parent != NULL)
+			{
 //NULL			std::cout << "nodE ==>" << tmp->pair->first << std::endl;
-			tmp = tmp->parent;
+				tmp = tmp->parent;
 //			if (tmp != NULL)
 //				std::cout << "Parenteoeooeo ==>" << tmp->pair->first << std::endl;
 //			else
 //				std::cout << "NUULLL\n";
+			}
+			return tmp;
 		}
-		return tmp;
+		return NULL;
 	}
 
 	void	check_value()

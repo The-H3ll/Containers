@@ -810,10 +810,13 @@ int     main()
 		my_m.insert(ft::make_pair(i, static_cast<char>(i + 97)));
 		m.insert(std::make_pair(i, static_cast<char>(i + 97)));
 	}
-
+	std::cout << "IMplerent\n";
 	it = m.begin();
 	it1 = ++(m.begin());
+
 	my_it = my_m.begin();
+	std::cout  << " my_iy == >" << my_it->first << std::endl;
+	std::cout << "IMplerent1\n";
 	my_it1 = ++(my_m.begin());
 
 	return 0;
