@@ -799,25 +799,50 @@ int     main()
 //	}
 	/*--------------------------------------------------------------------------*/
 
+	std::map<int, char> m;
+	std::map<int, char>::iterator it, it1;
 
+	ft::map<int, char> my_m;
+	ft::map<int, char>::iterator my_it, my_it1, tmp;
 
-	int res(0), tmp;
-	int myints[] = {12, 82, 37, 64, 15};
-	ft::map<int, int> m;
-	for (size_t i = 0; i < 5; ++i)
-		m.insert(ft::make_pair(myints[i], i));
+	for (int i = 0; i < 10; ++i)
+	{
+		my_m.insert(ft::make_pair(i, static_cast<char>(i + 97)));
+		m.insert(std::make_pair(i, static_cast<char>(i + 97)));
+	}
 
-	for (ft::map<int, int>::iterator it = m.begin(); it != m.end(); it++)
-		std::cout << " ==> " << it->first << std::endl;
+	it = m.begin();
+	it1 = ++(m.begin());
+	my_it = my_m.begin();
+	my_it1 = ++(my_m.begin());
 
-	ft::map<int, int>::iterator it = m.begin();
-	std::cout << "Before11 \n";
-	ft::map<int, int>::iterator eit = --m.end();
-	std::cout << "After 11 \n";
-	tmp = eit->first;
-	m.erase(eit);
-	for (; it != m.end(); ++it)
-		res += it->first;
+	bool cond(false);
+	{
+		int res(0);
+		int myints[] = {12, 82, 37, 64, 15};
+		ft::map<int, int> m;
+		for (size_t i = 0; i < 5; ++i)
+			m.insert(ft::make_pair(myints[i], i));
+		for (ft::map<int, int>::iterator it = m.begin(); it != m.end(); ++it)
+			res += it->first;
+		cond = res == 210;
+	}
+	{
+		int res(0), tmp;
+		int myints[] = {12, 82, 37, 64, 15};
+		ft::map<int, int> m;
+		for (size_t i = 0; i < 5; ++i)
+			m.insert(ft::make_pair(myints[i], i));
+		ft::map<int, int>::iterator it = m.begin(), eit = --m.end();
+		tmp = eit->first;
+		m.erase(eit);
+		for (; it != m.end(); ++it)
+			res += it->first;
+		cond = cond && (res == (210 - tmp));
+	}
+	++my_it; // I incremented here to make sure that the object changes
+	EQUAL(*my_it == *my_it1);
+
 
 	return 0;
 }

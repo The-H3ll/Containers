@@ -82,7 +82,7 @@ namespace ft
 		size_type		_size;
 		allocator_iter 	iter_alloc;
 		Node_			*node ;
-		Node_			ending;
+		Node_			*ending;
 		Node_			*root;
 		Node_			*temp_parent;
 		Node_			*tmp;
@@ -102,7 +102,7 @@ namespace ft
 			this->_size = 0;
 			k_compare = comp;
 			this->alloc = alloc;
-			ending = Node_();
+			ending = alloc_.allocate(1);
 		}
 
 		template <class InputIterator>
@@ -112,7 +112,7 @@ namespace ft
 		{
 			this->_size = 0;
 			k_compare = comp;
-			ending = Node_();
+			ending = alloc_.allocate(1);
 			while (first != last)
 			{
 				insert(*first);
@@ -154,8 +154,8 @@ namespace ft
 				node->right = my_insert(node->right, val);
 				root = node;
 				iterator  iter = begin();
-				while (iter != end())
-				{
+				while (iter != end()) {
+				//	std::cout << "Iterr ==> " << iter->first << std::endl;
 					node = do_father(node, iter, root);
 					iter++;
 				}
@@ -692,9 +692,10 @@ namespace ft
 		iterator 		find_key(const value_type *value)
 		{
 			iterator iter;
+			iterator fin = end();
 
 			iter = begin();
-			while (iter != end())
+			while (iter != fin)
 			{
 				if (iter->first == value->first)
 					return iter;
@@ -706,10 +707,12 @@ namespace ft
 		iterator 		find_key(const value_type &value)
 		{
 			iterator iter;
+			iterator fin = end();
 
 			iter = begin();
-			while (iter != end())
+			while (iter != fin)
 			{
+//				endlstd::cout << "Iter ==> " << iter->first << std::endl;
 				if (iter->first == value.first)
 					return iter;
 				iter++;
@@ -754,8 +757,12 @@ namespace ft
 			alloc.construct(node->pair, val);
 			node->height = 0;
 			node->left = NULL;
-			node->right	=	&ending;
+			node->right	=	ending;
 			node->parent = NULL;
+			ending->right = NULL;
+			ending->left = NULL;
+			ending->pair = NULL;
+			ending->parent = node;
 		}
 
 		Node_*	new_node(const value_type &val, int i)
@@ -765,27 +772,29 @@ namespace ft
 			alloc.construct(_node->pair, val);
 			_node->height = 1;
 			_node->left = NULL;
+			_node->parent = tmp;
 			if (i == 0)
 				_node->right = NULL;
 			else
-				_node->right = &ending;
-			_node->parent = tmp;
+			{
+				_node->right = ending;
+				ending->right = NULL;
+				ending->left = NULL;
+				ending->pair = NULL;
+				ending->parent = _node;
+			}
 			return _node;
 		}
 
 		Node_*	my_insert(Node_* node, const value_type& val)
 		{
 			int balance;
-			Node_* temp = &ending;
 			if (node == NULL)
 			{
 				return (new_node(val, 0));
 			}
-			else if (node ==temp)
-			{
-				std::cout << "Enter in Ending\n";
-				return  (new_node(val, 1));
-			}
+			else if (node == ending)
+				return (new_node(val, 1));
 			if (val.first < node->pair->first)
 			{
 				tmp = node;

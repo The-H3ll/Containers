@@ -49,10 +49,10 @@ public:
 		this->node = node;
 	}
 
-	Map_iterator(Node_ node)
-	{
-		this->node = &node;
-	}
+//	Map_iterator(Node_ node)
+//	{
+//		this->node = &node;
+//	node}
 
 
 	Map_iterator(const Map_iterator& mapIterator)
@@ -134,13 +134,13 @@ public:
 	Map_iterator&	operator++()
 	{
 
-		Node_ *tmp = right_most();
-
-		if (tmp->pair && tmp->pair->first == node->pair->first)
-		{
-			node = node->right;
-		}
-		else if (node->right != NULL && node->pair->first != go_root()->pair->first )
+//		Node_ *tmp = right_most();
+//
+//		if (tmp->pair && tmp->pair->first == node->pair->first)
+//		{
+//			node = node->right;
+//		}
+	if (node->right != NULL && node->pair->first != go_root()->pair->first )
 			node = node->right;
 		else if (node->parent != NULL && node->pair->first < node->parent->pair->first && node->pair->first != go_root()->pair->first)
 			node = node->parent;
@@ -183,7 +183,7 @@ public:
 		Node_ *tmp = go_root();
 		if (tmp)
 		{
-			while (tmp->right != NULL)
+			while (tmp->right->right != NULL)
 				tmp = tmp->right;
 			return tmp;
 		}
@@ -194,16 +194,21 @@ public:
 
 	Map_iterator	after_right_most()
 	{
+//		while (node->right != NULL)
+//		{
+//			node = node->right;
+//		}
+//		node = node->right;
 		return (*this);
 	}
 
 	const Map_iterator	after_right_most() const
 	{
-		while (node->right != NULL)
-		{
-			node = node->right;
-		}
-		node = node->right;
+//		while (node->right != NULL)
+//		{
+//			node = node->right;
+//		}
+//		node = node->right;
 		return (*this);
 	}
 
@@ -226,30 +231,27 @@ public:
 	Map_iterator&	operator--()
 	{
 
-		std::cout << "Enter 1\n";
-
 		if (node->left != NULL)
 		{
 			node = node->left;
 			if (node->right != NULL)
 				node = node->right;
 		}
-		else if (node->parent != NULL && node->pair->first > node->parent->pair->first)
+		else if (node->parent != NULL && node->pair != NULL && node->pair->first > node->parent->pair->first)
 		{
 			node = node->parent;
 		}
-		else if (node->parent != NULL && node->pair->first < node->parent->pair->first && node->parent->parent != NULL)
+		else if (node->parent != NULL &&node->pair != NULL && node->pair->first < node->parent->pair->first && node->parent->parent != NULL)
 		{
 			node = node->parent->parent;
 		}
+		else if (node->parent != NULL && node->pair == NULL && node->right == NULL && node->left == NULL)
+			node =node->parent;
 		return (*this);
 	}
 
 	Map_iterator 	operator--(int)
 	{
-		std::cout << "Enter 2 \n";
-
-
 		Map_iterator temp = *this;
 		--(*this);
 //		if (node == NULL)

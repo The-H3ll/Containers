@@ -205,7 +205,6 @@ void iterator_tests(void)
                 ;
             ualarm(0, 0);
         }*/
-        std::cout << "STTTTTTAAAARTING\n";
         bool cond(false);
         {
             int res(0);
@@ -215,10 +214,10 @@ void iterator_tests(void)
                 m.insert(ft::make_pair(myints[i], i));
             for (ft::map<int, int>::iterator it = m.begin(); it != m.end(); ++it)
                 res += it->first;
-            cond = res == 210;`
+            cond = res == 210;
         }
         {
-            int res(0), tmp
+            int res(0), tmp;
             int myints[] = {12, 82, 37, 64, 15};
             ft::map<int, int> m;
             for (size_t i = 0; i < 5; ++i)
