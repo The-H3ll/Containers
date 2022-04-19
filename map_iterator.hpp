@@ -49,6 +49,11 @@ public:
 		this->node = node;
 	}
 
+	Map_iterator(Node_ node)
+	{
+		this->node = &node;
+	}
+
 
 	Map_iterator(const Map_iterator& mapIterator)
 	{
@@ -185,14 +190,10 @@ public:
 		return NULL;
 	}
 
+
+
 	Map_iterator	after_right_most()
 	{
-		node = go_root();
-		while (node->right != NULL)
-		{
-			node = node->right;
-		}
-		node = node->right;
 		return (*this);
 	}
 
@@ -215,27 +216,18 @@ public:
 			tmp = node;
 			while (tmp->parent != NULL)
 			{
-//NULL			std::cout << "nodE ==>" << tmp->pair->first << std::endl;
 				tmp = tmp->parent;
-//			if (tmp != NULL)
-//				std::cout << "Parenteoeooeo ==>" << tmp->pair->first << std::endl;
-//			else
-//				std::cout << "NUULLL\n";
 			}
 			return tmp;
 		}
 		return NULL;
 	}
 
-	void	check_value()
-	{
-		std::cout << "Check IN\n";
-		std::cout << "Key ==> " << node->pair->first << std::endl;
-		std::cout << "value ==> " << node->pair->second << std::endl;
-	}
-
 	Map_iterator&	operator--()
 	{
+
+		std::cout << "Enter 1\n";
+
 		if (node->left != NULL)
 		{
 			node = node->left;
@@ -255,21 +247,28 @@ public:
 
 	Map_iterator 	operator--(int)
 	{
-		if (node->left != NULL)
-		{
-			node = node->left;
-			if (node->right != NULL)
-				node = node->right;
-		}
-		else if (node->parent != NULL && node->pair->first > node->parent->pair->first)
-		{
-			node = node->parent;
-		}
-		else if (node->parent != NULL && node->pair->first < node->parent->pair->first && node->parent->parent != NULL)
-		{
-			node = node->parent->parent;
-		}
-		return (*this);
+		std::cout << "Enter 2 \n";
+
+
+		Map_iterator temp = *this;
+		--(*this);
+//		if (node == NULL)
+//			return (*this);
+//		if (node->left != NULL)
+//		{
+//			node = node->left;
+//			if (node->right != NULL)
+//				node = node->right;
+//		}
+//		else if (node->parent != NULL && node->pair->first > node->parent->pair->first)
+//		{
+//			node = node->parent;
+//		}
+//		else if (node->parent != NULL && node->pair->first < node->parent->pair->first && node->parent->parent != NULL)
+//		{
+//			node = node->parent->parent;
+//		}
+	return (temp);
 	}
 
 	Map_iterator	operator-(difference_type n) const

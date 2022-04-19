@@ -82,6 +82,7 @@ namespace ft
 		size_type		_size;
 		allocator_iter 	iter_alloc;
 		Node_			*node ;
+		Node_			ending;
 		Node_			*root;
 		Node_			*temp_parent;
 		Node_			*tmp;
@@ -101,6 +102,7 @@ namespace ft
 			this->_size = 0;
 			k_compare = comp;
 			this->alloc = alloc;
+			ending = Node_();
 		}
 
 		template <class InputIterator>
@@ -110,6 +112,7 @@ namespace ft
 		{
 			this->_size = 0;
 			k_compare = comp;
+			ending = Node_();
 			while (first != last)
 			{
 				insert(*first);
@@ -162,7 +165,7 @@ namespace ft
 			}
 			else
 				my_pair.second = false;
-			printTree(node, "", true);
+//			printTree(node, "", true);
 			return my_pair;
 		}
 
@@ -254,28 +257,21 @@ namespace ft
 				{
 					if (iter->first == first->first)
 					{
-						std::cout << "Itr ==> " <<  iter->first << std::endl;
-						std::cout << "First ==> " <<  first->first << std::endl;
 						break;
 					}
 				}
-				std::cout << "HEEEREREpppppp\n";
 				erase(iter->first);
 			}
 		}
 		size_type	erase(const key_type& k)
 		{
 			iterator iter;
-			std::cout << "STTTARRRRTTT\n";
 			iter = find_key(k);
-			std::cout << "Before erasing Node\n";
 			node = erase_node(node, iter);
-			std::cout << "After erasing Node\n";
 //			while (node && node->parent != NULL)
 //				node = node->parent;
 			if (node)
 			{
-				std::cout << "STARTT\n";
 				root = node;
 				iter = begin();
 				while (iter != end())
@@ -284,15 +280,13 @@ namespace ft
 					iter++;
 				}
 				iter = begin();
-				std::cout << "Middle\n";
 				while (iter != end())
 				{
 					node = upadte_height(node, iter);
 					iter++;
 				}
 				iter = begin();
-				std::cout << "Middle A\n";
-				printTree(node, "", true);
+//				printTree(node, "", true);
 				while (iter != end())
 				{
 					node = do_rotation(node, iter);
@@ -306,8 +300,8 @@ namespace ft
 				//	std::cout << "Ite ==> " << iter->first << std::endl;
 					iter++;
 				}
-				std::cout << "After Middle A \n";
-				printTree(node, "", true);
+//				std::cout << "After Middle A \n";
+//				printTree(node, "", true);
 //				root = node;
 //				iterator  _iter = begin();
 //				while (_iter != end())
@@ -315,7 +309,6 @@ namespace ft
 //					node = do_father(node, _iter, root);
 //					_iter++;
 //				}
-				std::cout << "Before\n";
 			}
 			this->_size -= 1;
 			return (1);
@@ -353,14 +346,14 @@ namespace ft
 		}
 		iterator end()
 		{
-			iterator iter(node);
+			iterator iter(ending);
 
 			return iter.after_right_most();
 		}
 
 		const_iterator end() const
 		{
-			const_iterator ite(node);
+			const_iterator ite(ending);
 
 			return ite.after_right_most();
 		}
@@ -417,7 +410,6 @@ namespace ft
 
 		bool empty() const
 		{
-			std::cout << "This Size ==> " << this->_size << std::endl;
 			if(this->_size == 0)
 				return true;
 			return false;
@@ -525,9 +517,8 @@ namespace ft
 
 		~map()
 		{
-			std::cout << "HERRE\n";
-			if (node && check == 0)
-				free_node();
+//			if (node && check == 0)
+//				free_node();
 			check = 0;
 		}
 
@@ -538,9 +529,7 @@ namespace ft
 		{
 			iterator  start = begin();
 			iterator  ends= end();
-			std::cout << "Before\n";
 			erase(start, ends);
-			std::cout << "After\n";
 		}
 		void 	printTree(Node* root, std::string indent, bool last)
 		{
@@ -613,9 +602,9 @@ namespace ft
 			else if (pos->first > root->pair->first)
 				root->right = erase_node(root->right, pos);
 			else {
-				std::cout << "Root ==> " << root->pair->first << std::endl;
+//				std::cout << "Root ==> " << root->pair->first << std::endl;
 				if ((root->left == NULL) || (root->right == NULL)) {
-					std::cout << "Enter In here 0\n";
+//					std::cout << "Enter In here 0\n";
 					Node_ *temp = root->left ? root->left : root->right;
 					if (temp == NULL) {
 						temp = root;
@@ -623,14 +612,14 @@ namespace ft
 						alloc_.deallocate(temp, 1);
 					}
 					else {
-						std::cout << "Enter In here 1\n";
+//						std::cout << "Enter In here 1\n";
 						iterator iter = find_key(temp->pair);
 						temp = root;
 						root = iter.return_node();
 						alloc_.deallocate(temp, 1);
 					}
 				} else {
-					std::cout << "Enter In herei 2\n";
+//					std::cout << "Enter In herei 2\n";
 					iterator temp = iterator(root->right).left_most();//= nodeWithMinimumValue(root->right);
 					check = 1;
 					alloc.construct(root->pair, temp.return_pair());
@@ -642,7 +631,7 @@ namespace ft
 				root->height = 1 + max(height(root->left),
 									   height(root->right));
 			}
-			printTree(root, "", true);
+//			printTree(root, "", true);
 			return root;
 		}
 
@@ -765,18 +754,21 @@ namespace ft
 			alloc.construct(node->pair, val);
 			node->height = 0;
 			node->left = NULL;
-			node->right	=	NULL;
+			node->right	=	&ending;
 			node->parent = NULL;
 		}
 
-		Node_*	new_node(const value_type &val)
+		Node_*	new_node(const value_type &val, int i)
 		{
 			Node_ *_node =  alloc_.allocate(1);
 			_node->pair =	alloc.allocate(1);
 			alloc.construct(_node->pair, val);
 			_node->height = 1;
 			_node->left = NULL;
-			_node->right = NULL;
+			if (i == 0)
+				_node->right = NULL;
+			else
+				_node->right = &ending;
 			_node->parent = tmp;
 			return _node;
 		}
@@ -784,10 +776,15 @@ namespace ft
 		Node_*	my_insert(Node_* node, const value_type& val)
 		{
 			int balance;
-
+			Node_* temp = &ending;
 			if (node == NULL)
 			{
-				return (new_node(val));
+				return (new_node(val, 0));
+			}
+			else if (node ==temp)
+			{
+				std::cout << "Enter in Ending\n";
+				return  (new_node(val, 1));
 			}
 			if (val.first < node->pair->first)
 			{

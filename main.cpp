@@ -799,25 +799,25 @@ int     main()
 //	}
 	/*--------------------------------------------------------------------------*/
 
-	std::map<int, char> m;
-	std::map<int, char>::iterator it, it1;
 
-	ft::map<int, char> my_m;
-	ft::map<int, char>::iterator my_it, my_it1, tmp;
 
-	for (int i = 0; i < 10; ++i)
-	{
-		my_m.insert(ft::make_pair(i, static_cast<char>(i + 97)));
-		m.insert(std::make_pair(i, static_cast<char>(i + 97)));
-	}
-	std::cout << "IMplerent\n";
-	it = m.begin();
-	it1 = ++(m.begin());
+	int res(0), tmp;
+	int myints[] = {12, 82, 37, 64, 15};
+	ft::map<int, int> m;
+	for (size_t i = 0; i < 5; ++i)
+		m.insert(ft::make_pair(myints[i], i));
 
-	my_it = my_m.begin();
-	std::cout  << " my_iy == >" << my_it->first << std::endl;
-	std::cout << "IMplerent1\n";
-	my_it1 = ++(my_m.begin());
+	for (ft::map<int, int>::iterator it = m.begin(); it != m.end(); it++)
+		std::cout << " ==> " << it->first << std::endl;
+
+	ft::map<int, int>::iterator it = m.begin();
+	std::cout << "Before11 \n";
+	ft::map<int, int>::iterator eit = --m.end();
+	std::cout << "After 11 \n";
+	tmp = eit->first;
+	m.erase(eit);
+	for (; it != m.end(); ++it)
+		res += it->first;
 
 	return 0;
 }
