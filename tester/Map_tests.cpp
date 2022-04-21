@@ -231,6 +231,8 @@ void iterator_tests(void)
         }
         ++my_it; // I incremented here to make sure that the object changes
         EQUAL(*my_it == *my_it1);
+
+
     }
     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " --it operator "
               << "] --------------------]\t\t\033[0m";
