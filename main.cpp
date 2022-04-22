@@ -42,6 +42,9 @@ struct classcomp
 	}
 };
 
+
+
+
 bool testMapConstructors()
 {
 	bool cond;
@@ -1611,105 +1614,34 @@ int     main()
 //
 	//testConstructors();
 
-//	std::map<int, std::string> m;
-//	ft::map<int, std::string> my_m;
-//	for (size_t i = 0; i < 10; i++)
-//	{
-//		m.insert(std::make_pair(i, "range constructor test"));
-//		my_m.insert(ft::make_pair(i, "range constructor test"));
-//	}
-//
-//	ft::map<int, std::string> my_m1(my_m.begin(), my_m.end()); // this one is to check if the range works with ft::map
-//	/*----------------------------------------------------------------------------------------------*/
-//	/*--------------- declare tow strings to store the results ------*/
-//	std::string res, my_res, my_res1;
-//	int sum(0), my_sum(0), my_sum1(0);
-//	/*--------------------------------------------------------*/
-//	for (std::map<int, std::string>::iterator it = m.begin(); it != m.end(); ++it)
-//	{ // fill res from std::map
-//		res += it->second;
-//		sum += it->first;
-//	}
-//
-//	for (ft::map<int, std::string>::iterator it = my_m.begin(); it != my_m.end(); ++it)
-//	{ // fill my_res from ft::map
-//		my_res += it->second;
-//		my_sum += it->first;
-//	}
-//
-//	for (ft::map<int, std::string>::iterator it = my_m1.begin(); it != my_m1.end(); ++it)
-//	{ // fill my_res1 from ft::map
-//		my_res1 += it->second;
-//		my_sum1 += it->first;
-//	}
-//	EQUAL(res == my_res && my_res == my_res1);
-
-	/*------------------ std::map ---------------------*/
-
-
-//	EQUAL(testMapConstructors());
-
-
-
-
-//	std::map<int, std::string> m1;
-//	ft::map<int, std::string> ft_m1;
-//
-//	for (size_t i = 0; i < 10; i++)
-//	{
-//		m1.insert(std::make_pair(i, "string2"));
-//		ft_m1.insert(ft::make_pair(i, "string2"));
-//	}
-//
-//	std::cout << "Before\n";
-//
-//	for (ft::map<int, std::string>::reverse_iterator  it = ft_m1.rbegin(); it != ft_m1.rend(); ++it)
-//		std::cout << "YYYYYYY ===> " <<  std::endl;
-//
-//	std::map<int, std::string> const m2(m1.rbegin(), m1.rend());
-//	ft::map<int, std::string>::reverse_iterator iter = ft_m1.rbegin();
-//	ft::map<int, std::string>::reverse_iterator iter1 = ft_m1.rend();
-////	std::cout << "ite ==> " << iter->first << std::endl;
-//	//std::cout << "ite2 ==> " << iter1->first << std::endl;
-//	ft::map<int, std::string> const ft_m2(ft_m1.rbegin(), ft_m1.rend());
-//	std::cout << "After\n";
-//
-//	/*-----------------------------------------------------*/
-//	/*------------------ ft::maps ---------------------*/
-//	/*----------------------------------------------------*/
-//	/*------------------ strings to store the results ----*/
-//	std::string res, ft_res, c_res, c_ft_res;
-//	/*----------------------------------------------------*/
-//	for (std::map<int, std::string>::reverse_iterator it = m1.rbegin(); it != m1.rend(); ++it) // fill res from m1
-//		res += it->second;
-//	for (std::map<int, std::string>::const_reverse_iterator rit = m2.rbegin(); rit != m2.rend(); ++rit) // fill c_res from const m1
-//		c_res += rit->second;
-//
-//	for (ft::map<int, std::string>::reverse_iterator it = ft_m1.rbegin(); it != ft_m1.rend(); ++it) // fill ft_res from ft_m1
-//		ft_res += it->second;
-//	for (ft::map<int, std::string>::const_reverse_iterator rit = ft_m2.rbegin(); rit != ft_m2.rend(); ++rit) // fill c_ft_res from const ft_m1
-//		c_ft_res += rit->second;
-//	std::cout << "After\n";
-//	int arr[] = {12, 82, 37, 64, 15};
-//	ft::map<int, int> end_test;
-//	for(size_t i = 0; i < 5; ++i)
-//		end_test.insert(ft::make_pair(arr[i], i));
-//	std::cout << "After\n";
-//	ft::map<int, int>::reverse_iterator rit = end_test.rend();
-//	rit--;
-//	EQUAL(res == ft_res && c_res == c_ft_res && rit->first == 12);
-
-
-	ft::map<int, char> my_m;
-	for (int i = 0; i < 1e2; i++)
+	ft::map<int, std::string> my_m;
+	std::map<int, std::string> m;
+	for (int i = 0; i < 10; i++)
 	{
-		std::cout << "I => " << i << std::endl;
-		my_m.insert(ft::make_pair(i, 'A'));
-
+		m.insert(std::make_pair(i, "Hello"));
+		my_m.insert(ft::make_pair(i, "Hello"));
 	}
-	ft::map<int, char>::reverse_iterator my_rit2(my_m.end());
-	ft::map<int, char>::const_reverse_iterator c_it, c_ob(my_m.end());
-	c_it = my_rit2;
-	EQUAL(my_rit2->first == c_it->first && my_rit2->first == c_ob->first);
+
+	/*---------------------------------------------------------*/
+	/*--------------- declare tow strings to store the results ------*/
+	std::string res, my_res;
+	/*---------------------------------------------------------*/
+
+
+
+	for (std::map<int, std::string>::iterator it = m.begin(); it != m.end(); ++it) // fill res from std::map
+	{
+		res += it->second;
+	}
+	for (ft::map<int, std::string>::iterator it = my_m.begin(); it != my_m.end(); ++it)// fill res from std::map
+	{
+		my_res += it->second;
+	}
+
+
+
+	EQUAL(res == my_res);
+
+
 	return 0;
 }

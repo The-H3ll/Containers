@@ -143,8 +143,11 @@ public:
 	}
 
 	Node_ *	left_most(Node_* node) {
-		while (node->left != NULL) {
-			node = node->left;
+		if (node)
+		{
+			while (node->left != NULL) {
+				node = node->left;
+			}
 		}
 		return (node);
 
@@ -193,7 +196,7 @@ public:
 			tmp = node;
 			while (tmp->parent != NULL)
 			{
-				std::cout << "Tmp ==> " << tmp->pair->first << std::endl;
+//				//std::cout << "Tmp ==> " << tmp->pair->first << std::endl;
 				tmp = tmp->parent;
 			}
 			return tmp;

@@ -118,7 +118,7 @@ namespace ft
 			iterator back;
 			while (first != last)
 			{
-
+				insert(*first);
 				first++;
 			}
 			//k_compare = comp;
@@ -168,7 +168,6 @@ namespace ft
 		pair<iterator, bool > insert(const value_type& val)
 		{
 			ft::pair< iterator , bool> my_pair;
-			std::cout << "Startt\n";
 			iterator iter;
 			if (node == NULL)
 			{
@@ -194,26 +193,21 @@ namespace ft
 				return  my_pair;
 			}
 			iter = begin();
-			std::cout << "A\n";
-			while (iter != ending)
+			while (iter != end())
 			{
 				node = upadte_height(node, iter);
 				iter++;
 			}
 			iter = begin();
-			std::cout << "b\n";
-			while (iter != ending)
+			while (iter != end())
 			{
-
 				node = do_rotation(node, iter);
-				std::cout << "Ite --> " << iter->first << std::endl;
 				iter++;
 			}
-			std::cout << "c\n";
 			my_pair.first = find_key(val);
 			my_pair.second = true;
 			this->_size += 1;
-			std::cout << "End\n";
+			printTree(node, "", true);
 			return my_pair;
 		}
 
@@ -357,12 +351,14 @@ namespace ft
 		iterator	begin()
 		{
 			iterator  iter(node, r_ending);
+			//iterator  iter(node);
 
 			return iter.left_most();
 		}
 		const_iterator	begin() const
 		{
 			const_iterator  iter(node, r_ending);
+			//const_iterator  iter(node);
 
 			return iter.left_most();
 		}
@@ -408,7 +404,7 @@ namespace ft
 		{
 			iterator  iter = begin();
 
-			while (iter !=  end())
+			while (iter != end())
 			{
 				if (k_compare(iter->first, k) == false && k_compare(k, iter->first) == false)
 					return (ft::make_pair(lower_bound(iter->first), upper_bound(iter->first)));
@@ -703,6 +699,7 @@ namespace ft
 			{
 //				std::cout << "FALL\n";
 				int balanceFactor = balanc_factor(root);
+			//	std::cout << "Balance Factor --> " << balanceFactor <<  " || node ==> " << root->pair->first << std::endl;
 				if (balanceFactor > 1) {
 					if (balanc_factor(root->left) >= 0) {
 //						std::cout << "Fall 00\n";
@@ -736,12 +733,17 @@ namespace ft
 				return NULL;
 			if (root == ending)
 				return ending;
+			if (root == r_ending)
+				return r_ending;
 			if (iter->first < root->pair->first)
 				root->left = upadte_height(root->left, iter);
 			else if (iter->first > root->pair->first)
 				root->right = upadte_height(root->right, iter);
 			else
+			{
 				root->height = 1 + max(height(root->left),height(root->right));
+				std::cout << "Key --> " << root->pair->first << " || height --> " << root->height << std::endl;
+			}
 			return root;
 		}
 
@@ -867,7 +869,7 @@ namespace ft
 
 		Node_*	my_insert(Node_* node, const value_type& val)
 		{
-			int balance;
+		//	int balance;
 			if (node == NULL)
 			{
 				return (new_node(val, 0));
@@ -886,37 +888,36 @@ namespace ft
 				tmp = node;
 				node->right = my_insert(node->right, val);
 			}
-			else
-				return node;
-			node->height = 1 + max(height(node->left), height(node->right));
-			balance = balanc_factor(node);
-			if (balance > 1)
-			{
-				if (val.first < node->left->pair->first)
-				{
-					return right_rotate(node);
-				}
-				else if (val.first > node->left->pair->first)
-				{
-					node->left = left_rotate(node->left);
-					return right_rotate(node);
-				}
-			}
-			if (balance < -1)
-			{
-				if (val.first > node->right->pair->first) {
-					return left_rotate(node);
-				} else if (val.first < node->right->pair->first) {
-					node->right = right_rotate(node->right);
-					return left_rotate(node);
-				}
-			}
+//			node->height = 1 + max(height(node->left), height(node->right));
+//			balance = balanc_factor(node);
+//			if (balance > 1)
+//			{
+//				if (val.first < node->left->pair->first)
+//				{
+//					return right_rotate(node);
+//				}
+//				else if (val.first > node->left->pair->first)
+//				{
+//					node->left = left_rotate(node->left);
+//					return right_rotate(node);
+//				}
+//			}
+//			if (balance < -1)
+//			{
+//				if (val.first > node->right->pair->first) {
+//					std::cout << "Unbalance here\n";
+//					return left_rotate(node);
+//				} else if (val.first < node->right->pair->first) {
+//					node->right = right_rotate(node->right);
+//					return left_rotate(node);
+//				}
+//	node		}
 			return node;
 		}
 
 		Node_*		right_rotate(Node_* y)
 		{
-			std::cout << "Right rotation \n";
+			std::cout << "Enter RR\n";
 			Node_ *x = y->left;
 			Node_ *T2 = x->right;
 			x->right = y;
@@ -938,21 +939,16 @@ namespace ft
 
 		Node_*	left_rotate(Node_* x)
 		{
-			std::cout << "Left rotation \n";
+			std::cout << "Enter LR\n";
 			Node_ *y = x->right;
 			Node_ *T2 = y->left;
-			Node_* temp = x->right->parent;
+			Node_* temp = x->parent;
 			y->left = x;
-//			if (x->parent == NULL)
-//			{
-//				x->parent = y;
-//				y->parent = NULL;
-//			}
 			x->right = T2;
-//			if (x->right)
-//				x->right->parent = x;
-//			x->parent = y;
-//			y->parent = temp;
+			if (x->right)
+				x->right->parent = x;
+			x->parent = y;
+			y->parent = temp;
 			x->height = max(height(x->left),
 							height(x->right)) +
 						1;
