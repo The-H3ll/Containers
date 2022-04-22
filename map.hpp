@@ -137,7 +137,7 @@ namespace ft
 		{
 			if (node != NULL)
 			{
-				erase(begin(), ending);
+				erase(begin(), end());
 				this->node = NULL;
 				if (!x.empty())
 				{
@@ -192,11 +192,12 @@ namespace ft
 				my_pair.second = false;
 				return  my_pair;
 			}
-			iter = begin();
-			while (iter != end())
+
+			iter = --end();
+			while (iter != begin())
 			{
 				node = upadte_height(node, iter);
-				iter++;
+				iter--;
 			}
 			iter = begin();
 			while (iter != end())
@@ -207,7 +208,6 @@ namespace ft
 			my_pair.first = find_key(val);
 			my_pair.second = true;
 			this->_size += 1;
-			printTree(node, "", true);
 			return my_pair;
 		}
 
@@ -301,6 +301,7 @@ namespace ft
 					}
 				}
 				erase(iter->first);
+			//	printTree(node, "", true);
 			}
 		}
 		size_type	erase(const key_type& k)
@@ -308,6 +309,7 @@ namespace ft
 			iterator iter;
 			iter = find_key(k);
 			node = erase_node(node, iter);
+			printTree(node, "", true);
 			if (node)
 			{
 				root = node;
@@ -322,11 +324,10 @@ namespace ft
 				while (iter != end())
 				{
 					node = do_rotation(node, iter);
-					root = node;
-
 					iter++;
 				}
 			}
+			printTree(node, "", true);
 			this->_size -= 1;
 			return (1);
 		}
@@ -640,9 +641,10 @@ namespace ft
 				root->right = erase_node(root->right, pos);
 			else {
 //				std::cout << "Root ==> " << root->pair->first << std::endl;
-				if ((root->left == NULL) || (root->right == NULL) || (root->left == ending) || (root->right == ending)) {
+				if ((root->left == NULL) || (root->right == NULL) || (root->left == r_ending) || (root->right == ending)) {
 //					std::cout << "Enter In here 0\n";
 					Node_ *temp = root->left ? root->left : root->right;
+					if (root
 					if (temp == NULL) {
 						temp = root;
 						root = NULL;
@@ -652,6 +654,12 @@ namespace ft
 					{
 						temp = root;
 						root = ending;
+						alloc_.deallocate(temp, 1);
+					}
+					else if (temp == r_ending)
+					{
+						temp = root;
+						root = r_ending;
 						alloc_.deallocate(temp, 1);
 					}
 					else {
@@ -742,7 +750,7 @@ namespace ft
 			else
 			{
 				root->height = 1 + max(height(root->left),height(root->right));
-				std::cout << "Key --> " << root->pair->first << " || height --> " << root->height << std::endl;
+			//	std::cout << "Key --> " << root->pair->first << " || height --> " << root->height << std::endl;
 			}
 			return root;
 		}
@@ -801,6 +809,7 @@ namespace ft
 		}
 		int height(Node_ *node)
 		{
+			int count = 0;
 			if (node == NULL)
 				return 0;
 			return node->height;
@@ -952,8 +961,7 @@ namespace ft
 			x->height = max(height(x->left),
 							height(x->right)) +
 						1;
-			y->height = max(height(y->left),
-							height(y->right)) +
+			y->height = max(height(y->left),height(y->right)) +
 						1;
 			return y;
 		}

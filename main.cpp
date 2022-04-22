@@ -1614,34 +1614,31 @@ int     main()
 //
 	//testConstructors();
 
-	ft::map<int, std::string> my_m;
-	std::map<int, std::string> m;
-	for (int i = 0; i < 10; i++)
+	std::map<int, std::string> m1;
+	std::map<int, std::string> m2;
+	ft::map<int, std::string> ft_m1;
+	ft::map<int, std::string> ft_m2;
+	for (int i = 0; i < 10; ++i)
 	{
-		m.insert(std::make_pair(i, "Hello"));
-		my_m.insert(ft::make_pair(i, "Hello"));
+		m1.insert(std::make_pair(i, "string1"));
+		m2.insert(std::make_pair(i, "string2"));
+		ft_m1.insert(ft::make_pair(i, "string1"));
+		ft_m2.insert(ft::make_pair(i, "string2"));
 	}
 
-	/*---------------------------------------------------------*/
-	/*--------------- declare tow strings to store the results ------*/
-	std::string res, my_res;
-	/*---------------------------------------------------------*/
+	m1 = m2;
+	ft_m1 = ft_m2;
+	/*----------------------------------------------------*/
+	/*------------------ strings to store the results ----*/
+	std::string res, ft_res;
+	/*----------------------------------------------------*/
+	for (std::map<int, std::string>::iterator it = m1.begin(); it != m1.end(); ++it) // fill res from m1
+		res += it->first;
 
+	for (ft::map<int, std::string>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
+		ft_res += it->first;
 
-
-	for (std::map<int, std::string>::iterator it = m.begin(); it != m.end(); ++it) // fill res from std::map
-	{
-		res += it->second;
-	}
-	for (ft::map<int, std::string>::iterator it = my_m.begin(); it != my_m.end(); ++it)// fill res from std::map
-	{
-		my_res += it->second;
-	}
-
-
-
-	EQUAL(res == my_res);
-
+	EQUAL(res == ft_res);
 
 	return 0;
 }
