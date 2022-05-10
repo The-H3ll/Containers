@@ -314,7 +314,7 @@ void testConstructors()
 		std::map<int, std::string> m2;
 		ft::map<int, std::string> ft_m2;
 		ft::map<int, std::string> ft_m1;
-		for (int i = 0; i < 1e4; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			m2.insert(std::make_pair(i, "string2"));
 			ft_m2.insert(ft::make_pair(i, "string2"));
@@ -372,7 +372,7 @@ void testConstructors()
 		std::map<int, std::string> m2;
 		ft::map<int, std::string> ft_m1;
 		ft::map<int, std::string> ft_m2;
-		for(size_t i = 0; i < 100; ++i)
+		for(size_t i = 0; i < 20; ++i)
 		{
 			m2.insert(std::make_pair(i, "value"));
 			ft_m2.insert(ft::make_pair(i, "value"));
@@ -1608,37 +1608,44 @@ int     main()
 	/*--------------------------------------------------------------------------*/
 
 
-	//iterator_tests();
-//
-//	const_iterator_tests();
-//
-	//testConstructors();
+// 	iterator_tests();
+// //
+// 	const_iterator_tests();
+// //
+// 	testConstructors();
 
-	std::map<int, std::string> m1;
-	std::map<int, std::string> m2;
-	ft::map<int, std::string> ft_m1;
-	ft::map<int, std::string> ft_m2;
-	for (int i = 0; i < 10; ++i)
-	{
-		m1.insert(std::make_pair(i, "string1"));
-		m2.insert(std::make_pair(i, "string2"));
-		ft_m1.insert(ft::make_pair(i, "string1"));
-		ft_m2.insert(ft::make_pair(i, "string2"));
-	}
 
-	m1 = m2;
-	ft_m1 = ft_m2;
-	/*----------------------------------------------------*/
-	/*------------------ strings to store the results ----*/
-	std::string res, ft_res;
-	/*----------------------------------------------------*/
-	for (std::map<int, std::string>::iterator it = m1.begin(); it != m1.end(); ++it) // fill res from m1
-		res += it->first;
 
-	for (ft::map<int, std::string>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
-		ft_res += it->first;
 
-	EQUAL(res == ft_res);
+        std::map<char, std::string> m;
+        ft::map<char, std::string> ft_m;
+
+        m['a'] = "an element";
+        m['b'] = "another element";
+        m['c'] = m['b'];
+        m['a'] = "test";
+
+			std::cout << "Yes 0\n";
+        ft_m['a'] = "an element";
+			std::cout << "Yes 1\n";
+        ft_m['b'] = "another element";
+			std::cout << "Yes 2\n";
+     //   ft_m['c'] = ft_m['b'];
+		std::cout << "Yes 3\n";
+        ft_m['a'] = "test";
+
+		for (ft::map<char, std::string>::iterator iter = ft_m.begin(); iter != ft_m.end(); iter++)
+		{
+			std::cout << "iter ==> "<< iter->first << std::endl;
+			std::cout << "Iter ==> "<< iter->second << std::endl;
+		}
+			
+		// if (m['a'] == ft_m['a'])
+		// 	std::cout << "Yes\n";
+		// //if (m['c'] == ft_m['c'])
+		// std::cout << "Yes\n";
+        EQUAL(m['a'] == ft_m['a'] && m['b'] == ft_m['b'] && m['c'] == ft_m['c'] && m.size() == ft_m.size());
+
 
 	return 0;
 }

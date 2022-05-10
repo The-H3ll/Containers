@@ -10,9 +10,9 @@
 #                                                                                                    #
 # ************************************************************************************************** #
 
-COMPILER = g++
-FLAGS_DEBUG = --std=c++98 -Wall -Wextra -Werror -fsanitize=address -g3
-FLAGS = --std=c++98 -Wall -Wextra -Werror
+COMPILER = clang++ -std=c++11
+#FLAGS_DEBUG =   -fsanitize=address -g3
+#FLAGS = --std=c++98 
 
 vector_tle:
 	$(COMPILER) $(FLAGS_DEBUG)	Vector_tests_tle.cpp -o vector.out 
