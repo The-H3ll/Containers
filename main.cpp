@@ -22,6 +22,12 @@
 
 
 #define EQUAL(x) ((x) ? (std::cout << "\033[1;32mAC\033[0m\n") : (std::cout << "\033[1;31mWA\033[0m\n"))
+#define TIME_FAC 20
+
+typedef std::pair<std::map<int, std::string>::iterator, std::map<int, std::string>::iterator> iter_def;
+typedef ft::pair<ft::map<int, std::string>::iterator, ft::map<int, std::string>::iterator> ft_iter_def;
+typedef std::pair<std::map<int, std::string>::const_iterator, std::map<int, std::string>::const_iterator> const_iter_def;
+typedef ft::pair<ft::map<int, std::string>::const_iterator, ft::map<int, std::string>::const_iterator> ft_const_iter_def;
 
 template <typename Iter1, typename Iter2>
 bool compareMaps(Iter1 first1, Iter1 last1, Iter2 first2, Iter2 last2)
@@ -1614,37 +1620,86 @@ int     main()
 // //
 // 	testConstructors();
 
+		
+        bool cond;
+        /*---------------------------------- time limit test --------------------------------------------*/
+        // {
+        //     time_t start, end, diff;
+        //     iter_def res;
+        //     ft_iter_def ft_res;
 
+        //     std::map<int, std::string> m;
+        //     ft::map<int, std::string> ft_m;
+        //     for (size_t i = 0; i < 1e6; ++i)
+        //     {
+        //         m.insert(std::make_pair(i, "value"));
+        //         ft_m.insert(ft::make_pair(i, "value"));
+        //     }
+        //     start = get_time();
+        //     res = m.equal_range(1e5);
+        //     end = get_time();
+        //     diff = end - start;
+        //     diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
 
+        //     ualarm(diff * 1e3, 0);
+        //     ft_res = ft_m.equal_range(1e5);
+        //     ualarm(0, 0);
+        //     cond = (ft_res.first->first == res.first->first) && (ft_res.second->first == res.second->first);
+        // }
+        cond = true;
+        iter_def res;
+        ft_iter_def ft_res;
+        const_iter_def c_res;
+        ft_const_iter_def ft_c_res;
+        std::map<int, std::string> m;
+        ft::map<int, std::string> ft_m;
+        int arr[] = {20, 10, 100, 15, 60, 90, 65, 200, 150}; // size = 9
+        for (size_t i = 0; i < 9; ++i)
+        {
+            m.insert(std::make_pair(arr[i], "value"));
+            ft_m.insert(ft::make_pair(arr[i], "value"));
+        }
+        std::map<int, std::string> const c_m(m.begin(), m.end());
+        ft::map<int, std::string> const c_ft_m(ft_m.begin(), ft_m.end());
 
-        std::map<char, std::string> m;
-        ft::map<char, std::string> ft_m;
+        res = m.equal_range(15);
+        ft_res = ft_m.equal_range(15);
+        cond = (cond && (ft_res.first->first == res.first->first) && (ft_res.second->first == res.second->first));
+        res = m.equal_range(65);
+        ft_res = ft_m.equal_range(65);
+        cond = (cond && (ft_res.first->first == res.first->first) && (ft_res.second->first == res.second->first));
+        res = m.equal_range(63);
+        ft_res = ft_m.equal_range(63);
+        cond = (cond && (ft_res.first->first == res.first->first) && (ft_res.second->first == res.second->first));
+        res = m.equal_range(120);
+        ft_res = ft_m.equal_range(120);
+        cond = (cond && (ft_res.first->first == res.first->first) && (ft_res.second->first == res.second->first));
+        res = m.equal_range(70);
+        ft_res = ft_m.equal_range(70);
+        cond = (cond && (ft_res.first->first == res.first->first) && (ft_res.second->first == res.second->first));
+        res = m.equal_range(150);
+        ft_res = ft_m.equal_range(150);
+        cond = (cond && (ft_res.first->first == res.first->first) && (ft_res.second->first == res.second->first));
 
-        m['a'] = "an element";
-        m['b'] = "another element";
-        m['c'] = m['b'];
-        m['a'] = "test";
-
-			std::cout << "Yes 0\n";
-        ft_m['a'] = "an element";
-			std::cout << "Yes 1\n";
-        ft_m['b'] = "another element";
-			std::cout << "Yes 2\n";
-     //   ft_m['c'] = ft_m['b'];
-		std::cout << "Yes 3\n";
-        ft_m['a'] = "test";
-
-		for (ft::map<char, std::string>::iterator iter = ft_m.begin(); iter != ft_m.end(); iter++)
-		{
-			std::cout << "iter ==> "<< iter->first << std::endl;
-			std::cout << "Iter ==> "<< iter->second << std::endl;
-		}
-			
-		// if (m['a'] == ft_m['a'])
-		// 	std::cout << "Yes\n";
-		// //if (m['c'] == ft_m['c'])
-		// std::cout << "Yes\n";
-        EQUAL(m['a'] == ft_m['a'] && m['b'] == ft_m['b'] && m['c'] == ft_m['c'] && m.size() == ft_m.size());
+        c_res = c_m.equal_range(15);
+        ft_c_res = c_ft_m.equal_range(15);
+        cond = (cond && (ft_c_res.first->first == c_res.first->first) && (ft_c_res.second->first == c_res.second->first));
+        c_res = c_m.equal_range(65);
+        ft_c_res = c_ft_m.equal_range(65);
+        cond = (cond && (ft_c_res.first->first == c_res.first->first) && (ft_c_res.second->first == c_res.second->first));
+        c_res = c_m.equal_range(63);
+        ft_c_res = c_ft_m.equal_range(63);
+        cond = (cond && (ft_c_res.first->first == c_res.first->first) && (ft_c_res.second->first == c_res.second->first));
+        c_res = c_m.equal_range(120);
+        ft_c_res = c_ft_m.equal_range(120);
+        cond = (cond && (ft_c_res.first->first == c_res.first->first) && (ft_c_res.second->first == c_res.second->first));
+        c_res = c_m.equal_range(70);
+        ft_c_res = c_ft_m.equal_range(70);
+        cond = (cond && (ft_c_res.first->first == c_res.first->first) && (ft_c_res.second->first == c_res.second->first));
+        c_res = c_m.equal_range(150);
+        ft_c_res = c_ft_m.equal_range(150);
+        cond = (cond && (ft_c_res.first->first == c_res.first->first) && (ft_c_res.second->first == c_res.second->first));
+        EQUAL(cond);
 
 
 	return 0;
