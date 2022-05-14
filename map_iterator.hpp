@@ -13,26 +13,29 @@
 #include "pair.hpp"
 #include "node.hpp"
 
-template <class T, class Z, class Pointer=T*, class Reference=T&>
+template <class T, class Z, class Compare, class Pointer=T*, class Reference=T&>
 class Map_iterator
 {
 public:
 	typedef std::bidirectional_iterator_tag	iterator_category;
 	typedef T							value_type;
-	typedef Map_iterator<const T, Z>    const_iterator;
+	typedef Map_iterator<const T, Z, Compare>    const_iterator;
 	typedef std::ptrdiff_t 					difference_type;
 	typedef Z						Node_;
 	typedef Pointer							pointer;
 	typedef Reference						reference;
+	typedef Compare							key_compare;
 
 //private:
 	Node_ 		*node;
 	Node_ 		*end;
+	key_compare		comp;
 
 public:
 	Map_iterator()
 	{
 		// Default;
+		comp = key_compare();
 	}
 
 	operator const_iterator()
@@ -44,17 +47,20 @@ public:
 
 	Map_iterator(Node_ *node)
 	{
+		comp = key_compare();
 		this->node = node;
 	}
 
 	Map_iterator(Node_ *node, Node_* end)
 	{
+		comp = key_compare();
 		this->node = node;
 		this->end = end;
 	}
 
 	Map_iterator(const Map_iterator& mapIterator)
 	{
+		comp = key_compare();
 		this->node = mapIterator.node;
 		this->end = mapIterator.end;
 	}
@@ -121,20 +127,20 @@ public:
 			if (node->left)
 			 	node = left_most(node);
 		}
-		else if (node->parent != NULL && node->pair && node->pair->first < node->parent->pair->first && node->pair->first != go_root()->pair->first)
+		else if (node->parent != NULL && node->pair && /*node->pair->first < node->parent->pair->first*/comp(node->pair->first, node->parent->pair->first) && node->pair->first != go_root()->pair->first)
 			node = node->parent;
-		else if (node->parent != NULL && node->pair && node->pair->first > node->parent->pair->first && node->parent->parent != NULL&& node->pair->first != go_root()->pair->first)
+		else if (node->parent != NULL && node->pair && /*node->pair->first > node->parent->pair->first*/comp(node->parent->pair->first, node->pair->first) && node->parent->parent != NULL&& node->pair->first != go_root()->pair->first)
 		{
 			Node_ *temp = node;
 			while (node->pair->first != go_root()->pair->first)
 			{
 				//std::cout << "Temp " << temp->pair->first << " || " << node->pair->first << std::endl;
-				if (temp->pair->first < node->pair->first)
+				if (/*temp->pair->first < node->pair->first*/comp(temp->pair->first, node->pair->first))
 					return *this;
 				else
 					node = node->parent;
 			}
-				if (temp->pair->first < node->pair->first)
+				if (/*temp->pair->first < node->pair->first*/ comp(temp->pair->first, node->pair->first))
 					return *this;
 			//node = node->parent->parent;
 		}
@@ -148,9 +154,21 @@ public:
 	Map_iterator	left_most() {
 		if (node)
 		{
-			while (node->left != NULL && node->left != end )
+			// while (node->left != NULL && node->left != end )
+			// {
+			// 	node = node->left;
+			// }
+			if (end)
 			{
-				node = node->left;
+				if (end->parent)
+					node = end->parent;
+			}
+			else
+			{
+			 while (node->left != NULL && node->left != end )
+			 {
+			 	node = node->left;
+			 }
 			}
 		}
 		return (*this);
@@ -159,8 +177,19 @@ public:
 	const Map_iterator	left_most() const{
 		if (node)
 		{
-			while (node->left != NULL && node->left != end) {
-				node = node->left;
+			// while (node->left != NULL && node->left != end) {
+			// 	node = node->left;
+			// }
+			if (end)
+			{
+				if (end->parent)
+					node = end->parent;
+			}
+			else
+			{
+				while (node->left != NULL && node->left != end) {
+					node = node->left;
+				}
 			}
 		}
 		return (*this);
@@ -236,22 +265,22 @@ public:
 				node = right_most(node->right);
 
 		}
-		else if (node->parent != NULL && node->pair != NULL && node->pair->first > node->parent->pair->first)
+		else if (node->parent != NULL && node->pair != NULL && /*node->pair->first > node->parent->pair->first*/ comp(node->parent->pair->first, node->pair->first))
 		{
 			node = node->parent;
 		}
-		else if (node->parent != NULL &&node->pair != NULL && node->pair->first < node->parent->pair->first && node->parent->parent != NULL)
+		else if (node->parent != NULL &&node->pair != NULL && /*node->pair->first < node->parent->pair->first*/comp(node->pair->first, node->parent->pair->first) && node->parent->parent != NULL)
 		{
 			Node_ *temp = node;
 			while (node->pair->first != go_root()->pair->first)
 			{
 				//std::cout << "Temp " << temp->pair->first << " || " << node->pair->first << std::endl;
-				if (temp->pair->first > node->pair->first)
+				if (/*temp->pair->first > node->pair->first*/ comp(node->pair->first, temp->pair->first))
 					return *this;
 				else
 					node = node->parent;
 			}
-			 if (temp->pair->first > node->pair->first)
+			 if (/*temp->pair->first > node->pair->first*/  comp(node->pair->first, temp->pair->first)  )
 			 	return *this;
 			// std::cout << "PAAAIR " << node->pair->first << std::endl;
 			if (node->left != NULL && node->left != end)
