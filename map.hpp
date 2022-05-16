@@ -91,6 +91,8 @@ namespace ft
 		allocator_type	alloc;
 		allocator_ 		alloc_;
 		key_compare 	k_compare;
+		Node_*		tempi;
+		Node_*			_node;
 
 	public:
 
@@ -195,7 +197,8 @@ namespace ft
 			if (node == NULL)
 			{
 				root_node(val);
-				my_pair.first = find_key(val);
+				 my_pair.first = find_key(val);
+				//my_pair.first = node->pair->first;
 				my_pair.second = true;
 				this->_size += 1;
 				return my_pair;
@@ -203,8 +206,9 @@ namespace ft
 			else if (/*val.first < node->pair->first*/  k_compare(val.first, node->pair->first))
 			{
 				tmp = node;
+				
 				node->left = my_insert(node->left, val);
-				tempo = node->right;
+				tempo = node->left;
 			}
 			else if (/*val.first > node->pair->first*/k_compare(node->pair->first, val.first) )
 			{
@@ -214,7 +218,7 @@ namespace ft
 			}
 			else if (val.first == node->pair->first)
 			{
-				my_pair.first = iterator(node);
+				my_pair.first = iterator(tempo);
 				my_pair.second = false;
 				return my_pair;
 			}
@@ -225,19 +229,48 @@ namespace ft
 				my_pair.second = false;
 				return my_pair;
 			}
-			iter = --end();
+			my_pair.first =iterator(_node);
+			my_pair.second = true;
+			iter = iterator(_node);
 			if (/*value->first < node->pair->first*/k_compare(node->pair->first, val.first))
 			{
-				while (iter != iterator(node))
-				{
-					node = upadte_height(node, iter);
-					node = do_rotation(node, iter);
-					iter--;
-				}
+				 printTree(node, "", true);
+
+				 //printTree(node, "", true);
+				 Node_* ver = tmp;
+				 if (ver->right)
+				 	ver = ver->right;
+				
+				 while (iter != iterator(node) && _node != NULL)
+				 {
+					//node = _node;
+				 //	node = upadte_height(node, iter);
+				 	do_rotation(node, iter);
+					//Node_*	var = _node;
+					//node = ver;
+					_node = _node->parent;
+				//	ver = ver->parent;
+					//node =node->parent;
+					iter = iterator(_node);
+				 }
+				
+				 //node = upadte_height(node, iter);
+				// node = do_rotation(node, iter);
+				// while (iter != iterator(node))
+				// {
+				// 	node = upadte_height(node, iter);
+				// 	node = do_rotation(node, iter);
+				// 	iter--;
+				// }
+				//   	node = upadte_height(node, iter);
+				//   	node = do_rotation(node, iter);
+
 			}
 			else if(/*value->first < node->pair->first*/k_compare(val.first, node->pair->first))
 			{
+				// std::cout << "Here2\n";
 				iterator itera(node);
+				// printTree(node, "", true);
 				while (itera != begin())
 				{
 					node = upadte_height(node, itera);
@@ -251,8 +284,6 @@ namespace ft
 				node = upadte_height(node, itera);
 				node = do_rotation(node, iter);
 			}
-			my_pair.first = find_key(val);
-			my_pair.second = true;
 			this->_size += 1;
 			return my_pair;
 		}
@@ -779,6 +810,42 @@ namespace ft
 			return root;
 		}
 
+		// Node_*		do_rotation(Node_ *root, iterator iter)
+		// {
+		// 	key_compare comp;
+		// 	if (root == NULL)
+		// 		return NULL;
+		// 	if (root == ending)
+		// 		return  ending;
+		// 	root->height = 1 + max(height(root->left),height(root->right));
+		// 	if (/*iter->first < root->pair->first*/k_compare(iter->first, root->pair->first))
+		// 		root->left = do_rotation(root->left, iter);
+		// 	else if (/*iter->first > root->pair->first*/k_compare(root->pair->first, iter->first))
+		// 		root->right = do_rotation(root->right, iter);
+		// 	else
+		// 	{
+		// 		int balanceFactor = balanc_factor(root);
+		// 		if (balanceFactor > 1) {
+		// 			if (balanc_factor(root->left) >= 0) {
+		// 				return right_rotate(root);
+		// 			}
+		// 			else {
+		// 				root->left = left_rotate(root->left);
+		// 				return right_rotate(root);
+		// 			}
+		// 		}
+		// 		if (balanceFactor < -1) {
+		// 			if (balanc_factor(root->right) <= 0) {
+		// 				return left_rotate(root);
+		// 			} else {
+		// 				root->right = right_rotate(root->right);
+		// 				return left_rotate(root);
+		// 			}
+		// 		}
+		// 	}
+		// 	return root;
+		// }
+
 		Node_*		do_rotation(Node_ *root, iterator iter)
 		{
 			key_compare comp;
@@ -815,6 +882,7 @@ namespace ft
 			return root;
 		}
 
+
 		Node_*		upadte_height(Node_* root, iterator iter)
 		{
 			key_compare comp;
@@ -824,15 +892,17 @@ namespace ft
 				return ending;
 			if (root == r_ending)
 				return r_ending;
-			if (/*iter->first < root->pair->first*/ k_compare(iter->first, root->pair->first))
-				root->left = upadte_height(root->left, iter);
-			else if (/*iter->first > root->pair->first*/k_compare(root->pair->first, iter->first))
-				root->right = upadte_height(root->right, iter);
-			else
-			{
-				root->height = 1 + max(height(root->left),height(root->right));
+			// if (/*iter->first < root->pair->first*/ k_compare(iter->first, root->pair->first))
+			// 	root->left = upadte_height(root->left, iter);
+			// else if (/*iter->first > root->pair->first*/k_compare(root->pair->first, iter->first))
+			// 	root->right = upadte_height(root->right, iter);
+			// else
+			// {
+				//root->height = 1 + max(height(root->left),height(root->right));
+				iter.return_node()->height = 1 + max(height(iter.return_node()->left),height(iter.return_node()->right));
+
 			//	std::cout << "Key --> " << root->pair->first << " || height --> " << root->height << std::endl;
-			}
+			// }
 			return root;
 		}
 
@@ -979,9 +1049,10 @@ namespace ft
 
 		Node_*	new_node(const value_type &val, int i)
 		{
-			Node_ *_node =  alloc_.allocate(1);
+			_node =  alloc_.allocate(1);
 			_node->pair =	alloc.allocate(1);
 			alloc.construct(_node->pair, val);
+		//	tempi->first = iterator(_node);
 			_node->height = 1;
 			_node->parent = tmp;
 			if (i == 0)
