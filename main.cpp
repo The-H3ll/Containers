@@ -909,44 +909,100 @@ int     main()
  	//  iterator_tests();
 	// testElementAccess();
 
-        bool cond;
-        /*---------------------------------- time limit test --------------------------------------------*/
-        // {
-        //     time_t start, end, diff;
-        //     bool res, ft_res;
 
-        //     std::map<int, std::string> m;
-        //     ft::map<int, std::string> ft_m;
-        //     for (size_t i = 0; i < 1e6; ++i)
-        //     {
-        //         m.insert(std::make_pair(i, "value"));
-        //         ft_m.insert(ft::make_pair(i, "value"));
-        //     }
-        //     start = get_time();
-        //     res = m.count(1e6 - 10);
-        //     end = get_time();
-        //     diff = end - start;
-        //     diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
-
-        //     ualarm(diff * 1e3, 0);
-        //     ft_res = ft_m.count(1e6 - 10);
-        //     ualarm(0, 0);
-        //     cond = ft_res == res;
-        // }
-        std::map<int, std::string> m;
-        ft::map<int, std::string> ft_m;
-        int arr[] = {20, 10, 100, 15, 60, 90, 65, 200, 150}; // size = 9
-        for (size_t i = 0; i < 9; ++i)
+        bool cond(true);
         {
-			std::cout << "I +++> " << i << std::endl;
-            m.insert(std::make_pair(arr[i], "value"));
-            ft_m.insert(ft::make_pair(arr[i], "value"));
-        }
-		std::cout << "HERE\n";
-        cond = true;
-        cond = (cond && (m.count(65) == ft_m.count(65) && m.count(300) == ft_m.count(300)));
-        EQUAL(cond);
+            time_t start, end, diff;
+            /*------------------ std::maps ---------------------*/
+            std::map<int, std::string> m1;
+            ft::map<int, std::string> ft_m1;
+            for (size_t i = 0; i < 1200/*1e6*/; i++)
+            {
+                m1.insert(std::make_pair(i, "string2"));
+                ft_m1.insert(ft::make_pair(i, "string2"));
+            }
 
+            start = get_time();
+
+            for (size_t i = 1e1; i < 1200/*1e5*/; i += 10)
+                m1.find(i);
+
+            end = get_time();
+            diff = end - start;
+            diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
+            /*-----------------------------------------------------*/
+            /*------------------ ft::maps ---------------------*/
+            ualarm(diff * 1e3, 0);
+            for (size_t i = 1e1; i < 1e5; i += 10)
+                ft_m1.find(i);
+            ualarm(0, 0);
+            /*----------------------------------------------------*/
+        }
+
+        std::vector<int> vec;
+        std::vector<int> ft_vec;
+        std::random_device randDev;
+        std::mt19937 generator(randDev());
+        std::uniform_int_distribution<int> distr(0, 1e8);
+
+        std::map<int, std::string> m1;
+        ft::map<int, std::string> ft_m1;
+        std::map<int, std::string>::iterator it;
+        ft::map<int, std::string>::iterator ft_it;
+
+        for (size_t i = 0; i < 1200/*1e6*/; i++)
+        {
+            m1.insert(std::make_pair(i, "string2"));
+            ft_m1.insert(ft::make_pair(i, "string2"));
+        }
+
+        for (size_t i = 0; i < 1200/*1e6*/; i++)
+        {
+            int n = distr(generator);
+            it = m1.find(n);
+            ft_it = ft_m1.find(n);
+            if (it == m1.end() && ft_it == ft_m1.end())
+                continue;
+            if (it == m1.end() && ft_it != ft_m1.end())
+            {
+                cond = false;
+                break;
+            }
+            else
+            {
+                vec.push_back(it->first);
+                ft_vec.push_back(ft_it->first);
+            }
+        }
+
+        std::map<char, int> m;
+        ft::map<char, int> ft_m;
+        std::map<char, int>::iterator it2;
+        ft::map<char, int>::iterator ft_it2;
+
+        m['a'] = 50;
+        m['b'] = 100;
+        m['c'] = 150;
+        m['d'] = 200;
+
+        ft_m['a'] = 50;
+        ft_m['b'] = 100;
+        ft_m['c'] = 150;
+        ft_m['d'] = 200;
+
+        it2 = m.find('b');
+        ft_it2 = ft_m.find('b');
+
+        cond = cond && it2->first == ft_it2->first && it2->second == ft_it2->second;
+
+        if (it2 != m.end())
+            m.erase(it2);
+        if (ft_it2 != ft_m.end())
+            ft_m.erase(ft_it2);
+
+        cond = cond && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+
+        EQUAL(cond && vec == ft_vec);
 
 	return 0;
 }

@@ -235,6 +235,7 @@ namespace ft
 			my_pair.first =iterator(_node);
 			my_pair.second = true;
 			iter = iterator(_node);
+			// printTree(node, "", true);
 			if (/*value->first < node->pair->first*/k_compare(node->pair->first, val.first))
 			{
 
@@ -249,7 +250,7 @@ namespace ft
 					//  node = ver;
 					//Node_*	var = _node;
 					//node = ver;
-					std::cout << "Ver ==> " << _node->pair->first << std::endl;
+					// std::cout << "Ver ==> " << _node->pair->first << std::endl;
 					_node = _node->parent;
 					//  ver = ver->parent;
 					//node =node->parent;
@@ -279,7 +280,7 @@ namespace ft
 			}
 			else if(/*value->first < node->pair->first*/k_compare(val.first, node->pair->first))
 			{
-				std::cout << "ENter\n";
+				// std::cout << "ENter\n";
 				iterator itera(node);
 				while (itera != begin())
 				{
@@ -295,7 +296,7 @@ namespace ft
 				node = do_rotation(node, iter);
 			}
 			this->_size += 1;
-
+			// printTree(node, "", true);
 			return my_pair;
 		}
 
@@ -587,7 +588,9 @@ namespace ft
 		// Operations
 		iterator find(const key_type& k)
 		{
-			iterator iter = begin();
+			 iterator iter = begin();
+
+			// if (k_compare)
 
 			while (iter != end())
 			{
@@ -601,10 +604,10 @@ namespace ft
 		size_type count(const key_type& k) const
 		{
 			const_iterator iter = begin();
-
+			// printTree(node, "", true);
 			while (iter != end())
 			{
-				//std::cout << "Ie ==> " << iter->first << " K ==> " << k  <<'\n';
+				// std::cout << "Ie ==> " << iter->first << " K ==> " << k  <<'\n';
 				if (k_compare(k, iter->first) == false && k_compare(iter->first, k) == false)
 					return 1;
 				iter++;
@@ -1238,8 +1241,14 @@ namespace ft
 			 x->parent = temp;
 			if (y->left)
 				y->left->parent = y;
-			// if (x->parent)
-			// 	x->parent->left = x;	
+			if (x->parent)
+			{
+				if (x->parent->left == y)
+			 		x->parent->left = x;
+				else
+					x->parent->right = x;
+
+			}
 			y->height = max(height(y->left),
 							height(y->right)) +
 						1;
@@ -1264,10 +1273,10 @@ namespace ft
 			// std::cout << "x ==>  " << x->pair->first << std::endl;
 			// if (x->right)
 			// 	std::cout << "xR ==>  " << x->right->pair->first << std::endl;
-			// // if (x->left)
-			// // 	std::cout << "xL ==>  " << x->left->pair->first << std::endl;
-			// // if (x->parent)
-			// // 	std::cout << "xP ==>  " << x->parent->pair->first << std::endl;
+			// if (x->left)
+			// 	std::cout << "xL ==>  " << x->left->pair->first << std::endl;
+			// if (x->parent)
+			// 	std::cout << "xP ==>  " << x->parent->pair->first << std::endl;
 			Node_ *y = x->right;
 			Node_ *T2 = y->left;
 			Node_* temp = x->parent;
