@@ -279,7 +279,7 @@ void iterator_tests(void)
                 }
                 res += it->first;
             }
-        }
+}
         --my_it; // I decremented here to make sure that the object changes
         EQUAL(*my_it != *my_it1);
     }
@@ -1206,7 +1206,7 @@ void testModifiers()
             ft::map<int, std::string> ft_m1;
 
             start = get_time();
-            for (size_t i = 0; i < 1200; i++)
+            for (size_t i = 0; i < /*12000;*/1e6; i++)
                 m1.insert(std::make_pair(i, "string2"));
             end = get_time();
             diff = end - start;
@@ -1214,7 +1214,7 @@ void testModifiers()
             /*-----------------------------------------------------*/
            /* ------------------ ft::maps ---------------------*/
           ualarm(diff * 1e3, 0);
-            for (size_t i = 0; i < 1200/*1e6*/; i++)
+            for (size_t i = 0; i < 1e6; i++)
                 ft_m1.insert(ft::make_pair(i, "string2"));
 
             ualarm(0, 0);
@@ -1230,9 +1230,9 @@ void testModifiers()
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
            // ----------------------------------------------------
             //------------------ ft::maps ---------------------
-         //   ualarm(diff * 1e3, 0);
+            ualarm(diff * 1e3, 0);
             ft_m_range.insert(ft_m1.begin(), ft_m1.end());
-           // ualarm(0, 0);
+            ualarm(0, 0);
            // ---------------------------------------------------
         }
 
@@ -1243,16 +1243,16 @@ void testModifiers()
             ft::map<int, std::string> ft_m1;
 
             start = get_time();
-            m1.insert(std::make_pair(1200/*1e9*/, "string2"));
+            m1.insert(std::make_pair(/*12000*/ 1e9, "string2"));
             end = get_time();
             diff = end - start;
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
             //-----------------------------------------------------
            // ------------------ ft::maps ---------------------
-          //  ualarm(diff * 1e3, 0);
-            ft_m1.insert(ft::make_pair(1200 /*1e9*/, "string2"));
-            //ualarm(0, 0);
-            //----------------------------------------------------
+            ualarm(diff * 1e3, 0);
+            ft_m1.insert(ft::make_pair(/*12000*/ 1e9, "string2"));
+            ualarm(0, 0);
+            // ----------------------------------------------------
         }
 
         std::map<char, int> m;
@@ -1312,7 +1312,7 @@ void testModifiers()
             /*------------------ std::maps ---------------------*/
             std::map<int, std::string> m1;
             ft::map<int, std::string> ft_m1;
-            for (size_t i = 0; i < 1200/*1e6*/; i++)
+            for (size_t i = 0; i < 1200; i++)
             {
                 m1.insert(std::make_pair(i, "string2"));
                 ft_m1.insert(ft::make_pair(i, "string2"));
@@ -1325,9 +1325,9 @@ void testModifiers()
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
             /*-----------------------------------------------------*/
             /*------------------ ft::maps ---------------------*/
-          //  ualarm(diff * 1e3, 0);
+           ualarm(diff * 1e3, 0);
             ft_m1.erase(ft_m1.begin(), ft_m1.end());
-            //ualarm(0, 0);
+            ualarm(0, 0);
             /*----------------------------------------------------*/
         }
         std::map<char, int> m;
@@ -1381,7 +1381,7 @@ void testModifiers()
         std::map<int, std::string> m2;
         ft::map<int, std::string> ft_m2;
 
-        for (size_t i = 0; i < 20/*1e5*/; i++)
+        for (size_t i = 0; i < 1200; i++)
         {
             m2.insert(std::make_pair(i, "string1"));
             ft_m2.insert(ft::make_pair(i, "string1"));
@@ -1408,13 +1408,13 @@ void testModifiers()
         std::mt19937 generator(randDev());
         std::uniform_int_distribution<int> distr(0, 1e8);
 
-        for (size_t i = 0; i < 20/*1e6*/; i++)
+        for (size_t i = 0; i < 1200; i++)
         {
             m3.insert(std::make_pair(i, "string1"));
             ft_m3.insert(ft::make_pair(i, "string1"));
         }
 
-        for (size_t i = 0; i < 20/*1e6*/; ++i)
+        for (size_t i = 0; i < 1200; ++i)
         {
             int n = distr(generator);
             int ret1 = m3.erase(n);

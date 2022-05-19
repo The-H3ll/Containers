@@ -116,13 +116,11 @@ public:
 
 	Map_iterator&	operator++()
 	{
-			//  std::cout << "HEEELLLO\n";
-			//   std::cout << go_root()->pair->first << std::endl;
 			//  if (go_root()->parent == NULL)
 			//  	std::cout << "Yes\n";
+		// std::cout << "Node ==> " << node->pair->first << std::endl;
 		if (node->right != NULL  && node->pair->first != go_root()->pair->first )
 		{
-			// std::cout << "Here\n";
 			node = node->right;
 			if (node->left)
 			 	node = left_most(node);
@@ -174,6 +172,17 @@ public:
 		return (*this);
 	}
 
+	Map_iterator left_left()
+	{
+		if (node)
+		{
+			 while (node->left != NULL && node->left != end )
+			 {
+			 	node = node->left;
+			 }
+		}
+		return (*this);
+	}
 	const Map_iterator	left_most() const{
 		if (node)
 		{
@@ -198,7 +207,7 @@ public:
 	Node_ *	left_most(Node_* node) {
 		if (node)
 		{
-			while (node->left != NULL) {
+			while (node->left != NULL && node->left != end) {
 				node = node->left;
 			}
 		}
@@ -247,7 +256,6 @@ public:
 			tmp = node;
 			while (tmp->parent != NULL)
 			{
-				//std::cout << "Tmp ==> " << tmp->pair->first << std::endl;
 				tmp = tmp->parent;
 			}
 			return tmp;
