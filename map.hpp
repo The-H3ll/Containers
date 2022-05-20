@@ -153,30 +153,30 @@ namespace ft
 
 		map& operator= (const map& x)
 		{
-		//	std::cout << "Enter\n";
 			k_compare = x.k_compare;
 			if (node != NULL)
 			{
 				//node = NULL;
-				//erase(begin(), end());
-				this->node = NULL;
+				erase(begin(), end());
+				 this->node = NULL;
 				if (!x.empty())
 				{
-					ending = x.ending;
-					r_ending = x.r_ending;
 					insert(x.begin(), x.end());
 				}
 				else
 				{
-					node = ending;
+					
+					r_ending = ending;
 					this->_size = 0;
 				}
+				return(*this);
 			}
 			else if (!x.empty())
 			{
-				this->node = NULL;
-				ending = x.ending;
-				r_ending = x.r_ending;
+				erase(begin(), end());
+				 this->node = NULL;
+				// ending = x.ending;
+				// r_ending = x.r_ending;
 				if (!x.empty())
 					insert(x.begin(), x.end());
 
@@ -195,6 +195,7 @@ namespace ft
 			ft::pair< iterator , bool> my_pair;
 			iterator iter;
 			Node_* tempo;
+			
 			if (node)
 				tempo = node;
 			
@@ -258,24 +259,6 @@ namespace ft
 				 }
 				node = do_rotation(node, iter);
 				
-				//printTree(node, "", true);
-
-				// printTree(node, "", true);
-
-				 //node = upadte_height(node, iter);
-				//if (ver)
-				//  	ver = do_rotation(ver, iter);
-
-				// node = ver;
-
-				// while (iter != iterator(node))
-				// {
-				// 	node = upadte_height(node, iter);
-				// 	node = do_rotation(node, iter);
-				// 	iter--;
-				// }
-				//   	node = upadte_height(node, iter);
-				//   	node = do_rotation(node, iter);
 
 			}
 			else if(/*value->first < node->pair->first*/k_compare(val.first, node->pair->first))
@@ -369,11 +352,29 @@ namespace ft
 			// std::cout << "EnteR\n";
 			iterator iter;
 			iterator itera;
-			//  printTree(node, "", true);
+			//   printTree(node, "", true);
 			Node_* tt = position.return_node();
+			// printTree(node, "", true);
 			if (tt->parent == NULL)
 			{
-				itera = iterator(tt->right).left_left();
+				// std::cout << "Here\n";
+				if (tt->right->left)
+				{
+					
+					itera = iterator(tt->right).left_left();
+				}
+				else if (tt->left)
+				{
+					if (tt->left == r_ending)
+					{
+					// std::cout << "Enteer\n";
+						itera = iterator(tt->right);
+					//   std::cout << "Itea  ==> " << itera->first << std::endl;
+					}
+					else
+						itera = iterator(tt->left);
+					//   std::cout << "Itea  ==> " << itera->first << std::endl;
+				}
 				tt = itera.return_node();
 			}
 			else
@@ -381,6 +382,8 @@ namespace ft
 
 			node = erase_node(node, position);
 			this->_size -= 1;
+
+			//   printTree(node, "", true);
 			if (node && this->_size > 0)
 			{
 				root = node;
@@ -391,11 +394,13 @@ namespace ft
 				// 	iter++;
 				// }
 				// std::cout << "Node ==> "<< node->pair->first << std::endl;
+				// std::cout << "TT ==> " << tt->pair->first << std::endl;
 				iter = iterator(tt);
+				// std::cout << "TT ==> " << tt->pair->first << std::endl;
 				//  printTree(node, "", true);
 				while (iter != iterator(node) && tt->parent != NULL)
 				{
-				//   std::cout << "Beg ==> " << iter->first << std::endl;
+				//    std::cout << "Beg ==> " << iter->first << std::endl;
 					node = do_rotation(node, iter);
 					tt = tt->parent;
 			//  printTree(node, "", true);
@@ -432,8 +437,10 @@ namespace ft
 					in = 0;
 					return 0;
 				}
+			// printTree(node, "", true);
 			node = erase_node(node, iter);
-			if (node)
+			this->_size -= 1;
+			if (node && this->_size > 0)
 			{
 				root = node;
 
@@ -450,7 +457,7 @@ namespace ft
 					iter++;
 				}
 			}
-			this->_size -= 1;
+			// printTree(node, "", true);
 			return (1);
 		}
 		void 		clear()
@@ -482,12 +489,16 @@ namespace ft
 
 		iterator	begin()
 		{
+			if (node == NULL)
+				return end();
 			iterator  iter(r_ending, r_ending);
 
 			return iter.left_most();
 		}
 		const_iterator	begin() const
 		{
+			if (node == NULL)
+				return end();
 			const_iterator  iter(r_ending, r_ending);
 
 			return iter.left_most();
@@ -588,48 +599,83 @@ namespace ft
 		// Operations
 		iterator find(const key_type& k)
 		{
-			 iterator iter = begin();
+			 iterator iter;
+			 Node_* root = node;
 
 			// if (k_compare)
-
-			while (iter != end())
+			while (root && root != ending)
 			{
-				//std::cout << "Ie ==> " << iter->first << " K ==> " << k  <<'\n';
+				iter = iterator(root);
 				if (k_compare(k, iter->first) == false && k_compare(iter->first, k) == false)
 					return iter;
-				iter++;
+				
+				if (/*k < node->pair->first*/k_compare(k, root->pair->first))
+					root = root->left;
+				else
+					root = root->right;
+
+			}
+			return end();
+		}
+		const_iterator find(const key_type& k)const
+		{
+			 const_iterator iter;
+			 Node_* root = node;
+
+			// if (k_compare)
+			while (root && root != ending)
+			{
+				iter = iterator(root);
+				if (k_compare(k, iter->first) == false && k_compare(iter->first, k) == false)
+					return iter;
+				
+				if (/*k < node->pair->first*/k_compare(k, root->pair->first))
+					root = root->left;
+				else
+					root = root->right;
+
 			}
 			return end();
 		}
 		size_type count(const key_type& k) const
 		{
-			const_iterator iter = begin();
-			// printTree(node, "", true);
-			while (iter != end())
-			{
-				// std::cout << "Ie ==> " << iter->first << " K ==> " << k  <<'\n';
-				if (k_compare(k, iter->first) == false && k_compare(iter->first, k) == false)
-					return 1;
-				iter++;
-			}
+			// const_iterator iter = begin();
+			// // printTree(node, "", true);
+			// while (iter != end())
+			// {
+			// 	// std::cout << "Ie ==> " << iter->first << " K ==> " << k  <<'\n';
+			// 	if (k_compare(k, iter->first) == false && k_compare(iter->first, k) == false)
+			// 		return 1;
+			// 	iter++;
+			// }
+			const_iterator iter = find(k);
+			if (iter != end())
+				return 1;
 			return 0;
 		}
 		iterator lower_bound(const key_type& k)
 		{
-			iterator  iter;
-
-			iter = begin();
-			while (iter != end() && key_comp()(iter->first, k))
+			iterator iter ;
+			iterator fin = end();
+			if (k_compare(node->pair->first, k))
+				 iter = iterator(node);
+			else
+				iter = begin();
+			while (iter != fin && key_comp()(iter->first, k))
 			{
 				iter++;
 			}
+
 			return  iter;
 		}
 		const_iterator lower_bound(const key_type& k) const
 		{
 			const_iterator  iter;
 
-			iter = begin();
+			if (k_compare(node->pair->first, k))
+				 iter = iterator(node);
+			else
+				iter = begin();
 			while (iter != end() && key_comp()(iter->first, k))
 			{
 				iter++;
@@ -641,26 +687,39 @@ namespace ft
 		{
 			iterator  iter;
 
-			iter = begin();
-			while (iter != end() && key_comp()(k, iter->first) == false)
+			if (k_compare(node->pair->first, k))
+				 iter = iterator(node);
+			else
+				iter = begin();
+			// std::cout << " k==> " << k << std::endl;
+			// std::cout << "Iter ==> " << iter->first << std::endl;
+			// std::cout <<² "Node ==> " << node->pair->first << std::endl;
+			while (iter != end())
+			{
+				if (key_comp()(k, iter->first))
+					break;
 				iter++;
+			}
 			return  iter;
 		}
 
 		const_iterator upper_bound(const key_type& k) const
 		{
-
 			const_iterator  iter;
-
-			iter = begin();
-			while (iter != end() && key_comp()(k, iter->first) == false)
+			if (k_compare(node->pair->first, k))
+				 iter = iterator(node);
+			else
+				iter = begin();
+			while (iter != end())
+			{
+				if (key_comp()(k, iter->first))
+					break;
 				iter++;
-
+			}
 			return  iter;
 		}
-
+		
 		//Allocator
-
 		allocator_type get_allocator() const
 		{
 			return alloc;
@@ -858,7 +917,6 @@ namespace ft
 					}
 					else
 					{
-						// std::cout << "ENNNENN\n";
 						Node_* tmp = root;
 						root = NULL;
 						alloc_.deallocate(tmp, 1);
