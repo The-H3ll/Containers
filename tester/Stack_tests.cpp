@@ -11,9 +11,9 @@
 /* ************************************************************************************************ */
 
 // you should include your path to this files
-#include "../ft_contaners/containers/stack.hpp"       // your stack path.
-#include "../ft_contaners/containers/vector.hpp" // your Vector path.
-#include "../ft_contaners/STL/utility.hpp"  // path to ft::pair.
+#include "../stack.hpp"       // your stack path.
+// #include "../vector.hpp" // your Vector path.
+// #include "../ft_contaners/STL/utility.hpp"  // path to ft::pair.
 
 #include <vector>
 #include <stack>
