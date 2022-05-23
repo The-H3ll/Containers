@@ -158,7 +158,8 @@ namespace ft
 			{
 				//node = NULL;
 				erase(begin(), end());
-				 this->node = NULL;
+				this->_size = 0;
+				this->node = NULL;
 				if (!x.empty())
 				{
 					insert(x.begin(), x.end());
@@ -174,9 +175,8 @@ namespace ft
 			else if (!x.empty())
 			{
 				erase(begin(), end());
-				 this->node = NULL;
-				// ending = x.ending;
-				// r_ending = x.r_ending;
+				this->_size = 0;
+				this->node = NULL;
 				if (!x.empty())
 					insert(x.begin(), x.end());
 
@@ -184,6 +184,7 @@ namespace ft
 			else if ( x.empty())
 			{
 				node = ending;
+				this->_size = 0;
 			}
 			return (*this);
 		}
@@ -349,15 +350,11 @@ namespace ft
 		}
 		void 	erase(iterator position)
 		{
-			// std::cout << "EnteR\n";
 			iterator iter;
 			iterator itera;
-			//   printTree(node, "", true);
 			Node_* tt = position.return_node();
-			// printTree(node, "", true);
 			if (tt->parent == NULL)
 			{
-				// std::cout << "Here\n";
 				if (tt->right->left)
 				{
 					
@@ -367,56 +364,41 @@ namespace ft
 				{
 					if (tt->left == r_ending)
 					{
-					// std::cout << "Enteer\n";
 						itera = iterator(tt->right);
-					//   std::cout << "Itea  ==> " << itera->first << std::endl;
 					}
 					else
 						itera = iterator(tt->left);
-					//   std::cout << "Itea  ==> " << itera->first << std::endl;
 				}
 				tt = itera.return_node();
 			}
 			else
 				tt = tt->parent;
 
+			// printTree(node, "", true);
 			node = erase_node(node, position);
+			// printTree(node, "", true);
 			this->_size -= 1;
-
-			//   printTree(node, "", true);
 			if (node && this->_size > 0)
 			{
 				root = node;
-				// iter = begin();
-				// while (iter != end())
-				// {
-				// 	node = upadte_height(node, iter);
-				// 	iter++;
-				// }
-				// std::cout << "Node ==> "<< node->pair->first << std::endl;
-				// std::cout << "TT ==> " << tt->pair->first << std::endl;
 				iter = iterator(tt);
-				// std::cout << "TT ==> " << tt->pair->first << std::endl;
-				//  printTree(node, "", true);
 				while (iter != iterator(node) && tt->parent != NULL)
 				{
-				//    std::cout << "Beg ==> " << iter->first << std::endl;
 					node = do_rotation(node, iter);
 					tt = tt->parent;
-			//  printTree(node, "", true);
 					iter = iterator(tt);
 				}
 			}
-			// std::cout << "End\n";
 		}
+
 		void 	erase(iterator first, iterator last) {
 			iterator iter;
 
 			if (this->_size == 0)
 				return ;
-			while (first != last) {
+			while (first != last)
+			{
 				iter = first;
-				// std::cout << "ITe ==> " << iter->first << std::endl;
 				first++;
 				if (first != last)
 				{
@@ -443,13 +425,6 @@ namespace ft
 			if (node && this->_size > 0)
 			{
 				root = node;
-
-				// iter = begin();
-				// while (iter != end())
-				// {
-				// 	node = upadte_height(node, iter);
-				// 	iter++;
-				// }
 				iter = begin();
 				while (iter != end())
 				{
@@ -457,9 +432,9 @@ namespace ft
 					iter++;
 				}
 			}
-			// printTree(node, "", true);
 			return (1);
 		}
+
 		void 		clear()
 		{
 			iterator iter = begin();
@@ -483,6 +458,7 @@ namespace ft
 			x.node = save_node;
 			x.ending = save_last_element;
 			x.r_ending = save_last_rev;
+			
 			
 		}
 		//		Iterators
@@ -639,15 +615,6 @@ namespace ft
 		}
 		size_type count(const key_type& k) const
 		{
-			// const_iterator iter = begin();
-			// // printTree(node, "", true);
-			// while (iter != end())
-			// {
-			// 	// std::cout << "Ie ==> " << iter->first << " K ==> " << k  <<'\n';
-			// 	if (k_compare(k, iter->first) == false && k_compare(iter->first, k) == false)
-			// 		return 1;
-			// 	iter++;
-			// }
 			const_iterator iter = find(k);
 			if (iter != end())
 				return 1;
@@ -728,13 +695,17 @@ namespace ft
 
 		~map()
 		{
-			// if (node)
-			// 	free_node();
+			if (this->_size > 0 && node)
+			{
+			
+				 clear();
+				 this->_size = 0;
+				 node = NULL;
+			}
+
 		}
 
 	private:
-
-
 
 		iterator 	return_begin()
 		{
@@ -839,16 +810,16 @@ namespace ft
 					else if (root->right != NULL && root->right != ending)
 						temp = root->right;
 					if (temp == NULL) {
-						// std::cout << "Enter Here0\n";
 						temp = root;
 						root = NULL;
 						alloc_.deallocate(temp, 1);
 					}
 					else if (temp == ending)
 					{
-						// std::cout << "Enter Here1\n";
+						//  std::cout << "Enter Here1\n";
 						temp = root;
 						root = ending;
+						ending->parent = temp->parent;
 						alloc_.deallocate(temp, 1);
 					}
 					else if (temp == r_ending)
@@ -865,25 +836,46 @@ namespace ft
 						alloc_.deallocate(temp, 1);
 					}
 					else {
-						//  std::cout << "Enter Here in herre\n";
-						iterator iter = find_key(temp->pair);
+						//   std::cout << "Enter Here in herre\n";
+						// iterator iter = find_key(temp->pair);
 						Node_* timp = root;
 						//temp->parent = root->parent;
 						root = temp;
-						// if (timp->parent)
 						root->parent = timp->parent;
+						// if (timp->right == ending && root->right == NULL)
+						// {
+						// 	root->right = ending;
+						// 	ending->parent = root;
+						// }
+						// if (timp->left == r_ending && root->left == NULL)
+						// {
+						// 	root->left = r_ending;
+						// 	r_ending->parent = root;
+						// }
+
+						// if (timp->parent)
+						// std::cout << "rooot " << root->pair->first << std::endl;
 						// std::cout << "Parent ==> " << root->parent->pair->first << std::endl;
 						if (timp->right == ending)
 						{
-							while (root != NULL && root != ending)
+							
+							 Node_ *tmp  = root;
+							while (tmp->right != NULL && tmp->right != ending)
 							{
-								root = root->right;
+								tmp = tmp->right;
+								// root->parent = tmp;
 							}
-							root = ending;
+							tmp->right = ending;
+							ending->parent = tmp;
+							// while (root != NULL && root != ending)
+							// {
+							// 	root = root->right;
+							// }
+							// root = ending;²
 						}
 						if (timp->left == r_ending)
 						{
-							// std::cout << "HEerrr\n";
+							//  std::cout << "HEerrr\n";
 							 Node_ *tmp  = root;
 							while (tmp->left != NULL && tmp->left != r_ending)
 							{
@@ -892,15 +884,6 @@ namespace ft
 							}
 							tmp->left = r_ending;
 							r_ending->parent = tmp;
-							// if (root->left == r_ending)
-							// 	std::cout << "YESS\n";
-							// std::cout << "ROOOT ==> "<< root->pair->first << std::endl;
-							// r_ending->parent = temp->parent;
-							// if (root->left == NULL)
-							// {
-							// 	root->left = r_ending;
-							// 	r_ending->parent = root;
-							// }
 						}
 						// std::cout << "TM ++> " << timp->pair->first << std::endl;
 						alloc_.deallocate(timp, 1);

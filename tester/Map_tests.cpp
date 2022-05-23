@@ -224,7 +224,6 @@ void iterator_tests(void)
                 m.insert(ft::make_pair(myints[i], i));
             ft::map<int, int>::iterator it = m.begin(), eit = --m.end();
             tmp = eit->first;
-
             m.erase(eit);
             for (; it != m.end(); ++it)
                 res += it->first;
@@ -765,6 +764,7 @@ void testConstructors()
             ualarm(diff * 1e3, 0);
             ft_m1 = ft_m2;
             ualarm(0, 0);
+            std::cout << "DONE\n";
             /*----------------------------------------------------*/
         }
         /*------------------------------------------------------------------------------------------*/

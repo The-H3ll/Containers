@@ -62,7 +62,15 @@
         "iostream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "xstring": "cpp",
+        "xutility": "cpp",
+        "list": "cpp",
+        "xhash": "cpp",
+        "xtree": "cpp",
+        "ios": "cpp",
+        "stack": "cpp",
+        "xiosbase": "cpp"
     },
     "cmake.configureOnOpen": false
 }

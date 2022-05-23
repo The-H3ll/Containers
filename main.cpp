@@ -905,40 +905,17 @@ void testElementAccess()
 }
 int     main()
 {
-
- 	//  iterator_tests();
-	// testElementAccess();
-		//  testConstructors();
-
-
-		std::map<int, std::string> m1;
-		std::map<int, std::string> m2;
-		ft::map<int, std::string> ft_m1;
-		ft::map<int, std::string> ft_m2;
-
-		for (int i = 0; i < 10; ++i)
-		{
-			m1.insert(std::make_pair(i, "string2"));
-			ft_m1.insert(ft::make_pair(i, "string2"));
-		}
-		m1 = m2;
-		/*-----------------------------------------------------*/
-		/*------------------ ft::map ---------------------*/
-		ft_m1 = ft_m2;
-		/*----------------------------------------------------*/
-		/*------------------ strings to store the results ----*/
-		std::string res, ft_res;
-		/*----------------------------------------------------*/
-		for (std::map<int, std::string>::iterator it = m1.begin(); it != m1.end(); ++it) // fill res from m1
-			res += it->second;
-
-		for (ft::map<int, std::string>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
-			ft_res += it->second;
-
-		std::cout << "res ==> " << res << std::endl;
-		std::cout << "ftres ==> " << ft_res << std::endl;
-		
-		EQUAL(res == ft_res);
+            int res(0), tmp;
+            int myints[] = {12, 82, 37, 64, 15};
+            ft::map<int, int> m;
+            for (size_t i = 0; i < 5; ++i)
+                m.insert(ft::make_pair(myints[i], i));
+            ft::map<int, int>::iterator it = m.begin(), eit = --m.end();
+            tmp = eit->first;
+            m.erase(eit);
+            for (; it != m.end(); ++it)
+                res += it->first;
+            // cond = cond && (res == (210 - tmp));
 
 
 

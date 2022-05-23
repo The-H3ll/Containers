@@ -749,6 +749,7 @@ void vector_tests(void)
             ualarm(diff * 1e3, 0);
             ft_v1 = ft_v2;
             ualarm(0, 0);
+            std::cout << "HEEERE\n";
             /*----------------------------------------------------*/
         }
         /*------------------------------------------------------------------------------------------*/
@@ -2476,9 +2477,9 @@ void vector_tests(void)
             /*------------------ ft::vectors ---------------------*/
             ft::vector<std::string> ft_v(1e6, "string");
             ft::vector<std::string> ft_v1(1e6, "string2");
-            ualarm(diff * 1e3, 0);
+            // ualarm(diff * 1e3, 0);
             ft_v.swap(ft_v1);
-            ualarm(0, 0);
+            // ualarm(0, 0);
         }
         /*
          * strings to store the resutls
@@ -2595,6 +2596,7 @@ void vector_tests(void)
             ft::vector<std::string> ft_v(1e6, "string2");
             ualarm(diff * 1e3, 0);
             ft_v.clear();
+            
             ualarm(0, 0);
         }
         /*
