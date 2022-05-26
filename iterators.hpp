@@ -63,10 +63,6 @@ public:
 		temp = it;
 		return (*temp);
 	}
-/* 	reference operator*(value_type value)
-	{
-		*it = value;
-	}*/
 
 	pointer operator->()
 	{
@@ -100,43 +96,35 @@ public:
 	}
 	Iterator operator + (difference_type value)const
 	{
-//		Iterator temp = *this;
-//
-//		temp.it = temp.it + value
 		return 	Iterator(it + value) ;
 	}
 	friend Iterator operator +(difference_type value, Iterator iter)
 	{
-//		Iterator temp = iter;
-//		temp.it = temp.it +value;
 		return Iterator(iter.it + value);
 	}
 	Iterator operator - (difference_type value)const
 	{
-//		Iterator temp = *this;
-//
-//		temp.it = temp.it - value;
 		return 	Iterator(it - value) ;
 	}
-	bool  operator <(Iterator iter)
+	bool  operator <(const Iterator &iter)
 	{
 		if (this->it < iter.it)
 			return true;
 		return false;
 	}
-	bool  operator >(Iterator iter)
+	bool  operator >(const Iterator &iter)
 	{
 		if (this->it > iter.it)
 			return true;
 		return false;
 	}
-	bool  operator >=(Iterator iter)
+	bool  operator >=(const Iterator &iter)
 	{
 		if (this->it >= iter.it)
 			return true;
 		return false;
 	}
-	bool  operator <=(Iterator iter)
+	bool  operator <=(const Iterator &iter)
 	{
 		if (this->it <= iter.it)
 			return true;

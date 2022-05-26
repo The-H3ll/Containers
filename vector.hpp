@@ -79,7 +79,6 @@ namespace ft
 			}
 			~vector()
 			{
-				// std::cout << "ENTER\n";
 				for (size_type i = 0; i < this->_size; i++)
 					_alloc.destroy(this->arr + i);
 				if (this->_capacity > 0)
@@ -94,10 +93,7 @@ namespace ft
             {
             	arr = _alloc.allocate(x._size);
 				for (size_type i = 0 ; i < x._size; i++)
-				{
-					// arr[i] = x.arr[i];
 					_alloc.construct(arr + i, x[i]);
-				}
 				_size = x._size;
 				_capacity = x._capacity;
             }
@@ -113,9 +109,7 @@ namespace ft
 				{
 					_alloc.construct(this->arr + i, x[i]);
 				}
-				// arr = x.arr;
 				this->_size = x._size;
-				// _capacity = x._capacityterminate called after throwing an instance of 'std::bad_alloc'
 				return *this;
 			}
 		// Iterators
@@ -206,14 +200,7 @@ namespace ft
             }
             size_type max_size() const
             {
-//				if (sizeof(T) != 1)
-//				{
-//					double d = pow(2, 64);
-//					size_type dive = d / sizeof (T);
-//					return ( dive - 1);
-//				}
 				return (_alloc.max_size());
-//				return (pow(2, 63) - 1);
             }
             size_type   capacity() const
             {
@@ -228,7 +215,6 @@ namespace ft
                     array = _alloc.allocate(n);
                     while ( i < n )
                     {
-                        // array[i] = this->arr[i];
 						_alloc.construct(array + i, arr[i]);
                         i++;
                     }
@@ -236,7 +222,6 @@ namespace ft
                     i = 0;
                     while (i < n)
                     {
-                        // this->arr[i] = array[i];
 						_alloc.construct(arr+ i, array[i]);
                         i++;
                     }
@@ -246,13 +231,11 @@ namespace ft
                    array = _alloc.allocate(n);
                    while ( i < this->_size )
                     {
-                        // array[i] = this->arr[i];
 						_alloc.construct(array + i, arr[i]);
                         i++;
                     }
                     while (i < n)
                     {
-                        // array[i] = val;
 						_alloc.construct(array + i, val);
                         i++;
                     }
@@ -268,7 +251,6 @@ namespace ft
                     i = 0;
                     while (i < n)
                     {
-                        // this->arr[i] = array[i];
 						_alloc.construct(arr + i, array[i]);
                         i++;           
                     }
@@ -295,10 +277,7 @@ namespace ft
 							array = _alloc.allocate(this->_size);
 							for (size_type i = 0 ; i < this->_size ; i++)
 							{
-								// array[i] = arr[i];
 								_alloc.construct(array + i, arr[i]);
-
-
 							}
 							if (arr)
 								_alloc.deallocate(arr, this->_size);
@@ -307,7 +286,6 @@ namespace ft
 							this->_capacity = n;
 							for (size_type i = 0; i < this->_size; i++)
 								_alloc.construct(arr + i, array[i]);
-							// arr[i] = array[i];
 							if (array)
 								_alloc.deallocate(array, this->_size);
 						}
@@ -334,7 +312,6 @@ namespace ft
                }
                for (size_type i = 0; i < n; i++)
 			   {
-                //    this->arr[i] = val;
 				   _alloc.construct(arr + i, val);
 
 			   }
@@ -355,7 +332,6 @@ namespace ft
 				}
 				for (size_type i = 0; i < count; i++)
 				{
-					// this->arr[i] = *first;
 				   _alloc.construct(arr + i, *first);
 					first++;
 				}
@@ -371,7 +347,6 @@ namespace ft
 					array = _alloc.allocate(this->_size -1);
 					for (size_type k = 0; k < this->_size - 1; k++)
 					{
-						// array[k] = this->arr[k];
 				   		_alloc.construct(array + k, arr[k]);
 					}
 					if (this->arr)
@@ -386,18 +361,15 @@ namespace ft
 					}
 					while (i < this->_size - 1)
 					{
-						// this->arr[i] = array[i];
 				   		_alloc.construct(arr + i, array[i]);
 						i += 1;
 					}
-					// this->arr[i] = val;
 					_alloc.construct(this->arr + i, val);
 					if (array)
 						_alloc.deallocate(array, this->_size);
 				}
 				else
 				{
-					// this->arr[this->_size - 1] = val;
 					_alloc.construct(this->arr + this->_size - 1, val);
 				}
             }
@@ -417,7 +389,6 @@ namespace ft
 					this->_size += 1;
 					arr = _alloc.allocate(this->_size);
 					this->_capacity = 1;
-					// arr[j] = val;
 					_alloc.construct(arr + j, val);
 					iter =begin();
 					return iter;
@@ -494,7 +465,6 @@ namespace ft
 				{
 					if (i != pos)
 					{
-						// array[i] = arr[j];
 						_alloc.construct(array + i, arr[j]);
 						j += 1;
 					}
@@ -502,7 +472,6 @@ namespace ft
 					{
 						while (len < n)
 						{
-							// array[i] = val;
 							_alloc.construct(array + i, val);
 							len++;
 							if (len < n)
@@ -523,7 +492,6 @@ namespace ft
 				}
 				for (size_type i = 0 ; i < this->_size ; i++)
 				{
-					// this->arr[i] = array[i];
 					_alloc.construct(arr + i , array[i]);
 				}
 				if (array)
@@ -549,7 +517,6 @@ namespace ft
 				{
 					if (i != pos)
 					{
-						// array[i] = arr[j];
 						_alloc.construct(array + i, arr[j]);
 						j += 1;
 					}
@@ -557,7 +524,6 @@ namespace ft
 					{
 						while (first != last)
 						{
-							// array[i] = *first;
 							_alloc.construct(array+ i, *first);
 							first++;
 							if (first != last)
@@ -578,7 +544,6 @@ namespace ft
 				}
 				for (size_type i = 0 ; i < this->_size ; i++)
 					_alloc.construct(arr + i, array[i]);
-				// this->arr[i] = array[i];
 				if (array)
 					_alloc.deallocate(array, this->_size);
 			}
@@ -604,13 +569,11 @@ namespace ft
 					array = _alloc.allocate(this->_size);
 					for (size_type i= 0; i < this->_size; i++)
 						_alloc.construct(array + i, arr[i]);
-					// array[i] = this->arr[i];
 					_alloc.destroy(this->arr + pos);
 					for (size_type i =0 ; i < this->_size; i++)
 					{
 						if (i != pos)
 						{
-							// this->arr[j] = array[i];
 							_alloc.construct(arr + j, array[i]);
 							j += 1;
 						}
@@ -654,16 +617,13 @@ namespace ft
 					array = _alloc.allocate(this->_size);
 					for (size_type i= 0; i < this->_size; i++)
 						_alloc.construct(array + i, arr[i]);
-					// array[i] = this->arr[i];
 					if (this->arr)
 						_alloc.deallocate(this->arr, this->_size);
 					this->arr = _alloc.allocate(this->_capacity);
-					//this->_size -= count_range(first, last);
 					for (size_type i =0 ; i < this->_size; i++)
 					{
 						if (i < pos || i >= pos1)
 						{
-							// this->arr[j] = array[i];
 							_alloc.construct(arr + j, array[i]);
 							j += 1;
 						}
@@ -710,7 +670,6 @@ namespace ft
             {
 				for (size_type i= 0; i < this->_size; i++)
 					_alloc.destroy(this->arr + i);
-				//  this->~vector();
                 this->_size = 0;
             }
 
@@ -732,68 +691,47 @@ namespace ft
 				}
 			return count;
 		}
-        //  Non-Members functions
-        
-        //friend bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs);
-       // friend bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs);
-    };
+
+		friend bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+		{
+			if (lhs.size() == rhs.size())
+			{
+				if (std::equal(lhs.begin(), lhs.end(), rhs.begin()))
+					return (true);
+				else
+					return (false);
+			}
+			else
+				return (false);
+		}
+		friend bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+		{
+			return !(lhs == rhs);
+		}
+		friend  bool operator<  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+		{
+			return (std::lexicographical_compare(lhs.begin(), lhs.end() - 1, rhs.begin(), rhs.end() - 1));
+		}
+
+		friend bool operator<= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+		{
+			return !(rhs < lhs);
+		}
+
+		friend bool operator>  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+		{
+			return (rhs < lhs);
+		}
+
+		friend bool operator>= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+		{
+			return !(lhs < rhs);
+		}
+
+		friend void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y)
+		{
+			x.swap(y);
+		}
+	};
 
 }
-template <class T, class Alloc>
-    bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
-  {
-      if (lhs.size() == rhs.size())
-      {
-        if (std::equal(lhs.begin(), lhs.end(), rhs.begin()))
-            return (true);
-        else
-            return (false);
-      }
-      else
-        return (false);
-  }
-  template <class T, class Alloc>
-    bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
-    {
-        return !(lhs == rhs);
-        // if (lhs.size() != rhs.size())
-        // {
-        //     return (true);
-        // }
-        // else
-        //     return (false);
-    }
-
-template <class T, class Alloc>
-bool operator<  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
-{
-	return (std::lexicographical_compare(lhs.begin(), lhs.end() - 1, rhs.begin(), rhs.end() - 1));
-}
-
-template <class T, class Alloc>
-bool operator<= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
-{
-	return !(rhs < lhs);
-}
-
-template <class T, class Alloc>
-bool operator>  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
-{
-	return (rhs < lhs);
-}
-
-template <class T, class Alloc>
-bool operator>= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
-{
-	return !(lhs < rhs);
-}
-
-
-
-
-
-template <class T, class Alloc>
-    void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y) 
-    {
-        x.swap(y);
-    }

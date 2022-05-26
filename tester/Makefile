@@ -11,14 +11,14 @@
 # ************************************************************************************************** #
 
 COMPILER = clang++ -std=c++11
-FLAGS_DEBUG =   -fsanitize=address -g3
-#FLAGS = --std=c++98 
+FLAGS_DEBUG =   --std=c++98 -Wall -Wextra -Werror -fsanitize=address -g3
+FLAGS = --std=c++98  -Wall -Wextra -Werror  -fsanitize=address -g3
 
 vector_tle:
 	$(COMPILER) $(FLAGS_DEBUG)	Vector_tests_tle.cpp -o vector.out 
 
-vector:
-	@$(COMPILER) $(FLAGS)	Vector_tests.cpp -o vector.out
+#vector:
+#@$(COMPILER) $(FLAGS)	Vector_tests.cpp -o vector.out
 
 map:
 	@$(COMPILER) $(FLAGS)	 Map_tests.cpp -o map.out 

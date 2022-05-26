@@ -905,16 +905,22 @@ void testElementAccess()
 }
 int     main()
 {
-            int res(0), tmp;
-            int myints[] = {12, 82, 37, 64, 15};
-            ft::map<int, int> m;
-            for (size_t i = 0; i < 5; ++i)
-                m.insert(ft::make_pair(myints[i], i));
-            ft::map<int, int>::iterator it = m.begin(), eit = --m.end();
-            tmp = eit->first;
-            m.erase(eit);
-            for (; it != m.end(); ++it)
-                res += it->first;
+//            int res(0), tmp;
+//            int myints[] = {12, 82, 37, 64, 15};
+            ft::map<int, std::string> m;
+//            for (size_t i = 0; i < 5; ++i)
+//                m.insert(ft::make_pair(myints[i], i));
+//            ft::map<int, int>::iterator it = m.begin(), eit = --m.end();
+//            tmp = eit->first;
+//            m.erase(eit);
+//            std::cout << "eit ==± " << eit->first << std::endl;
+//            for (; it != m.end(); ++it)
+//                res += it->first;
+
+			for (size_t i = 0; i < 1e6 ; i++)
+				m.insert(ft::make_pair(i, "labhairi"));
+			m.clear();
+            while (1);
             // cond = cond && (res == (210 - tmp));
 
 
